@@ -1,0 +1,7 @@
+<library path="lib/libpath_visual">
+    <class name="path_visual_plugin/PathVisualPlugin"
+           type="path_visual_plugin::PathVisualPlugin"
+           base_class_type="rviz::Panel">
+        <description>A panel widget allowing path visualization.</description>
+    </class>
+</library>
