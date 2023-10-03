@@ -4,6 +4,7 @@ project(path_visual LANGUAGES CXX)
 
 find_package(catkin REQUIRED COMPONENTS
         rviz
+        wrapper_planner
         pluginlib
         )
 
@@ -81,12 +82,7 @@ install(FILES
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 
-#add_executable(path_visual
-#src/main.cpp
-#src/path_visual_plugin.cpp
-#include/path_visual_plugin.h
-#include/ui_path_visual_plugin.h
-#ui/path_visual_plugin.ui
-#)
-#
-#target_link_libraries(path_visual PRIVATE Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME}
+        ${catkin_LIBRARIES}
+        wrapper_planner
+)

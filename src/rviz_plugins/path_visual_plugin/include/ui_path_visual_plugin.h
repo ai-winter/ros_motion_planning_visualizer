@@ -97,7 +97,6 @@ public:
 
         horizontalLayout_6->addWidget(tableView);
 
-
         gridLayout_4->addWidget(groupBox_3, 0, 0, 1, 2);
 
         groupBox_4 = new QGroupBox(tab_path_visualization);
@@ -134,7 +133,6 @@ public:
 
         horizontalLayout->addWidget(lineEdit_2);
 
-
         verticalLayout->addWidget(groupBox_5);
 
         groupBox_6 = new QGroupBox(groupBox_4);
@@ -161,7 +159,6 @@ public:
 
         horizontalLayout_2->addWidget(lineEdit_4);
 
-
         verticalLayout->addWidget(groupBox_6);
 
         groupBox_7 = new QGroupBox(groupBox_4);
@@ -178,7 +175,6 @@ public:
 
         horizontalLayout_3->addWidget(comboBox);
 
-
         verticalLayout->addWidget(groupBox_7);
 
         pushButton = new QPushButton(groupBox_4);
@@ -190,7 +186,6 @@ public:
 
         verticalLayout->addItem(verticalSpacer_2);
 
-
         gridLayout_4->addWidget(groupBox_4, 0, 2, 2, 1);
 
         groupBox_10 = new QGroupBox(tab_path_visualization);
@@ -201,7 +196,6 @@ public:
         pushButton_4->setObjectName(QStringLiteral("pushButton_4"));
 
         horizontalLayout_5->addWidget(pushButton_4);
-
 
         gridLayout_4->addWidget(groupBox_10, 1, 0, 1, 1);
 
@@ -219,18 +213,15 @@ public:
 
         horizontalLayout_4->addWidget(pushButton_3);
 
-
         gridLayout_4->addWidget(groupBox_8, 1, 1, 1, 1);
 
         tab_manager->addTab(tab_path_visualization, QString());
 
         verticalLayout_5->addWidget(tab_manager);
 
-
         retranslateUi(PathVisualPlugin);
 
         tab_manager->setCurrentIndex(0);
-
 
         QMetaObject::connectSlotsByName(PathVisualPlugin);
     } // setupUi
@@ -256,11 +247,13 @@ public:
         pushButton_3->setText(QApplication::translate("PathVisualPlugin", "Load Paths", Q_NULLPTR));
         tab_manager->setTabText(tab_manager->indexOf(tab_path_visualization), QApplication::translate("PathVisualPlugin", "Path Visualization", Q_NULLPTR));
     } // retranslateUi
-
 };
 
-namespace Ui {
-    class PathVisualPlugin: public Ui_PathVisualPlugin {};
+namespace Ui
+{
+    class PathVisualPlugin : public Ui_PathVisualPlugin
+    {
+    };
 } // namespace Ui
 
 QT_END_NAMESPACE
