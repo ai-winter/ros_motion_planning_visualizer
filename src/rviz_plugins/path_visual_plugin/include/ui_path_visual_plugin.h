@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'path_visual_plugin.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.7
+** Created by: Qt User Interface Compiler version 5.12.8
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -11,9 +11,7 @@
 
 #include <QtCore/QLocale>
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
@@ -22,7 +20,6 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTableView>
 #include <QtWidgets/QVBoxLayout>
@@ -33,227 +30,212 @@ QT_BEGIN_NAMESPACE
 class Ui_PathVisualPlugin
 {
 public:
-    QVBoxLayout *verticalLayout_5;
-    QTabWidget *tab_manager;
-    QWidget *tab_path_visualization;
-    QGridLayout *gridLayout_4;
-    QGroupBox *groupBox_3;
-    QHBoxLayout *horizontalLayout_6;
-    QTableView *tableView;
-    QGroupBox *groupBox_4;
-    QVBoxLayout *verticalLayout;
-    QGroupBox *groupBox_5;
-    QHBoxLayout *horizontalLayout;
-    QLabel *label_4;
-    QLineEdit *lineEdit;
-    QLabel *label_5;
-    QLineEdit *lineEdit_2;
-    QGroupBox *groupBox_6;
-    QHBoxLayout *horizontalLayout_2;
-    QLabel *label_6;
-    QLineEdit *lineEdit_3;
-    QLabel *label_7;
-    QLineEdit *lineEdit_4;
-    QGroupBox *groupBox_7;
-    QHBoxLayout *horizontalLayout_3;
-    QLabel *label_8;
-    QComboBox *comboBox;
-    QPushButton *pushButton;
-    QSpacerItem *verticalSpacer_2;
-    QGroupBox *groupBox_10;
-    QHBoxLayout *horizontalLayout_5;
-    QPushButton *pushButton_4;
-    QGroupBox *groupBox_8;
-    QHBoxLayout *horizontalLayout_4;
-    QPushButton *pushButton_2;
-    QPushButton *pushButton_3;
+    QVBoxLayout *verticalLayout_main;
+    QTabWidget *tabManager;
+    QWidget *tab_pathVisualization;
+    QGridLayout *gridLayout_pathVisualization;
+    QGroupBox *groupBox_list;
+    QHBoxLayout *horizontalLayout_list;
+    QTableView *tableView_list;
+    QGroupBox *groupBox_add;
+    QVBoxLayout *verticalLayout_add;
+    QGroupBox *groupBox_add_start;
+    QHBoxLayout *horizontalLayout_add_start;
+    QLabel *label_add_start_x;
+    QLineEdit *lineEdit_add_start_x;
+    QLabel *label_add_start_y;
+    QLineEdit *lineEdit_add_start_y;
+    QGroupBox *groupBox_add_goal;
+    QHBoxLayout *horizontalLayout_add_goal;
+    QLabel *label_add_goal_x;
+    QLineEdit *lineEdit_add_goal_x;
+    QLabel *label_add_goal_y;
+    QLineEdit *lineEdit_add_goal_y;
+    QGroupBox *groupBox_add_planner;
+    QHBoxLayout *horizontalLayout_add_planner;
+    QLabel *label_add_planner_global;
+    QComboBox *comboBox_add_planner_global;
+    QPushButton *pushButton_add_add;
+    QGroupBox *groupBox_files;
+    QVBoxLayout *verticalLayout_files;
+    QPushButton *pushButton_files_load;
+    QPushButton *pushButton_files_save;
 
     void setupUi(QWidget *PathVisualPlugin)
     {
         if (PathVisualPlugin->objectName().isEmpty())
-            PathVisualPlugin->setObjectName(QStringLiteral("PathVisualPlugin"));
+            PathVisualPlugin->setObjectName(QString::fromUtf8("PathVisualPlugin"));
         PathVisualPlugin->resize(800, 600);
-        verticalLayout_5 = new QVBoxLayout(PathVisualPlugin);
-        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
-        tab_manager = new QTabWidget(PathVisualPlugin);
-        tab_manager->setObjectName(QStringLiteral("tab_manager"));
-        tab_manager->setMinimumSize(QSize(100, 0));
-        tab_manager->setLocale(QLocale(QLocale::English, QLocale::Australia));
-        tab_path_visualization = new QWidget();
-        tab_path_visualization->setObjectName(QStringLiteral("tab_path_visualization"));
-        gridLayout_4 = new QGridLayout(tab_path_visualization);
-        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
-        groupBox_3 = new QGroupBox(tab_path_visualization);
-        groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
-        horizontalLayout_6 = new QHBoxLayout(groupBox_3);
-        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
-        tableView = new QTableView(groupBox_3);
-        tableView->setObjectName(QStringLiteral("tableView"));
+        verticalLayout_main = new QVBoxLayout(PathVisualPlugin);
+        verticalLayout_main->setObjectName(QString::fromUtf8("verticalLayout_main"));
+        tabManager = new QTabWidget(PathVisualPlugin);
+        tabManager->setObjectName(QString::fromUtf8("tabManager"));
+        tabManager->setMinimumSize(QSize(100, 0));
+        tabManager->setLocale(QLocale(QLocale::English, QLocale::Australia));
+        tab_pathVisualization = new QWidget();
+        tab_pathVisualization->setObjectName(QString::fromUtf8("tab_pathVisualization"));
+        gridLayout_pathVisualization = new QGridLayout(tab_pathVisualization);
+        gridLayout_pathVisualization->setObjectName(QString::fromUtf8("gridLayout_pathVisualization"));
+        groupBox_list = new QGroupBox(tab_pathVisualization);
+        groupBox_list->setObjectName(QString::fromUtf8("groupBox_list"));
+        horizontalLayout_list = new QHBoxLayout(groupBox_list);
+        horizontalLayout_list->setObjectName(QString::fromUtf8("horizontalLayout_list"));
+        tableView_list = new QTableView(groupBox_list);
+        tableView_list->setObjectName(QString::fromUtf8("tableView_list"));
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(tableView->sizePolicy().hasHeightForWidth());
-        tableView->setSizePolicy(sizePolicy);
+        sizePolicy.setHeightForWidth(tableView_list->sizePolicy().hasHeightForWidth());
+        tableView_list->setSizePolicy(sizePolicy);
 
-        horizontalLayout_6->addWidget(tableView);
+        horizontalLayout_list->addWidget(tableView_list);
 
-        gridLayout_4->addWidget(groupBox_3, 0, 0, 1, 2);
 
-        groupBox_4 = new QGroupBox(tab_path_visualization);
-        groupBox_4->setObjectName(QStringLiteral("groupBox_4"));
-        groupBox_4->setEnabled(true);
+        gridLayout_pathVisualization->addWidget(groupBox_list, 0, 0, 3, 2);
+
+        groupBox_add = new QGroupBox(tab_pathVisualization);
+        groupBox_add->setObjectName(QString::fromUtf8("groupBox_add"));
+        groupBox_add->setEnabled(true);
         QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Preferred);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(groupBox_4->sizePolicy().hasHeightForWidth());
-        groupBox_4->setSizePolicy(sizePolicy1);
-        verticalLayout = new QVBoxLayout(groupBox_4);
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        groupBox_5 = new QGroupBox(groupBox_4);
-        groupBox_5->setObjectName(QStringLiteral("groupBox_5"));
-        horizontalLayout = new QHBoxLayout(groupBox_5);
-        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        label_4 = new QLabel(groupBox_5);
-        label_4->setObjectName(QStringLiteral("label_4"));
+        sizePolicy1.setHeightForWidth(groupBox_add->sizePolicy().hasHeightForWidth());
+        groupBox_add->setSizePolicy(sizePolicy1);
+        verticalLayout_add = new QVBoxLayout(groupBox_add);
+        verticalLayout_add->setObjectName(QString::fromUtf8("verticalLayout_add"));
+        groupBox_add_start = new QGroupBox(groupBox_add);
+        groupBox_add_start->setObjectName(QString::fromUtf8("groupBox_add_start"));
+        horizontalLayout_add_start = new QHBoxLayout(groupBox_add_start);
+        horizontalLayout_add_start->setObjectName(QString::fromUtf8("horizontalLayout_add_start"));
+        label_add_start_x = new QLabel(groupBox_add_start);
+        label_add_start_x->setObjectName(QString::fromUtf8("label_add_start_x"));
 
-        horizontalLayout->addWidget(label_4);
+        horizontalLayout_add_start->addWidget(label_add_start_x);
 
-        lineEdit = new QLineEdit(groupBox_5);
-        lineEdit->setObjectName(QStringLiteral("lineEdit"));
+        lineEdit_add_start_x = new QLineEdit(groupBox_add_start);
+        lineEdit_add_start_x->setObjectName(QString::fromUtf8("lineEdit_add_start_x"));
 
-        horizontalLayout->addWidget(lineEdit);
+        horizontalLayout_add_start->addWidget(lineEdit_add_start_x);
 
-        label_5 = new QLabel(groupBox_5);
-        label_5->setObjectName(QStringLiteral("label_5"));
+        label_add_start_y = new QLabel(groupBox_add_start);
+        label_add_start_y->setObjectName(QString::fromUtf8("label_add_start_y"));
 
-        horizontalLayout->addWidget(label_5);
+        horizontalLayout_add_start->addWidget(label_add_start_y);
 
-        lineEdit_2 = new QLineEdit(groupBox_5);
-        lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
+        lineEdit_add_start_y = new QLineEdit(groupBox_add_start);
+        lineEdit_add_start_y->setObjectName(QString::fromUtf8("lineEdit_add_start_y"));
 
-        horizontalLayout->addWidget(lineEdit_2);
+        horizontalLayout_add_start->addWidget(lineEdit_add_start_y);
 
-        verticalLayout->addWidget(groupBox_5);
 
-        groupBox_6 = new QGroupBox(groupBox_4);
-        groupBox_6->setObjectName(QStringLiteral("groupBox_6"));
-        horizontalLayout_2 = new QHBoxLayout(groupBox_6);
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        label_6 = new QLabel(groupBox_6);
-        label_6->setObjectName(QStringLiteral("label_6"));
+        verticalLayout_add->addWidget(groupBox_add_start);
 
-        horizontalLayout_2->addWidget(label_6);
+        groupBox_add_goal = new QGroupBox(groupBox_add);
+        groupBox_add_goal->setObjectName(QString::fromUtf8("groupBox_add_goal"));
+        horizontalLayout_add_goal = new QHBoxLayout(groupBox_add_goal);
+        horizontalLayout_add_goal->setObjectName(QString::fromUtf8("horizontalLayout_add_goal"));
+        label_add_goal_x = new QLabel(groupBox_add_goal);
+        label_add_goal_x->setObjectName(QString::fromUtf8("label_add_goal_x"));
 
-        lineEdit_3 = new QLineEdit(groupBox_6);
-        lineEdit_3->setObjectName(QStringLiteral("lineEdit_3"));
+        horizontalLayout_add_goal->addWidget(label_add_goal_x);
 
-        horizontalLayout_2->addWidget(lineEdit_3);
+        lineEdit_add_goal_x = new QLineEdit(groupBox_add_goal);
+        lineEdit_add_goal_x->setObjectName(QString::fromUtf8("lineEdit_add_goal_x"));
 
-        label_7 = new QLabel(groupBox_6);
-        label_7->setObjectName(QStringLiteral("label_7"));
+        horizontalLayout_add_goal->addWidget(lineEdit_add_goal_x);
 
-        horizontalLayout_2->addWidget(label_7);
+        label_add_goal_y = new QLabel(groupBox_add_goal);
+        label_add_goal_y->setObjectName(QString::fromUtf8("label_add_goal_y"));
 
-        lineEdit_4 = new QLineEdit(groupBox_6);
-        lineEdit_4->setObjectName(QStringLiteral("lineEdit_4"));
+        horizontalLayout_add_goal->addWidget(label_add_goal_y);
 
-        horizontalLayout_2->addWidget(lineEdit_4);
+        lineEdit_add_goal_y = new QLineEdit(groupBox_add_goal);
+        lineEdit_add_goal_y->setObjectName(QString::fromUtf8("lineEdit_add_goal_y"));
 
-        verticalLayout->addWidget(groupBox_6);
+        horizontalLayout_add_goal->addWidget(lineEdit_add_goal_y);
 
-        groupBox_7 = new QGroupBox(groupBox_4);
-        groupBox_7->setObjectName(QStringLiteral("groupBox_7"));
-        horizontalLayout_3 = new QHBoxLayout(groupBox_7);
-        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        label_8 = new QLabel(groupBox_7);
-        label_8->setObjectName(QStringLiteral("label_8"));
 
-        horizontalLayout_3->addWidget(label_8);
+        verticalLayout_add->addWidget(groupBox_add_goal);
 
-        comboBox = new QComboBox(groupBox_7);
-        comboBox->setObjectName(QStringLiteral("comboBox"));
+        groupBox_add_planner = new QGroupBox(groupBox_add);
+        groupBox_add_planner->setObjectName(QString::fromUtf8("groupBox_add_planner"));
+        horizontalLayout_add_planner = new QHBoxLayout(groupBox_add_planner);
+        horizontalLayout_add_planner->setObjectName(QString::fromUtf8("horizontalLayout_add_planner"));
+        label_add_planner_global = new QLabel(groupBox_add_planner);
+        label_add_planner_global->setObjectName(QString::fromUtf8("label_add_planner_global"));
 
-        horizontalLayout_3->addWidget(comboBox);
+        horizontalLayout_add_planner->addWidget(label_add_planner_global);
 
-        verticalLayout->addWidget(groupBox_7);
+        comboBox_add_planner_global = new QComboBox(groupBox_add_planner);
+        comboBox_add_planner_global->setObjectName(QString::fromUtf8("comboBox_add_planner_global"));
 
-        pushButton = new QPushButton(groupBox_4);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
+        horizontalLayout_add_planner->addWidget(comboBox_add_planner_global);
 
-        verticalLayout->addWidget(pushButton);
 
-        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalLayout_add->addWidget(groupBox_add_planner);
 
-        verticalLayout->addItem(verticalSpacer_2);
+        pushButton_add_add = new QPushButton(groupBox_add);
+        pushButton_add_add->setObjectName(QString::fromUtf8("pushButton_add_add"));
 
-        gridLayout_4->addWidget(groupBox_4, 0, 2, 2, 1);
+        verticalLayout_add->addWidget(pushButton_add_add);
 
-        groupBox_10 = new QGroupBox(tab_path_visualization);
-        groupBox_10->setObjectName(QStringLiteral("groupBox_10"));
-        horizontalLayout_5 = new QHBoxLayout(groupBox_10);
-        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        pushButton_4 = new QPushButton(groupBox_10);
-        pushButton_4->setObjectName(QStringLiteral("pushButton_4"));
 
-        horizontalLayout_5->addWidget(pushButton_4);
+        gridLayout_pathVisualization->addWidget(groupBox_add, 0, 2, 2, 1);
 
-        gridLayout_4->addWidget(groupBox_10, 1, 0, 1, 1);
+        groupBox_files = new QGroupBox(tab_pathVisualization);
+        groupBox_files->setObjectName(QString::fromUtf8("groupBox_files"));
+        verticalLayout_files = new QVBoxLayout(groupBox_files);
+        verticalLayout_files->setObjectName(QString::fromUtf8("verticalLayout_files"));
+        pushButton_files_load = new QPushButton(groupBox_files);
+        pushButton_files_load->setObjectName(QString::fromUtf8("pushButton_files_load"));
 
-        groupBox_8 = new QGroupBox(tab_path_visualization);
-        groupBox_8->setObjectName(QStringLiteral("groupBox_8"));
-        horizontalLayout_4 = new QHBoxLayout(groupBox_8);
-        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
-        pushButton_2 = new QPushButton(groupBox_8);
-        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        verticalLayout_files->addWidget(pushButton_files_load);
 
-        horizontalLayout_4->addWidget(pushButton_2);
+        pushButton_files_save = new QPushButton(groupBox_files);
+        pushButton_files_save->setObjectName(QString::fromUtf8("pushButton_files_save"));
 
-        pushButton_3 = new QPushButton(groupBox_8);
-        pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
+        verticalLayout_files->addWidget(pushButton_files_save);
 
-        horizontalLayout_4->addWidget(pushButton_3);
 
-        gridLayout_4->addWidget(groupBox_8, 1, 1, 1, 1);
+        gridLayout_pathVisualization->addWidget(groupBox_files, 2, 2, 1, 1);
 
-        tab_manager->addTab(tab_path_visualization, QString());
+        tabManager->addTab(tab_pathVisualization, QString());
 
-        verticalLayout_5->addWidget(tab_manager);
+        verticalLayout_main->addWidget(tabManager);
+
 
         retranslateUi(PathVisualPlugin);
 
-        tab_manager->setCurrentIndex(0);
+        tabManager->setCurrentIndex(0);
+
 
         QMetaObject::connectSlotsByName(PathVisualPlugin);
     } // setupUi
 
     void retranslateUi(QWidget *PathVisualPlugin)
     {
-        PathVisualPlugin->setWindowTitle(QApplication::translate("PathVisualPlugin", "PathVisualPlugin", Q_NULLPTR));
-        groupBox_3->setTitle(QApplication::translate("PathVisualPlugin", "Path List", Q_NULLPTR));
-        groupBox_4->setTitle(QApplication::translate("PathVisualPlugin", "Add a New Path", Q_NULLPTR));
-        groupBox_5->setTitle(QApplication::translate("PathVisualPlugin", "Start Point", Q_NULLPTR));
-        label_4->setText(QApplication::translate("PathVisualPlugin", "x", Q_NULLPTR));
-        label_5->setText(QApplication::translate("PathVisualPlugin", "y", Q_NULLPTR));
-        groupBox_6->setTitle(QApplication::translate("PathVisualPlugin", "Goal Point", Q_NULLPTR));
-        label_6->setText(QApplication::translate("PathVisualPlugin", "x", Q_NULLPTR));
-        label_7->setText(QApplication::translate("PathVisualPlugin", "y", Q_NULLPTR));
-        groupBox_7->setTitle(QApplication::translate("PathVisualPlugin", "Planner", Q_NULLPTR));
-        label_8->setText(QApplication::translate("PathVisualPlugin", "Global Planner", Q_NULLPTR));
-        pushButton->setText(QApplication::translate("PathVisualPlugin", "Add Path", Q_NULLPTR));
-        groupBox_10->setTitle(QApplication::translate("PathVisualPlugin", "Remove Selected Path", Q_NULLPTR));
-        pushButton_4->setText(QApplication::translate("PathVisualPlugin", "Remove Path", Q_NULLPTR));
-        groupBox_8->setTitle(QApplication::translate("PathVisualPlugin", "Save or Load the Path Files", Q_NULLPTR));
-        pushButton_2->setText(QApplication::translate("PathVisualPlugin", "Save Paths", Q_NULLPTR));
-        pushButton_3->setText(QApplication::translate("PathVisualPlugin", "Load Paths", Q_NULLPTR));
-        tab_manager->setTabText(tab_manager->indexOf(tab_path_visualization), QApplication::translate("PathVisualPlugin", "Path Visualization", Q_NULLPTR));
+        PathVisualPlugin->setWindowTitle(QApplication::translate("PathVisualPlugin", "PathVisualPlugin", nullptr));
+        groupBox_list->setTitle(QApplication::translate("PathVisualPlugin", "Path List", nullptr));
+        groupBox_add->setTitle(QApplication::translate("PathVisualPlugin", "Add a New Path", nullptr));
+        groupBox_add_start->setTitle(QApplication::translate("PathVisualPlugin", "Start Point", nullptr));
+        label_add_start_x->setText(QApplication::translate("PathVisualPlugin", "x", nullptr));
+        label_add_start_y->setText(QApplication::translate("PathVisualPlugin", "y", nullptr));
+        groupBox_add_goal->setTitle(QApplication::translate("PathVisualPlugin", "Goal Point", nullptr));
+        label_add_goal_x->setText(QApplication::translate("PathVisualPlugin", "x", nullptr));
+        label_add_goal_y->setText(QApplication::translate("PathVisualPlugin", "y", nullptr));
+        groupBox_add_planner->setTitle(QApplication::translate("PathVisualPlugin", "Planner", nullptr));
+        label_add_planner_global->setText(QApplication::translate("PathVisualPlugin", "Global Planner", nullptr));
+        pushButton_add_add->setText(QApplication::translate("PathVisualPlugin", "Add Path", nullptr));
+        groupBox_files->setTitle(QApplication::translate("PathVisualPlugin", "For Path Files", nullptr));
+        pushButton_files_load->setText(QApplication::translate("PathVisualPlugin", "Load Paths", nullptr));
+        pushButton_files_save->setText(QApplication::translate("PathVisualPlugin", "Save Paths", nullptr));
+        tabManager->setTabText(tabManager->indexOf(tab_pathVisualization), QApplication::translate("PathVisualPlugin", "Path Visualization", nullptr));
     } // retranslateUi
+
 };
 
-namespace Ui
-{
-    class PathVisualPlugin : public Ui_PathVisualPlugin
-    {
-    };
+namespace Ui {
+    class PathVisualPlugin: public Ui_PathVisualPlugin {};
 } // namespace Ui
 
 QT_END_NAMESPACE
