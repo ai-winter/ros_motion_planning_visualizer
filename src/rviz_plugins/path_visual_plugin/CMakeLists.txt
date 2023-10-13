@@ -52,11 +52,14 @@ add_definitions(-DQT_NO_KEYWORDS)
 
 set(SOURCE_FILES
         src/path_visual_plugin.cpp
+        src/core_path_visual_plugin.cpp
         ${MOC_FILES}
         )
 
 set(HEADER_FILES
         include/path_visual_plugin.h
+        include/core_path_visual_plugin.h
+        include/ui_path_visual_plugin.h
         )
 
 add_library(${PROJECT_NAME}

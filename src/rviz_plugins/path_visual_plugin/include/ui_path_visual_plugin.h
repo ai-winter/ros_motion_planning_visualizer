@@ -87,6 +87,7 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(tableView_list->sizePolicy().hasHeightForWidth());
         tableView_list->setSizePolicy(sizePolicy);
+        tableView_list->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
         horizontalLayout_list->addWidget(tableView_list);
 
