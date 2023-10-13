@@ -3,20 +3,23 @@
  * @file: path_visual_plugin.h
  * @breif: Contains path visualization Rviz plugin class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-10-3
- * @version: 1.1
+ * @update: 2023-10-14
+ * @version: 1.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
  * All rights reserved.
  * --------------------------------------------------------
  *
  **********************************************************/
-#ifndef PATHVISUALPLUGIN_H
-#define PATHVISUALPLUGIN_H
+#ifndef PATH_VISUAL_PLUGIN_H
+#define PATH_VISUAL_PLUGIN_H
 
 #include <QWidget>
 #include <QRegExpValidator>
 #include <QStandardItemModel>
+#include <QCheckBox>
+#include <QColorDialog>
+#include <QRegularExpression>
 #include <rviz/panel.h>
 
 #include <ros/ros.h>
@@ -33,6 +36,8 @@ QT_END_NAMESPACE
 
 namespace path_visual_plugin
 {
+class CorePathVisualPlugin;
+
 class PathVisualPlugin : public rviz::Panel
 {
   Q_OBJECT
@@ -53,45 +58,7 @@ public:
    */
   void setupUi();
 
-  /**
-   * @brief ROS parameters initialization
-   */
-  void setupROS();
-
-  /**
-   * @brief Publish planning path
-   * @param path  planning path
-   */
-  void publishPlan(const std::vector<geometry_msgs::PoseStamped>& plan);
-
-  /**
-   *  @brief call path planning service
-   */
-  void addPath();
-
-  /**
-   *  @brief call load paths service
-   */
-  void loadPaths();
-
-  /**
-   *  @brief call save paths service
-   */
-  void savePaths();
-
 protected Q_SLOTS:
-  /**
-   *  @brief update the start point, it is a callback funciton
-   *  @param  pose    the start setting in Rviz
-   */
-  void _onStartUpdate(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose);
-
-  /**
-   *  @brief update the goal point, it is a callback funciton
-   *  @param  pose    the goal setting in Rviz
-   */
-  void _onGoalUpdate(const geometry_msgs::PoseStamped::ConstPtr& pose);
-
   /**
    *  @brief if clicked signal is received, call this slot function
    */
@@ -102,27 +69,29 @@ protected Q_SLOTS:
    */
   void _onEditingFinished();
 
+  /**
+   *  @brief if value changed signal from core is received, call this slot function
+   */
+  void _onValueChanged();
+
+  /**
+   *  @brief add a path row in table view
+   */
+  void _addPathRow();
+
+  /**
+   *  @brief remove a path with some index row in table view
+   *  @param index  the index of the removed path
+   */
+  void _removePathRow(const int& index);
+
 private:
-  Ui::PathVisualPlugin* ui;  // ui object
+  Ui::PathVisualPlugin* ui;   // ui object
+  CorePathVisualPlugin* core; // core object
 
   QStandardItemModel* table_model_; // model of table "Path List"
   QStringList table_header_;        // header of table "Path List"
-
-  ros::Publisher marker_pub_;  // map marker publisher
-  ros::Publisher plan_pub_;    // path planning publisher
-
-  // start and goal point subscriber
-  ros::Subscriber start_sub_, goal_sub_;
-
-  // call plan client
-  ros::ServiceClient call_plan_client_;
-
-  //   start and goal point
-  double start_x_, start_y_;
-  double goal_x_, goal_y_;
-
-  std::vector<std::string> planner_list_;  // valid planner name list
 };
 
 }  // namespace path_visual_plugin
-#endif  // PATHVISUALPLUGIN_H
+#endif  // PATH_VISUAL_PLUGIN_H
