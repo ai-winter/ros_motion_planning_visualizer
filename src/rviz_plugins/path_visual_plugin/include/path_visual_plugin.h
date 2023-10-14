@@ -85,9 +85,11 @@ protected Q_SLOTS:
    */
   void _removePathRow(const int& index);
 
+  void _updateTableView();
+
 private:
-  Ui::PathVisualPlugin* ui;   // ui object
-  CorePathVisualPlugin* core; // core object
+  Ui::PathVisualPlugin* ui_;   // ui object
+  CorePathVisualPlugin* core_; // core object
 
   QStandardItemModel* table_model_; // model of table "Path List"
   QStringList table_header_;        // header of table "Path List"

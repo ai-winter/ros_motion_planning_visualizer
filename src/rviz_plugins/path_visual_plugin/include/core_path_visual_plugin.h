@@ -20,6 +20,8 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 
+#include "include/path_list.h"
+
 namespace path_visual_plugin
 {
 class CorePathVisualPlugin : public QObject
@@ -27,6 +29,16 @@ class CorePathVisualPlugin : public QObject
   Q_OBJECT
 
 public:
+  /**
+   * @brief Construct a new CorePathVisualPlugin object
+   */
+  CorePathVisualPlugin();
+
+  /**
+   * @brief Destroy the CorePathVisualPlugin object
+   */
+  ~CorePathVisualPlugin();
+
   /**
    * @brief ROS parameters initialization
    */
@@ -112,15 +124,13 @@ public:
   // call plan client
   ros::ServiceClient call_plan_client_;
 
-  // start and goal point
-  double start_x_, start_y_;
-  double goal_x_, goal_y_;
-
-  // total number of paths created
-  int path_num_;
-
   // valid planner name list
   std::vector<std::string> planner_list_;
+
+  // start and goal point
+  double start_x_, start_y_, goal_x_, goal_y_;
+
+  PathList* path_list_;
 };
 }  // namespace path_visual_plugin
 #endif  // CORE_PATH_VISUAL_PLUGIN_H
