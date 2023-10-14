@@ -20,6 +20,23 @@
 namespace path_visual_plugin
 {
 /**
+   * @brief Construct a new CorePathVisualPlugin object
+ */
+CorePathVisualPlugin::CorePathVisualPlugin() : path_list_(new PathList)
+{
+  start_x_ = start_y_ = goal_x_ = goal_y_ = 0.00;
+}
+
+/**
+   * @brief Destroy the CorePathVisualPlugin object
+ */
+CorePathVisualPlugin::~CorePathVisualPlugin()
+{
+  if (path_list_)
+    delete path_list_;
+}
+
+/**
  * @brief ROS parameters initialization
  */
 void CorePathVisualPlugin::setupROS()
@@ -42,10 +59,6 @@ void CorePathVisualPlugin::setupROS()
 
   // parameters
   private_nh.getParam("/move_base/planner", planner_list_);
-
-  // initialize values
-  start_x_ = start_y_ = goal_x_ = goal_y_ = 0.00;
-  path_num_ = 0;
 }
 
 /**
@@ -89,11 +102,27 @@ void CorePathVisualPlugin::addPath(const std::string& planner_name)
   if (call_plan_client_.call(call_plan_srv))
   {
     publishPlan(call_plan_srv.response.path);
-    ROS_INFO("Planner %s planning successfully done.", planner_name.c_str());
 
+    if (path_list_->append(PathInfo{
+      planner_name: planner_name,
+      start_x: start_x_,
+      start_y: start_y_,
+      goal_x: goal_x_,
+      goal_y: goal_y_,
+      length: 0,
+      turning_angle: 0,
+      color: Qt::darkBlue,
+      show: true
+    }))
+      ROS_INFO("Planner %s planning successfully done.", planner_name.c_str());
+    else
+    {
+      ROS_ERROR("Planner %s planning failed.", planner_name.c_str());
+      return;
+    }
   }
   else
-    ROS_WARN("Planner %s planning failed.", planner_name.c_str());
+    ROS_ERROR("Planner %s planning failed.", planner_name.c_str());
 }
 
 /**
@@ -138,7 +167,10 @@ void CorePathVisualPlugin::setPathShowStatus(const int& index, const bool& show)
  */
 void CorePathVisualPlugin::removePath(const int &index)
 {
-
+  if (path_list_->remove(index))
+    ROS_INFO("Path with index %d is successfully removed!", index);
+  else
+    ROS_ERROR("Failed to remove path with index %d.", index);
 }
 
 /**
