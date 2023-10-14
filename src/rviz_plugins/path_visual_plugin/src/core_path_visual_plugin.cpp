@@ -148,7 +148,16 @@ void CorePathVisualPlugin::savePaths()
  */
 void CorePathVisualPlugin::setPathColor(const int &index, const QColor& color)
 {
+    if (path_list_->setColor(index, color))
+    {
+      QRgb color_rgb = color.rgb();
+      ROS_INFO("The color of path with index %d is successfully set to RGB(%d, %d, %d)!",
+             index, qRed(color_rgb), qGreen(color_rgb), qBlue(color_rgb));
 
+
+    }
+    else
+      ROS_ERROR("Failed to set the color of path with index %d.", index);
 }
 
 /**
@@ -158,7 +167,14 @@ void CorePathVisualPlugin::setPathColor(const int &index, const QColor& color)
  */
 void CorePathVisualPlugin::setPathShowStatus(const int& index, const bool& show)
 {
+    if (path_list_->setShow(index, show))
+    {
+      ROS_INFO("The show status of path with index %d is successfully set to %s!", index, show?"true":"false");
 
+
+    }
+    else
+      ROS_ERROR("Failed to set the show status of path with index %d.", index);
 }
 
 /**
@@ -168,7 +184,11 @@ void CorePathVisualPlugin::setPathShowStatus(const int& index, const bool& show)
 void CorePathVisualPlugin::removePath(const int &index)
 {
   if (path_list_->remove(index))
+  {
     ROS_INFO("Path with index %d is successfully removed!", index);
+
+
+  }
   else
     ROS_ERROR("Failed to remove path with index %d.", index);
 }
