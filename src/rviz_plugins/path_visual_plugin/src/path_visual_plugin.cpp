@@ -73,7 +73,7 @@ void PathVisualPlugin::setupUi()
 }
 
 /**
-   *  @brief if clicked signal is received, call this slot function
+   *  @brief if clicked signal from pushButton is received, call this slot function
  */
 void PathVisualPlugin::_onClicked()
 {
@@ -107,6 +107,7 @@ void PathVisualPlugin::_onClicked()
       int index = capturedText.toInt(&ok);
       if (ok)
       {
+        // 这里还需要改代码，把darkBlue改成当前路径颜色
         QColor color = QColorDialog::getColor(Qt::darkBlue, this);
         if (color.isValid())
           core_->setPathColor(index, color);
@@ -150,7 +151,7 @@ void PathVisualPlugin::_onClicked()
 }
 
 /**
- *  @brief if editing finished signal is received, call this slot function
+ *  @brief if editing finished signal from lineEdit is received, call this slot function
  */
 void PathVisualPlugin::_onEditingFinished()
 {
@@ -185,6 +186,45 @@ void PathVisualPlugin::_onEditingFinished()
   }
   else
     ROS_ERROR("Failed to get signal sender QLineEdit.");
+}
+
+/**
+ *  @brief if editing finished signal is from checkBox received, call this slot function
+ */
+void PathVisualPlugin::_onStateChanged(int state)
+{
+  QCheckBox* senderCheckBox = qobject_cast<QCheckBox*>(sender());
+
+  if (senderCheckBox)
+  {
+    // get the button name
+    QString senderName = senderCheckBox->objectName();
+
+    // regular expression to match button names
+    QRegularExpression re("checkBox_list_show_(\\d+)");
+    QRegularExpressionMatch match = re.match(senderName);
+
+    if (match.hasMatch())
+    {
+      QString capturedText = match.captured(1);
+      bool ok = false;
+      int index = capturedText.toInt(&ok);
+      if (ok)
+        core_->setPathShowStatus(index, (state == 0)?false:true);
+      else
+      {
+        ROS_ERROR("Failed to get the path index to set color!");
+        return;
+      };
+    }
+    else
+    {
+      ROS_ERROR("Unknown signal sender QCheckBox.");
+      return;
+    }
+  }
+  else
+    ROS_ERROR("Failed to get signal sender QCheckBox.");
 }
 
 /**
@@ -278,13 +318,16 @@ void PathVisualPlugin::_updateTableView()
       connect(pushButton_list_color, SIGNAL(clicked()), this, SLOT(_onClicked()));
 
       QCheckBox* checkBox_list_show = new QCheckBox();
+      checkBox_list_show->setObjectName(QString::fromUtf8("checkBox_list_show_%1")
+                                            .arg(QString::number(row)));
       checkBox_list_show->setAutoFillBackground(true);
       checkBox_list_show->setStyleSheet(
           "background-color: rgb(255, 255, 255);"
           //        "padding-left:20px;"
       );
       ui_->tableView_list->setIndexWidget(table_model_->index(row, 6), checkBox_list_show);
-      checkBox_list_show->setChecked(true);
+      checkBox_list_show->setChecked(row_info.show);
+      connect(checkBox_list_show, SIGNAL(stateChanged(int)), this, SLOT(_onStateChanged(int)));
 
       QPushButton* pushButton_list_remove = new QPushButton();
       pushButton_list_remove->setObjectName(QString::fromUtf8("pushButton_list_remove_%1")

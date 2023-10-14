@@ -62,6 +62,36 @@ bool PathList::remove(const int& index)
 }
 
 /**
+ * @brief set the color of path with some index
+ * @param index the index of path to set color
+ * @param color the color to set
+ */
+bool PathList::setColor(const int& index, const QColor& color)
+{
+  if (index < 0 || index >= path_num_)
+    return false;
+
+  path_info_[index].color = color;
+
+  return true;
+}
+
+/**
+ * @brief set the show status of path with some index
+ * @param index the index of path to set show status
+ * @param show  whether to show the path or not
+ */
+bool PathList::setShow(const int& index, const bool& show)
+{
+  if (index < 0 || index >= path_num_)
+    return false;
+
+  path_info_[index].show = show;
+
+  return true;
+}
+
+/**
  * @brief query the path info with some index
  * @param path  the variable that stores queried value
  * @param index the index of path to query

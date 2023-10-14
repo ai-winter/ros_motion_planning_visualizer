@@ -60,20 +60,26 @@ public:
 
 protected Q_SLOTS:
   /**
-   *  @brief if clicked signal is received, call this slot function
+   *  @brief if clicked signal from pushButton is received, call this slot function
    */
   void _onClicked();
 
   /**
-   *  @brief if editing finished signal is received, call this slot function
+   *  @brief if editing finished signal from lineEdit is received, call this slot function
    */
   void _onEditingFinished();
+
+  /**
+   *  @brief if editing finished signal is from checkBox received, call this slot function
+   */
+  void _onStateChanged(int state);
 
   /**
    *  @brief if value changed signal from core is received, call this slot function
    */
   void _onValueChanged();
 
+protected:
   /**
    *  @brief add a path row in table view
    */
@@ -85,6 +91,9 @@ protected Q_SLOTS:
    */
   void _removePathRow(const int& index);
 
+  /**
+   *  @brief update the table_model_ to update the table view of Path List
+   */
   void _updateTableView();
 
 private:

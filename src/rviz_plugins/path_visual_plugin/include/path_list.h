@@ -65,6 +65,20 @@ namespace path_visual_plugin
     bool remove(const int& index);
 
     /**
+     * @brief set the color of path with some index
+     * @param index the index of path to set color
+     * @param color the color to set
+     */
+    bool setColor(const int& index, const QColor& color);
+
+    /**
+     * @brief set the show status of path with some index
+     * @param index the index of path to set show status
+     * @param show  whether to show the path or not
+     */
+    bool setShow(const int& index, const bool& show);
+
+    /**
      * @brief query the path info with some index
      * @param path  the variable that stores queried value
      * @param index the index of path to query
