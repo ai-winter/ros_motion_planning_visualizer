@@ -27,8 +27,8 @@ namespace path_visual_plugin
 /**
  * @brief Construct a new Path Visualization Plugin object
  */
-PathVisualPlugin::PathVisualPlugin(QWidget* parent) :
-  rviz::Panel(parent), ui_(new Ui::PathVisualPlugin), core_(new CorePathVisualPlugin)
+PathVisualPlugin::PathVisualPlugin(QWidget* parent)
+  : rviz::Panel(parent), ui_(new Ui::PathVisualPlugin), core_(new CorePathVisualPlugin)
 {
   ui_->setupUi(this);
   core_->setupROS();
@@ -54,7 +54,7 @@ PathVisualPlugin::~PathVisualPlugin()
 void PathVisualPlugin::setupUi()
 {
   table_model_ = new QStandardItemModel();
-  table_header_ = QStringList({"Planner", "Start", "Goal", "Length", "Turning Angle", "Color", "Show", "Remove"});
+  table_header_ = QStringList({ "Planner", "Start", "Goal", "Length", "Turning Angle", "Color", "Show", "Remove" });
   table_model_->setHorizontalHeaderLabels(table_header_);
   ui_->tableView_list->setModel(table_model_);
   ui_->tableView_list->setColumnWidth(6, 40);
@@ -66,6 +66,8 @@ void PathVisualPlugin::setupUi()
 
   connect(core_, SIGNAL(valueChanged()), this, SLOT(_onValueChanged()));
   connect(ui_->pushButton_add_add, SIGNAL(clicked()), this, SLOT(_onClicked()));
+  connect(ui_->pushButton_files_load, SIGNAL(clicked()), this, SLOT(_onClicked()));
+  connect(ui_->pushButton_files_save, SIGNAL(clicked()), this, SLOT(_onClicked()));
   connect(ui_->lineEdit_add_start_x, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
   connect(ui_->lineEdit_add_start_y, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
   connect(ui_->lineEdit_add_goal_x, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
@@ -73,7 +75,7 @@ void PathVisualPlugin::setupUi()
 }
 
 /**
-   *  @brief if clicked signal from pushButton is received, call this slot function
+ *  @brief if clicked signal from pushButton is received, call this slot function
  */
 void PathVisualPlugin::_onClicked()
 {
@@ -93,11 +95,17 @@ void PathVisualPlugin::_onClicked()
     if (senderName == QString::fromUtf8("pushButton_add_add"))
     {
       core_->addPath(ui_->comboBox_add_planner_global->currentText().toStdString());
-//      _addPathRow();
+      //      _addPathRow();
       _updateTableView();
     }
     else if (senderName == QString::fromUtf8("pushButton_files_load"))
-      core_->loadPaths();
+    {
+      std::string cur_dir(std::getenv("PWD"));
+      QString open_dir = QString::fromStdString(cur_dir + std::string("/../../user_data"));
+      QString open_file = QFileDialog::getOpenFileName(this, QStringLiteral("select path files"), open_dir,
+                                                       "JSON Files(*.json)", nullptr, QFileDialog::DontResolveSymlinks);
+      core_->loadPaths(open_file.toStdString());
+    }
     else if (senderName == QString::fromUtf8("pushButton_files_save"))
       core_->savePaths();
     else if (match_color.hasMatch())
@@ -107,7 +115,6 @@ void PathVisualPlugin::_onClicked()
       int index = capturedText.toInt(&ok);
       if (ok)
       {
-        // 这里还需要改代码，把darkBlue改成当前路径颜色
         QColor color = QColorDialog::getColor(Qt::darkBlue, this);
         if (color.isValid())
           core_->setPathColor(index, color);
@@ -131,7 +138,7 @@ void PathVisualPlugin::_onClicked()
       if (ok)
       {
         core_->removePath(index);
-//        _removePathRow(index);
+        //        _removePathRow(index);
         _updateTableView();
       }
       else
@@ -210,7 +217,7 @@ void PathVisualPlugin::_onStateChanged(int state)
       bool ok = false;
       int index = capturedText.toInt(&ok);
       if (ok)
-        core_->setPathShowStatus(index, (state == 0)?false:true);
+        core_->setPathShowStatus(index, (state == 0) ? false : true);
       else
       {
         ROS_ERROR("Failed to get the path index to set color!");
@@ -228,7 +235,7 @@ void PathVisualPlugin::_onStateChanged(int state)
 }
 
 /**
-   *  @brief if value changed signal from core is received, call this slot function
+ *  @brief if value changed signal from core is received, call this slot function
  */
 void PathVisualPlugin::_onValueChanged()
 {
@@ -239,40 +246,39 @@ void PathVisualPlugin::_onValueChanged()
 }
 
 /**
-   *  @brief add a path row in table view
+ *  @brief add a path row in table view
  */
 void PathVisualPlugin::_addPathRow()
 {
   int nrow = table_model_->rowCount();
   table_model_->setItem(nrow, 0, new QStandardItem(ui_->comboBox_add_planner_global->currentText()));
-  table_model_->setItem(nrow, 1, new QStandardItem(QString("(%1,%2)")
-                                                       .arg(QString::number(core_->start_x_, 'f', 3))
-                                                       .arg(QString::number(core_->start_y_, 'f', 3))
-                                                   ));
-  table_model_->setItem(nrow, 2, new QStandardItem(QString("(%1,%2)")
-                                                       .arg(QString::number(core_->goal_x_, 'f', 3))
-                                                       .arg(QString::number(core_->goal_x_, 'f', 3))
-                                                   ));
+  table_model_->setItem(nrow, 1,
+                        new QStandardItem(QString("(%1,%2)")
+                                              .arg(QString::number(core_->start_x_, 'f', 3))
+                                              .arg(QString::number(core_->start_y_, 'f', 3))));
+  table_model_->setItem(nrow, 2,
+                        new QStandardItem(QString("(%1,%2)")
+                                              .arg(QString::number(core_->goal_x_, 'f', 3))
+                                              .arg(QString::number(core_->goal_x_, 'f', 3))));
 
   QPushButton* pushButton_list_color = new QPushButton();
-  pushButton_list_color->setObjectName(QString::fromUtf8("pushButton_list_color_%1")
-                                           .arg(QString::number(core_->path_list_->size())));
+  pushButton_list_color->setObjectName(
+      QString::fromUtf8("pushButton_list_color_%1").arg(QString::number(core_->path_list_->size())));
   pushButton_list_color->setText(QApplication::translate("PathVisualPlugin", "set", nullptr));
   ui_->tableView_list->setIndexWidget(table_model_->index(nrow, 5), pushButton_list_color);
   connect(pushButton_list_color, SIGNAL(clicked()), this, SLOT(_onClicked()));
 
   QCheckBox* checkBox_list_show = new QCheckBox();
   checkBox_list_show->setAutoFillBackground(true);
-  checkBox_list_show->setStyleSheet(
-      "background-color: rgb(255, 255, 255);"
-//        "padding-left:20px;"
+  checkBox_list_show->setStyleSheet("background-color: rgb(255, 255, 255);"
+                                    //        "padding-left:20px;"
   );
   ui_->tableView_list->setIndexWidget(table_model_->index(nrow, 6), checkBox_list_show);
   checkBox_list_show->setChecked(true);
 
   QPushButton* pushButton_list_remove = new QPushButton();
-  pushButton_list_remove->setObjectName(QString::fromUtf8("pushButton_list_remove_%1")
-                                            .arg(QString::number(core_->path_list_->size())));
+  pushButton_list_remove->setObjectName(
+      QString::fromUtf8("pushButton_list_remove_%1").arg(QString::number(core_->path_list_->size())));
   pushButton_list_remove->setText(QApplication::translate("PathVisualPlugin", "X", nullptr));
   ui_->tableView_list->setIndexWidget(table_model_->index(nrow, 7), pushButton_list_remove);
   connect(pushButton_list_remove, SIGNAL(clicked()), this, SLOT(_onClicked()));
@@ -281,8 +287,8 @@ void PathVisualPlugin::_addPathRow()
 }
 
 /**
-   *  @brief remove a path of some index row in table view
-   *  @param index  the index of the removed path
+ *  @brief remove a path of some index row in table view
+ *  @param index  the index of the removed path
  */
 void PathVisualPlugin::_removePathRow(const int& index)
 {
@@ -301,37 +307,33 @@ void PathVisualPlugin::_updateTableView()
     if (ok)
     {
       table_model_->setItem(row, 0, new QStandardItem(QString::fromStdString(row_info.planner_name)));
-      table_model_->setItem(row, 1, new QStandardItem(QString("(%1,%2)")
-                                                          .arg(QString::number(row_info.start_x, 'f', 3))
-                                                          .arg(QString::number(row_info.start_y, 'f', 3))
-                                                      ));
-      table_model_->setItem(row, 2, new QStandardItem(QString("(%1,%2)")
-                                                          .arg(QString::number(row_info.goal_x, 'f', 3))
-                                                          .arg(QString::number(row_info.goal_x, 'f', 3))
-                                                      ));
+      table_model_->setItem(row, 1,
+                            new QStandardItem(QString("(%1,%2)")
+                                                  .arg(QString::number(row_info.start_x, 'f', 3))
+                                                  .arg(QString::number(row_info.start_y, 'f', 3))));
+      table_model_->setItem(row, 2,
+                            new QStandardItem(QString("(%1,%2)")
+                                                  .arg(QString::number(row_info.goal_x, 'f', 3))
+                                                  .arg(QString::number(row_info.goal_x, 'f', 3))));
 
       QPushButton* pushButton_list_color = new QPushButton();
-      pushButton_list_color->setObjectName(QString::fromUtf8("pushButton_list_color_%1")
-                                               .arg(QString::number(row)));
+      pushButton_list_color->setObjectName(QString::fromUtf8("pushButton_list_color_%1").arg(QString::number(row)));
       pushButton_list_color->setText(QApplication::translate("PathVisualPlugin", "set", nullptr));
       ui_->tableView_list->setIndexWidget(table_model_->index(row, 5), pushButton_list_color);
       connect(pushButton_list_color, SIGNAL(clicked()), this, SLOT(_onClicked()));
 
       QCheckBox* checkBox_list_show = new QCheckBox();
-      checkBox_list_show->setObjectName(QString::fromUtf8("checkBox_list_show_%1")
-                                            .arg(QString::number(row)));
+      checkBox_list_show->setObjectName(QString::fromUtf8("checkBox_list_show_%1").arg(QString::number(row)));
       checkBox_list_show->setAutoFillBackground(true);
-      checkBox_list_show->setStyleSheet(
-          "background-color: rgb(255, 255, 255);"
-          //        "padding-left:20px;"
+      checkBox_list_show->setStyleSheet("background-color: rgb(255, 255, 255);"
+                                        //        "padding-left:20px;"
       );
       ui_->tableView_list->setIndexWidget(table_model_->index(row, 6), checkBox_list_show);
       checkBox_list_show->setChecked(row_info.show);
       connect(checkBox_list_show, SIGNAL(stateChanged(int)), this, SLOT(_onStateChanged(int)));
 
       QPushButton* pushButton_list_remove = new QPushButton();
-      pushButton_list_remove->setObjectName(QString::fromUtf8("pushButton_list_remove_%1")
-                                                .arg(QString::number(row)));
+      pushButton_list_remove->setObjectName(QString::fromUtf8("pushButton_list_remove_%1").arg(QString::number(row)));
       pushButton_list_remove->setText(QApplication::translate("PathVisualPlugin", "X", nullptr));
       ui_->tableView_list->setIndexWidget(table_model_->index(row, 7), pushButton_list_remove);
       connect(pushButton_list_remove, SIGNAL(clicked()), this, SLOT(_onClicked()));

@@ -3,8 +3,8 @@
  * @file: core_path_visual_plugin.h
  * @breif: Contains core of path visualization Rviz plugin class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-10-14
- * @version: 1.0
+ * @update: 2023-10-27
+ * @version: 2.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
  * All rights reserved.
@@ -45,20 +45,15 @@ public:
   void setupROS();
 
   /**
-   * @brief Publish planning path
-   * @param path  planning path
-   */
-  void publishPlan(const std::vector<geometry_msgs::PoseStamped>& plan);
-
-  /**
    *  @brief call path planning service
    */
   void addPath(const std::string& planner_name);
 
   /**
    *  @brief load paths file
+   *  @param open_file  load paths from local workspace using .json format
    */
-  void loadPaths();
+  void loadPaths(const std::string open_file);
 
   /**
    *  @brief save paths file
@@ -84,6 +79,8 @@ public:
    *  @param index  the index of the path to remove
    */
   void removePath(const int& index);
+
+  void refresh();
 
 Q_SIGNALS:
   /**
@@ -116,7 +113,7 @@ protected:
 
 public:
   ros::Publisher marker_pub_;  // map marker publisher
-  ros::Publisher plan_pub_;    // path planning publisher
+  ros::Publisher paths_pub_;   // paths publisher
 
   // start and goal point subscriber
   ros::Subscriber start_sub_, goal_sub_;

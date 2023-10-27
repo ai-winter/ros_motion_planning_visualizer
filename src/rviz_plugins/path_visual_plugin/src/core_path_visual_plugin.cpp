@@ -3,24 +3,30 @@
  * @file: core_path_visual_plugin.cpp
  * @breif: Contains core of path visualization Rviz plugin class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-10-14
- * @version: 1.0
+ * @update: 2023-10-27
+ * @version: 2.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
  * All rights reserved.
  * --------------------------------------------------------
  *
  **********************************************************/
-#include "wrapper_planner/CallPlan.h"
+#include <stdio.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <dirent.h>
+
 #include <visualization_msgs/Marker.h>
+#include "visualization_msgs/MarkerArray.h"
 #include <nav_msgs/Path.h>
 
+#include "wrapper_planner/CallPlan.h"
 #include "include/core_path_visual_plugin.h"
 
 namespace path_visual_plugin
 {
 /**
-   * @brief Construct a new CorePathVisualPlugin object
+ * @brief Construct a new CorePathVisualPlugin object
  */
 CorePathVisualPlugin::CorePathVisualPlugin() : path_list_(new PathList)
 {
@@ -28,7 +34,7 @@ CorePathVisualPlugin::CorePathVisualPlugin() : path_list_(new PathList)
 }
 
 /**
-   * @brief Destroy the CorePathVisualPlugin object
+ * @brief Destroy the CorePathVisualPlugin object
  */
 CorePathVisualPlugin::~CorePathVisualPlugin()
 {
@@ -46,7 +52,7 @@ void CorePathVisualPlugin::setupROS()
 
   // publisher
   marker_pub_ = private_nh.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-  plan_pub_ = private_nh.advertise<nav_msgs::Path>("plan", 1);
+  paths_pub_ = private_nh.advertise<visualization_msgs::MarkerArray>("/paths", 10);
 
   // subscriber
   start_sub_ = private_nh.subscribe<geometry_msgs::PoseWithCovarianceStamped>(
@@ -59,24 +65,6 @@ void CorePathVisualPlugin::setupROS()
 
   // parameters
   private_nh.getParam("/move_base/planner", planner_list_);
-}
-
-/**
- * @brief Publish planning path
- * @param path  planning path
- */
-void CorePathVisualPlugin::publishPlan(const std::vector<geometry_msgs::PoseStamped>& plan)
-{
-  // create visulized path plan
-  nav_msgs::Path gui_plan;
-  gui_plan.poses.resize(plan.size());
-  gui_plan.header.frame_id = "map";
-  gui_plan.header.stamp = ros::Time::now();
-  for (unsigned int i = 0; i < plan.size(); i++)
-    gui_plan.poses[i] = plan[i];
-
-  // publish plan to rviz
-  plan_pub_.publish(gui_plan);
 }
 
 /**
@@ -101,20 +89,13 @@ void CorePathVisualPlugin::addPath(const std::string& planner_name)
 
   if (call_plan_client_.call(call_plan_srv))
   {
-    publishPlan(call_plan_srv.response.path);
-
-    if (path_list_->append(PathInfo{
-      planner_name: planner_name,
-      start_x: start_x_,
-      start_y: start_y_,
-      goal_x: goal_x_,
-      goal_y: goal_y_,
-      length: 0,
-      turning_angle: 0,
-      color: Qt::darkBlue,
-      show: true
-    }))
+    PathInfo path(planner_name, start_x_, start_y_, goal_x_, goal_y_, Qt::darkBlue, true);
+    path.setPath(call_plan_srv.response.path);
+    if (path_list_->append(path))
+    {
+      refresh();
       ROS_INFO("Planner %s planning successfully done.", planner_name.c_str());
+    }
     else
     {
       ROS_ERROR("Planner %s planning failed.", planner_name.c_str());
@@ -127,10 +108,14 @@ void CorePathVisualPlugin::addPath(const std::string& planner_name)
 
 /**
  *  @brief call load paths service
+ *  @param open_file  load paths from local workspace using .json format
  */
-void CorePathVisualPlugin::loadPaths()
+void CorePathVisualPlugin::loadPaths(const std::string open_file)
 {
+  ROS_INFO("Loading path information at location %s", open_file.c_str());
 
+  path_list_->load(open_file);
+  refresh();
 }
 
 /**
@@ -138,7 +123,35 @@ void CorePathVisualPlugin::loadPaths()
  */
 void CorePathVisualPlugin::savePaths()
 {
+  // TODO if valid_size > 0
+  std::string cur_dir(std::getenv("PWD"));
+  std::string save_dir = cur_dir + std::string("/../../user_data");
 
+  if (access(save_dir.c_str(), F_OK) == -1)
+    mkdir(save_dir.c_str(), S_IRWXU);
+
+  int cnt = 0;
+  DIR* dir_ptr = opendir(save_dir.c_str());
+  struct dirent* dp = NULL;
+  while ((dp = readdir(dir_ptr)) != NULL)
+  {
+    std::string f_name = dp->d_name;
+    if (f_name == "." || f_name == "..")
+      continue;
+
+    if (dp->d_type == DT_REG)  // 文件
+      cnt++;
+  }
+  closedir(dir_ptr);
+  delete dp;
+
+  std::ostringstream ostr;
+  ostr << "/paths_" << cnt << ".json";
+  std::string save_file = save_dir + ostr.str();
+
+  ROS_INFO("Saving path information at location %s", save_file.c_str());
+
+  path_list_->save(save_file);
 }
 
 /**
@@ -146,18 +159,17 @@ void CorePathVisualPlugin::savePaths()
  *  @param index  the index of the path to set color
  *  @param color  the color to set
  */
-void CorePathVisualPlugin::setPathColor(const int &index, const QColor& color)
+void CorePathVisualPlugin::setPathColor(const int& index, const QColor& color)
 {
-    if (path_list_->setColor(index, color))
-    {
-      QRgb color_rgb = color.rgb();
-      ROS_INFO("The color of path with index %d is successfully set to RGB(%d, %d, %d)!",
-             index, qRed(color_rgb), qGreen(color_rgb), qBlue(color_rgb));
-
-
-    }
-    else
-      ROS_ERROR("Failed to set the color of path with index %d.", index);
+  if (path_list_->setColor(index, color))
+  {
+    QRgb color_rgb = color.rgb();
+    ROS_INFO("The color of path with index %d is successfully set to RGB(%d, %d, %d)!", index, qRed(color_rgb),
+             qGreen(color_rgb), qBlue(color_rgb));
+    refresh();
+  }
+  else
+    ROS_ERROR("Failed to set the color of path with index %d.", index);
 }
 
 /**
@@ -167,30 +179,82 @@ void CorePathVisualPlugin::setPathColor(const int &index, const QColor& color)
  */
 void CorePathVisualPlugin::setPathShowStatus(const int& index, const bool& show)
 {
-    if (path_list_->setShow(index, show))
-    {
-      ROS_INFO("The show status of path with index %d is successfully set to %s!", index, show?"true":"false");
-
-
-    }
-    else
-      ROS_ERROR("Failed to set the show status of path with index %d.", index);
+  if (path_list_->setShow(index, show))
+  {
+    ROS_INFO("The show status of path with index %d is successfully set to %s!", index, show ? "true" : "false");
+    refresh();
+  }
+  else
+    ROS_ERROR("Failed to set the show status of path with index %d.", index);
 }
 
 /**
  *  @brief remove the path with some index from table view
  *  @param index  the index of the path to remove
  */
-void CorePathVisualPlugin::removePath(const int &index)
+void CorePathVisualPlugin::removePath(const int& index)
 {
   if (path_list_->remove(index))
   {
     ROS_INFO("Path with index %d is successfully removed!", index);
-
-
   }
   else
     ROS_ERROR("Failed to remove path with index %d.", index);
+}
+
+void CorePathVisualPlugin::refresh()
+{
+  // point_line_pub.publish(MarkerArray);
+  visualization_msgs::Marker path_marker;
+  visualization_msgs::MarkerArray path_marker_array;
+  int marker_id = 0;
+  for (int i = 0; i < path_list_->size(); i++)
+  {
+    PathInfo path;
+    if (path_list_->query(path, i))
+    {
+      for (unsigned int j = 0; j < path.path.size() - 1; j++)
+      {
+        path_marker.ns = "path_marker";
+        path_marker.type = visualization_msgs::Marker::LINE_LIST;
+        path_marker.action = path_marker.ADD;
+        geometry_msgs::Point p;
+        p.x = path.path[j].x;
+        p.y = path.path[j].y;
+        p.z = 0.0;
+        path_marker.points.push_back(p);
+        p.x = path.path[j + 1].x;
+        p.y = path.path[j + 1].y;
+        p.z = 0.0;
+        path_marker.points.push_back(p);
+
+        path_marker.pose.orientation.x = 0.0;
+        path_marker.pose.orientation.y = 0.0;
+        path_marker.pose.orientation.z = 0.0;
+        path_marker.pose.orientation.w = 1.0;
+        path_marker.scale.x = 0.1;
+
+        //设置线的颜色，a应该是透明度
+        path_marker.color.r = qRed(path.color.rgb()) / 255.0;
+        path_marker.color.g = qGreen(path.color.rgb()) / 255.0;
+        path_marker.color.b = qBlue(path.color.rgb()) / 255.0;
+        path_marker.color.a = 1.0;
+
+        path_marker.lifetime = ros::Duration();
+        path_marker.id = marker_id;
+
+        path_marker.header.frame_id = "map";
+        path_marker.header.stamp = ros::Time::now();
+        path_marker_array.markers.push_back(path_marker);
+        path_marker.points.clear();
+
+        marker_id++;
+      }
+    }
+    else
+      ROS_ERROR("Path request for index %d failed, this should not happen", i);
+  }
+  paths_pub_.publish(path_marker_array);
 }
 
 /**

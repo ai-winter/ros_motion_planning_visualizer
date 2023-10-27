@@ -20,6 +20,7 @@
 #include <QCheckBox>
 #include <QColorDialog>
 #include <QRegularExpression>
+#include <QFileDialog>
 #include <rviz/panel.h>
 
 #include <ros/ros.h>
