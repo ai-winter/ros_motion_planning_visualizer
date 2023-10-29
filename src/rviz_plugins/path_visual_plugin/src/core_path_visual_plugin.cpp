@@ -30,7 +30,7 @@ namespace path_visual_plugin
  */
 CorePathVisualPlugin::CorePathVisualPlugin() : path_list_(new PathList)
 {
-  start_x_ = start_y_ = goal_x_ = goal_y_ = 0.00;
+  start_ = goal_ = Point2D(0.0, 0.0);
 }
 
 /**
@@ -75,22 +75,33 @@ void CorePathVisualPlugin::addPath(const std::string& planner_name)
   geometry_msgs::PoseStamped start, goal;
   start.header.frame_id = "map";
   start.header.stamp = ros::Time::now();
-  start.pose.position.x = start_x_;
-  start.pose.position.y = start_y_;
+  start.pose.position.x = start_.x;
+  start.pose.position.y = start_.y;
   goal.header.frame_id = "map";
   goal.header.stamp = ros::Time::now();
-  goal.pose.position.x = goal_x_;
-  goal.pose.position.y = goal_y_;
+  goal.pose.position.x = goal_.x;
+  goal.pose.position.y = goal_.y;
 
   wrapper_planner::CallPlan call_plan_srv;
   call_plan_srv.request.start = start;
   call_plan_srv.request.goal = goal;
   call_plan_srv.request.planner_name = planner_name;
 
+  ROS_WARN("call planner %s", planner_name.c_str());
+  ROS_WARN("start: %f, %f", start.pose.position.x, start.pose.position.y);
+  ROS_WARN("goal: %f, %f", goal.pose.position.x, goal.pose.position.y);
+
   if (call_plan_client_.call(call_plan_srv))
   {
-    PathInfo path(planner_name, start_x_, start_y_, goal_x_, goal_y_, Qt::darkBlue, true);
-    path.setPath(call_plan_srv.response.path);
+    // get path points from service response
+    std::vector<Point2D> path_points;
+    path_points.clear();
+    for (const auto p : call_plan_srv.response.path)
+      path_points.push_back(Point2D(p.pose.position.x, p.pose.position.y));
+
+    // construct path info
+    PathInfo path(planner_name, start_, goal_, path_points);
+
     if (path_list_->append(path))
     {
       refresh();
@@ -103,7 +114,10 @@ void CorePathVisualPlugin::addPath(const std::string& planner_name)
     }
   }
   else
+  {
     ROS_ERROR("Planner %s planning failed.", planner_name.c_str());
+    return;
+  }
 }
 
 /**
@@ -173,19 +187,19 @@ void CorePathVisualPlugin::setPathColor(const int& index, const QColor& color)
 }
 
 /**
- *  @brief set the show status of path with some index
- *  @param index  the index of the path to set show status
- *  @param show   whether to show the path or not
+ *  @brief set the select status of path with some index
+ *  @param index  the index of the path to set select status
+ *  @param select   whether to select and visualize the path or not
  */
-void CorePathVisualPlugin::setPathShowStatus(const int& index, const bool& show)
+void CorePathVisualPlugin::setPathSelectStatus(const int& index, const bool& select)
 {
-  if (path_list_->setShow(index, show))
+  if (path_list_->setSelect(index, select))
   {
-    ROS_INFO("The show status of path with index %d is successfully set to %s!", index, show ? "true" : "false");
+    ROS_INFO("The select status of path with index %d is successfully set to %s!", index, select ? "true" : "false");
     refresh();
   }
   else
-    ROS_ERROR("Failed to set the show status of path with index %d.", index);
+    ROS_ERROR("Failed to set the select status of path with index %d.", index);
 }
 
 /**
@@ -213,18 +227,19 @@ void CorePathVisualPlugin::refresh()
     PathInfo path;
     if (path_list_->query(path, i))
     {
-      for (unsigned int j = 0; j < path.path.size() - 1; j++)
+      std::vector<Point2D> path_points = path.getPathPoints();
+      for (unsigned int j = 0; j < path_points.size() - 1; j++)
       {
         path_marker.ns = "path_marker";
         path_marker.type = visualization_msgs::Marker::LINE_LIST;
         path_marker.action = path_marker.ADD;
         geometry_msgs::Point p;
-        p.x = path.path[j].x;
-        p.y = path.path[j].y;
+        p.x = path_points[j].x;
+        p.y = path_points[j].y;
         p.z = 0.0;
         path_marker.points.push_back(p);
-        p.x = path.path[j + 1].x;
-        p.y = path.path[j + 1].y;
+        p.x = path_points[j + 1].x;
+        p.y = path_points[j + 1].y;
         p.z = 0.0;
         path_marker.points.push_back(p);
 
@@ -263,8 +278,7 @@ void CorePathVisualPlugin::refresh()
  */
 void CorePathVisualPlugin::_onStartUpdate(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose)
 {
-  start_x_ = pose->pose.pose.position.x;
-  start_y_ = pose->pose.pose.position.y;
+  start_ = Point2D(pose->pose.pose.position.x, pose->pose.pose.position.y);
   Q_EMIT valueChanged();
 
   // mark pose on the map
@@ -300,8 +314,8 @@ void CorePathVisualPlugin::_onStartUpdate(const geometry_msgs::PoseWithCovarianc
  */
 void CorePathVisualPlugin::_onGoalUpdate(const geometry_msgs::PoseStamped::ConstPtr& pose)
 {
-  goal_x_ = pose->pose.position.x;
-  goal_y_ = pose->pose.position.y;
+  goal_.x = pose->pose.position.x;
+  goal_.y = pose->pose.position.y;
   Q_EMIT valueChanged();
 
   // mark pose on the map

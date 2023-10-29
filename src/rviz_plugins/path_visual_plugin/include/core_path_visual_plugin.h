@@ -68,11 +68,11 @@ public:
   void setPathColor(const int& index, const QColor& color);
 
   /**
-   *  @brief set the show status of path with some index
-   *  @param index  the index of the path to set show status
-   *  @param show   whether to show the path or not
+   *  @brief set the select status of path with some index
+   *  @param index  the index of the path to set select status
+   *  @param select   whether to select and visualize the path or not
    */
-  void setPathShowStatus(const int& index, const bool& show);
+  void setPathSelectStatus(const int& index, const bool& select);
 
   /**
    *  @brief remove the path with some index from table view
@@ -125,7 +125,7 @@ public:
   std::vector<std::string> planner_list_;
 
   // start and goal point
-  double start_x_, start_y_, goal_x_, goal_y_;
+  Point2D start_, goal_;
 
   PathList* path_list_;
 };

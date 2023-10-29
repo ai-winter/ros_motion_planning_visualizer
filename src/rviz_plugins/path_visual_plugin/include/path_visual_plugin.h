@@ -82,17 +82,6 @@ protected Q_SLOTS:
 
 protected:
   /**
-   *  @brief add a path row in table view
-   */
-  void _addPathRow();
-
-  /**
-   *  @brief remove a path with some index row in table view
-   *  @param index  the index of the removed path
-   */
-  void _removePathRow(const int& index);
-
-  /**
    *  @brief update the table_model_ to update the table view of Path List
    */
   void _updateTableView();
