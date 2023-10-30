@@ -47,7 +47,7 @@ public:
   /**
    *  @brief call path planning service
    */
-  void addPath(const std::string& planner_name);
+  void addPath(const QString& planner_name);
 
   /**
    *  @brief load paths file

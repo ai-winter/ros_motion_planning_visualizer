@@ -70,7 +70,7 @@ void CorePathVisualPlugin::setupROS()
 /**
  *  @brief call path planning service
  */
-void CorePathVisualPlugin::addPath(const std::string& planner_name)
+void CorePathVisualPlugin::addPath(const QString& planner_name)
 {
   geometry_msgs::PoseStamped start, goal;
   start.header.frame_id = "map";
@@ -85,16 +85,16 @@ void CorePathVisualPlugin::addPath(const std::string& planner_name)
   wrapper_planner::CallPlan call_plan_srv;
   call_plan_srv.request.start = start;
   call_plan_srv.request.goal = goal;
-  call_plan_srv.request.planner_name = planner_name;
+  call_plan_srv.request.planner_name = planner_name.toStdString();
 
-  ROS_WARN("call planner %s", planner_name.c_str());
+  ROS_WARN("call planner %s", planner_name.toStdString().c_str());
   ROS_WARN("start: %f, %f", start.pose.position.x, start.pose.position.y);
   ROS_WARN("goal: %f, %f", goal.pose.position.x, goal.pose.position.y);
 
   if (call_plan_client_.call(call_plan_srv))
   {
     // get path points from service response
-    std::vector<Point2D> path_points;
+    QList<Point2D> path_points;
     path_points.clear();
     for (const auto p : call_plan_srv.response.path)
       path_points.push_back(Point2D(p.pose.position.x, p.pose.position.y));
@@ -105,17 +105,17 @@ void CorePathVisualPlugin::addPath(const std::string& planner_name)
     if (path_list_->append(path))
     {
       refresh();
-      ROS_INFO("Planner %s planning successfully done.", planner_name.c_str());
+      ROS_INFO("Planner %s planning successfully done.", planner_name.toStdString().c_str());
     }
     else
     {
-      ROS_ERROR("Planner %s planning failed.", planner_name.c_str());
+      ROS_ERROR("Planner %s planning failed.", planner_name.toStdString().c_str());
       return;
     }
   }
   else
   {
-    ROS_ERROR("Planner %s planning failed.", planner_name.c_str());
+    ROS_ERROR("Planner %s planning failed.", planner_name.toStdString().c_str());
     return;
   }
 }
@@ -227,7 +227,7 @@ void CorePathVisualPlugin::refresh()
     PathInfo path;
     if (path_list_->query(path, i))
     {
-      std::vector<Point2D> path_points = path.getPathPoints();
+      QList<Point2D> path_points = path.getPathPoints();
       for (unsigned int j = 0; j < path_points.size() - 1; j++)
       {
         path_marker.ns = "path_marker";

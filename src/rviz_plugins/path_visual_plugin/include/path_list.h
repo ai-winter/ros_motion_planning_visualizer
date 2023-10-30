@@ -1,7 +1,7 @@
 /***********************************************************
  *
  * @file: path_list.h
- * @breif: Contains PathInfo struct and PathList class
+ * @breif: Contains Point2D struct, PathInfo class and PathList class
  * @author: Yang Haodong, Wu Maojia
  * @update: 2023-10-27
  * @version: 2.0
@@ -16,7 +16,20 @@
 
 #define MAX_PATH_NUM 10000
 
+#include <algorithm>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+
 #include <QColor>
+#include <QString>
+#include <QList>
+#include <QVariant>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+
+#include <ros/ros.h>
 
 #include <geometry_msgs/PoseStamped.h>
 
@@ -39,6 +52,10 @@ public:
 class PathInfo
 {
 public:
+  enum { plannerName, startPoint, startPointX, startPointY, goalPoint, goalPointX, goalPointY, pathLength, pathColor,
+    turningAngle, selectStatus };
+
+public:
   /**
    * @brief Construct a new PathInfo object with parameters
    * @param p_name  the name of planner
@@ -48,49 +65,17 @@ public:
    * @param c  the color of path
    * @param slt  whether the path is selected
    */
-  PathInfo(std::string p_name = "None", Point2D s = Point2D(0.0, 0.0), Point2D g = Point2D(0.0, 0.0),
-           std::vector<Point2D> pts = std::vector<Point2D>(), QColor c = Qt::darkBlue, bool slt = true);
+  PathInfo(QString p_name = "None", Point2D s = Point2D(0.0, 0.0), Point2D g = Point2D(0.0, 0.0),
+           QList<Point2D> pts = QList<Point2D>(), QColor c = Qt::darkBlue, bool slt = true);
 
   /**
    * @brief Destroy the PathInfo object
    */
   ~PathInfo();
 
-  /**
-   * @brief get the planner name of path info
-   * @return the planner name
-   */
-  std::string getPlannerName();
+  QVariant getData(const int &variant) const;
 
-  /**
-   * @brief get the start point of path info
-   * @return the start point
-   */
-  Point2D getStart();
-
-  /**
-   * @brief get the goal point of path info
-   * @return the goal point
-   */
-  Point2D getGoal();
-
-  /**
-   * @brief get the path points of path info
-   * @return the path points
-   */
-  std::vector<Point2D> getPathPoints();
-
-  /**
-   * @brief get the length of path info
-   * @return the length of path
-   */
-  double getLength();
-
-  /**
-   * @brief get the turning angle of path info
-   * @return the turning angle of path
-   */
-  double getTurningAngle();
+  QList<Point2D> getPathPoints() const;
 
 public:
   // the color of visualized path
@@ -101,13 +86,13 @@ public:
 
 private:
   // the name of planner
-  std::string planner_name_;
+  QString planner_name_;
 
   // start and goal point
   Point2D start_, goal_;
 
   // path planned
-  std::vector<Point2D> path_;
+  QList<Point2D> path_;
 
   // path length and total turning angle
   double length_, turning_angle_;
@@ -187,7 +172,8 @@ public:
   int size();
 
 private:
-  std::vector<PathInfo> path_info_; // the path list
+  QList<PathInfo> path_info_; // the path list
 };
 }  // namespace path_visual_plugin
+Q_DECLARE_METATYPE(path_visual_plugin::Point2D)
 #endif  // PATH_LIST_H

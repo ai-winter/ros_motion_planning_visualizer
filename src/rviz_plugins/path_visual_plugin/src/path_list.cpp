@@ -11,16 +11,6 @@
  * --------------------------------------------------------
  *
  **********************************************************/
-#include <algorithm>
-#include <iostream>
-#include <fstream>
-#include <iomanip>
-#include <QJsonArray>
-#include <QJsonDocument>
-#include <QJsonObject>
-
-#include <ros/ros.h>
-
 #include "include/path_list.h"
 
 namespace path_visual_plugin
@@ -34,7 +24,7 @@ namespace path_visual_plugin
  * @param c  the color of path
  * @param slt  whether the path is selected
  */
-PathInfo::PathInfo(std::string p_name, Point2D s, Point2D g, std::vector<Point2D> pts, QColor c, bool slt)
+PathInfo::PathInfo(QString p_name, Point2D s, Point2D g, QList<Point2D> pts, QColor c, bool slt)
 {
   planner_name_ = p_name;
   start_ = s;
@@ -51,58 +41,40 @@ PathInfo::~PathInfo()
 {
 }
 
-/**
- * @brief get the planner name of path info
- * @return the planner name
- */
-std::string PathInfo::getPlannerName()
+QVariant PathInfo::getData(const int &variant) const
 {
-  return planner_name_;
+  switch (variant)
+  {
+    case plannerName:
+      return planner_name_;
+    case startPoint:
+      return QVariant::fromValue(start_);
+    case startPointX:
+      return start_.x;
+    case startPointY:
+      return start_.y;
+    case goalPoint:
+      return QVariant::fromValue(goal_);
+    case goalPointX:
+      return goal_.x;
+    case goalPointY:
+      return goal_.y;
+    case pathLength:
+      return length_;
+    case pathColor:
+      return color;
+    case turningAngle:
+      return turning_angle_;
+    case selectStatus:
+      return select;
+    default:
+      return QVariant();
+  }
 }
 
-/**
- * @brief get the start point of path info
- * @return the start point
- */
-Point2D PathInfo::getStart()
-{
-  return start_;
-}
-
-/**
- * @brief get the goal point of path info
- * @return the goal point
- */
-Point2D PathInfo::getGoal()
-{
-  return goal_;
-}
-
-/**
- * @brief get the path points of path info
- * @return the path points
- */
-std::vector<Point2D> PathInfo::getPathPoints()
+QList<Point2D> PathInfo::getPathPoints() const
 {
   return path_;
-}
-
-/**
- * @brief get the length of path info
- * @return the length of path
- */
-double PathInfo::getLength()
-{
-  return length_;
-}
-
-/**
- * @brief get the turning angle of path info
- * @return the turning angle of path
- */
-double PathInfo::getTurningAngle()
-{
-  return turning_angle_;
 }
 
 /**
@@ -224,18 +196,16 @@ bool PathList::save(std::string file_name)
     if (query(path, i))
     {
       // save the path info to JSON object
-      path_json["planner"] = QString::fromStdString(path.getPlannerName());
+      path_json["planner"] = path.getData(PathInfo::plannerName).toString();
 
       QJsonObject start_json;
-      Point2D start_point = path.getStart();
-      start_json["x"] = start_point.x;
-      start_json["y"] = start_point.y;
+      start_json["x"] = path.getData(PathInfo::startPointX).toDouble();
+      start_json["y"] = path.getData(PathInfo::startPointY).toDouble();
       path_json["start"] = start_json;
 
       QJsonObject goal_json;
-      Point2D goal_point = path.getGoal();
-      goal_json["x"] = goal_point.x;
-      goal_json["y"] = goal_point.y;
+      goal_json["x"] = path.getData(PathInfo::goalPointX).toDouble();
+      goal_json["y"] = path.getData(PathInfo::goalPointY).toDouble();
       path_json["goal"] = goal_json;
 
       QJsonArray points_array;
@@ -312,7 +282,7 @@ bool PathList::load(std::string file_name)
         QJsonObject start = path_json["start"].toObject();
         QJsonObject goal = path_json["goal"].toObject();
         QJsonArray points_array = path_json["path"].toArray();
-        std::vector<Point2D> path_points;
+        QList<Point2D> path_points;
         path_points.clear();
         for (const auto point : points_array)
           path_points.push_back(Point2D(point.toObject()["x"].toDouble(), point.toObject()["y"].toDouble()));
@@ -320,7 +290,7 @@ bool PathList::load(std::string file_name)
 
         // construct a new PathInfo object with the parsed info
         PathInfo path(
-            path_json["planner"].toString().toStdString(),
+            path_json["planner"].toString(),
             Point2D(start["x"].toDouble(), start["y"].toDouble()),
             Point2D(goal["x"].toDouble(), goal["y"].toDouble()),
             path_points,

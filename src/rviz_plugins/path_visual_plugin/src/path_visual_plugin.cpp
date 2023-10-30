@@ -96,7 +96,7 @@ void PathVisualPlugin::_onClicked()
 
    if (senderName == QString::fromUtf8("pushButton_add_add"))
    {
-     core_->addPath(ui_->comboBox_add_planner_global->currentText().toStdString());
+     core_->addPath(ui_->comboBox_add_planner_global->currentText());
      _updateTableView();
    }
    else if (senderName == QString::fromUtf8("pushButton_files_load"))
@@ -278,21 +278,19 @@ void PathVisualPlugin::_updateTableView()
      table_model_->setData(table_model_->index(row, 0), row_info.select, Qt::UserRole);
 
      // 1st column: planner name
-     table_model_->setItem(row, 1, new QStandardItem(QString::fromStdString(row_info.getPlannerName())));
+     table_model_->setItem(row, 1, new QStandardItem(row_info.getData(PathInfo::plannerName).toString()));
 
      // 2nd column: start point
-     Point2D start_point = row_info.getStart();
-     table_model_->setItem(row, 2,
-                           new QStandardItem(QString("(%1,%2)")
-                                                 .arg(QString::number(start_point.x, 'f', 3))
-                                                 .arg(QString::number(start_point.y, 'f', 3))));
+     table_model_->setItem(row, 2, new QStandardItem(QString("(%1,%2)")
+                                                         .arg(QString::number(row_info.getData(PathInfo::startPointX).toDouble(), 'f', 3))
+                                                         .arg(QString::number(row_info.getData(PathInfo::startPointY).toDouble(), 'f', 3))
+                                                     ));
 
      // 3rd column: goal point
-     Point2D goal_point = row_info.getGoal();
-     table_model_->setItem(row, 3,
-                           new QStandardItem(QString("(%1,%2)")
-                                                 .arg(QString::number(goal_point.x, 'f', 3))
-                                                 .arg(QString::number(goal_point.y, 'f', 3))));
+     table_model_->setItem(row, 3, new QStandardItem(QString("(%1,%2)")
+                                                         .arg(QString::number(row_info.getData(PathInfo::goalPointX).toDouble(), 'f', 3))
+                                                         .arg(QString::number(row_info.getData(PathInfo::goalPointY).toDouble(), 'f', 3))
+                                                     ));
 
      // 6th column: color
      QPushButton* pushButton_list_color = new QPushButton();
