@@ -73,7 +73,7 @@ public:
    */
   ~PathInfo();
 
-  QVariant getData(const int &variant) const;
+  QVariant getData(const int& variant) const;
 
   QList<Point2D> getPathPoints() const;
 
@@ -116,7 +116,7 @@ public:
    * @param path  the new path to append
    * @return true if append successfully
    */
-  bool append(PathInfo path);
+  bool append(const PathInfo& path);
 
   /**
    * @brief remove the path with some index from path list

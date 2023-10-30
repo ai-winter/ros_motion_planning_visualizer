@@ -41,7 +41,7 @@ PathInfo::~PathInfo()
 {
 }
 
-QVariant PathInfo::getData(const int &variant) const
+QVariant PathInfo::getData(const int& variant) const
 {
   switch (variant)
   {
@@ -97,7 +97,7 @@ PathList::~PathList()
  * @param path  the new path to append
  * @return true if append successfully
  */
-bool PathList::append(PathInfo path)
+bool PathList::append(const PathInfo& path)
 {
   if (size() >= MAX_PATH_NUM)
     return false;
