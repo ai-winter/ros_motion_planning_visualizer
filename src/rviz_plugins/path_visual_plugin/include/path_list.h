@@ -164,6 +164,8 @@ public:
    */
   bool query(PathInfo& path, const int& index);
 
+  bool getSelect(const int& index);
+
   /**
    * @brief save the paths to a local JSON file
    * @param file_name  the file name to save

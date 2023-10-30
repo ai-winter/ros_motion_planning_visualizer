@@ -198,6 +198,14 @@ bool PathList::query(PathInfo& path, const int& index)
   return true;
 }
 
+//bool PathList::getSelect(const int& index)
+//{
+//  if (index < 0 || index >= size())
+//    return false;
+//
+//  return path_info_[index].select;
+//}
+
 /**
  * @brief save the paths to a local JSON file
  * @param file_name  the file name to save

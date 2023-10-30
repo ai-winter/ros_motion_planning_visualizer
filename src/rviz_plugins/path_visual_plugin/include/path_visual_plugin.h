@@ -28,6 +28,8 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 
+#include "include/table_delegate.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui
 {
@@ -71,8 +73,9 @@ protected Q_SLOTS:
   void _onEditingFinished();
 
   /**
-   *  @brief if editing finished signal is from checkBox received, call this slot function
+   *  @brief if state changed signal is from checkBox received, call this slot function
    */
+  void _onCheckBoxStateChanged(const QModelIndex &index, const bool &checked);
   void _onStateChanged(int state);
 
   /**
@@ -92,6 +95,8 @@ private:
 
   QStandardItemModel* table_model_; // model of table "Path List"
   QStringList table_header_;        // header of table "Path List"
+
+  CheckBoxListSelectDelegate checkBoxListSelectDelegate_;  // delegate for checkBoxListSelect
 };
 
 }  // namespace path_visual_plugin

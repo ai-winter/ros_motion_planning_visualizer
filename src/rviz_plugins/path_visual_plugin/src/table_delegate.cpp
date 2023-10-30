@@ -1,26 +1,57 @@
+/***********************************************************
+*
+* @file: table_delegate.cpp
+* @breif: Contains delegate classes for table view
+* @author: Yang Haodong, Wu Maojia
+* @update: 2023-10-30
+* @version: 1.0
+*
+* Copyright (c) 2023， Yang Haodong, Wu Maojia
+* All rights reserved.
+* --------------------------------------------------------
+*
+**********************************************************/
+#include <QDebug>
+#include "include/table_delegate.h"
+
 namespace path_visual_plugin
 {
-  void CheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override
-  {
-    QStyleOptionViewItem checkBoxOption(option);
-    initStyleOption(&checkBoxOption, index);
+QWidget* CheckBoxListSelectDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option,
+                                                  const QModelIndex &index) const
+{
+    QCheckBox* editor = new QCheckBox();
+    editor->setTristate(false);
+    return editor;
+}
 
-    // 计算复选框的位置使其居中
-    int x = option.rect.center().x() - checkBoxOption.rect.width() / 2;
-    int y = option.rect.center().y() - checkBoxOption.rect.height() / 2;
-    checkBoxOption.rect.moveTo(x, y);
+void CheckBoxListSelectDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    if (index.column() == 0)
+    {
+      bool value = index.data(Qt::UserRole).toInt();
+      QStyleOptionButton checkBoxOption;
+      QRect checkBoxRect = QApplication::style()->subElementRect(QStyle::SE_CheckBoxIndicator, &checkBoxOption);
+      checkBoxOption.rect = option.rect;
+      checkBoxOption.rect.setLeft(option.rect.left() + (option.rect.width() - checkBoxRect.width()) / 2);
+      checkBoxOption.rect.setTop(option.rect.top() + (option.rect.height() - checkBoxRect.height()) / 2);
+      checkBoxOption.state = value ? QStyle::State_On : QStyle::State_Off;
+      checkBoxOption.state |= QStyle::State_Enabled;
+      QApplication::style()->drawControl(QStyle::CE_CheckBox, &checkBoxOption, painter);
+    }
+    else
+      QStyledItemDelegate::paint(painter,option,index);
+}
 
-    QCheckBox checkBox;
-    checkBox.setChecked(index.data(Qt::CheckStateRole).toBool());
-    checkBox.setStyle(option.widget ? option.widget->style() : QApplication::style());
-    checkBox.setAttribute(Qt::WA_TransparentForMouseEvents);
-    checkBox.render(painter, checkBoxOption.rect.topLeft());
-  }
+bool CheckBoxListSelectDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
+{
+    // disable double clicks and  releases
+    if (event->type() == QEvent::MouseButtonDblClick || event->type() == QEvent::MouseButtonRelease)
+      return false;
 
-  QSize CheckBoxDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override
-  {
-    QStyleOptionViewItem checkBoxOption(option);
-    initStyleOption(&checkBoxOption, index);
-    return QSize(checkBoxOption.rect.width(), checkBoxOption.rect.height());
-  }
-};
+    bool checked = index.data(Qt::UserRole).toBool();
+    model->setData(index, !checked, Qt::UserRole);
+    Q_EMIT checkBoxStateChanged(index, !checked);
+
+    return QStyledItemDelegate::editorEvent(event,model,option,index);
+}
+} // namespace path_visual_plugin

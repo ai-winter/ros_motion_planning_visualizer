@@ -57,7 +57,9 @@ void PathVisualPlugin::setupUi()
  table_header_ = QStringList({ "Select", "Planner", "Start", "Goal", "Length", "Turning Angle", "Color", "Remove" });
  table_model_->setHorizontalHeaderLabels(table_header_);
  ui_->tableView_list->setModel(table_model_);
- ui_->tableView_list->setColumnWidth(6, 40);
+ ui_->tableView_list->setItemDelegateForColumn(0, &checkBoxListSelectDelegate_);
+ connect(&checkBoxListSelectDelegate_, SIGNAL(checkBoxStateChanged(QModelIndex, bool)), this,
+         SLOT(_onCheckBoxStateChanged(QModelIndex, bool)));
 
  for (const auto p_name : core_->planner_list_)
    ui_->comboBox_add_planner_global->addItem(QString::fromStdString(p_name));
@@ -195,8 +197,13 @@ void PathVisualPlugin::_onEditingFinished()
 }
 
 /**
-*  @brief if editing finished signal is from checkBox received, call this slot function
+*  @brief if state changed signal is from checkBox received, call this slot function
 */
+void PathVisualPlugin::_onCheckBoxStateChanged(const QModelIndex &index, const bool &checked)
+{
+ core_->setPathSelectStatus(index.row(), checked);
+ ROS_WARN("index: %d, checked: %d", index.row(), checked);
+}
 void PathVisualPlugin::_onStateChanged(int state)
 {
  QCheckBox* senderCheckBox = qobject_cast<QCheckBox*>(sender());
@@ -205,6 +212,7 @@ void PathVisualPlugin::_onStateChanged(int state)
  {
    // get the button name
    QString senderName = senderCheckBox->objectName();
+//   ROS_WARN("senderName: %s", senderName.toStdString());
 
    // regular expression to match button names
    QRegularExpression re("checkBox_list_select_(\\d+)");
@@ -257,16 +265,17 @@ void PathVisualPlugin::_updateTableView()
    bool ok = core_->path_list_->query(row_info, row);
    if (ok)
    {
-     // 0th column: select status
-     QCheckBox* checkBox_list_select = new QCheckBox();
-     checkBox_list_select->setObjectName(QString::fromUtf8("checkBox_list_select_%1").arg(QString::number(row)));
-     checkBox_list_select->setAutoFillBackground(true);
-     checkBox_list_select->setStyleSheet("background-color: rgb(255, 255, 255);"
-                                         //        "padding-left:20px;"
-     );
-     ui_->tableView_list->setIndexWidget(table_model_->index(row, 0), checkBox_list_select);
-     checkBox_list_select->setChecked(row_info.select);
-     connect(checkBox_list_select, SIGNAL(stateChanged(int)), this, SLOT(_onStateChanged(int)));
+//     ROS_WARN("debugging");
+//     ROS_WARN(checkBoxListSelectDelegate_.editors.isEmpty() ? "is empty" : "not empty");
+//     // 0th column: select status
+//     QHash<QModelIndex, QCheckBox*>::const_iterator it;
+//     for (it = checkBoxListSelectDelegate_.editors.constBegin(); it != checkBoxListSelectDelegate_.editors.constEnd(); ++it) {
+//       const QModelIndex &key = it.key();
+//       ROS_WARN("key: (%d, %d)", key.row(), key.column());
+//     }
+//     QCheckBox* checkBox_list_select = checkBoxListSelectDelegate_.getEditor(table_model_->index(row, 0));
+//     connect(checkBox_list_select, SIGNAL(stateChanged(int)), this, SLOT(_onStateChanged(int)));
+     table_model_->setData(table_model_->index(row, 0), row_info.select, Qt::UserRole);
 
      // 1st column: planner name
      table_model_->setItem(row, 1, new QStandardItem(QString::fromStdString(row_info.getPlannerName())));
