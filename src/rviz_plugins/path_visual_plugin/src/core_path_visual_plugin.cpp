@@ -11,15 +11,6 @@
  * --------------------------------------------------------
  *
  **********************************************************/
-#include <stdio.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <dirent.h>
-
-#include <visualization_msgs/Marker.h>
-#include "visualization_msgs/MarkerArray.h"
-#include <nav_msgs/Path.h>
-
 #include "wrapper_planner/CallPlan.h"
 #include "include/core_path_visual_plugin.h"
 
@@ -121,51 +112,23 @@ void CorePathVisualPlugin::addPath(const QString& planner_name)
 }
 
 /**
- *  @brief call load paths service
- *  @param open_file  load paths from local workspace using .json format
+ *  @brief call save paths service
  */
-void CorePathVisualPlugin::loadPaths(const std::string open_file)
+void CorePathVisualPlugin::savePaths(const QString& save_file)
 {
-  ROS_INFO("Loading path information at location %s", open_file.c_str());
-
-  path_list_->load(open_file);
-  refresh();
+  ROS_INFO("Saving path information at location %s", save_file.toStdString().c_str());
+  path_list_->save(save_file);
 }
 
 /**
- *  @brief call save paths service
+ *  @brief call load paths service
+ *  @param open_file  load paths from local workspace using .json format
  */
-void CorePathVisualPlugin::savePaths()
+void CorePathVisualPlugin::loadPaths(const QString open_file)
 {
-  // TODO if valid_size > 0
-  std::string cur_dir(std::getenv("PWD"));
-  std::string save_dir = cur_dir + std::string("/../../user_data");
-
-  if (access(save_dir.c_str(), F_OK) == -1)
-    mkdir(save_dir.c_str(), S_IRWXU);
-
-  int cnt = 0;
-  DIR* dir_ptr = opendir(save_dir.c_str());
-  struct dirent* dp = NULL;
-  while ((dp = readdir(dir_ptr)) != NULL)
-  {
-    std::string f_name = dp->d_name;
-    if (f_name == "." || f_name == "..")
-      continue;
-
-    if (dp->d_type == DT_REG)  // 文件
-      cnt++;
-  }
-  closedir(dir_ptr);
-  delete dp;
-
-  std::ostringstream ostr;
-  ostr << "/paths_" << cnt << ".json";
-  std::string save_file = save_dir + ostr.str();
-
-  ROS_INFO("Saving path information at location %s", save_file.c_str());
-
-  path_list_->save(save_file);
+  ROS_INFO("Loading path information at location %s", open_file.toStdString().c_str());
+  path_list_->load(open_file);
+  refresh();
 }
 
 /**
@@ -222,52 +185,48 @@ void CorePathVisualPlugin::refresh()
   visualization_msgs::Marker path_marker;
   visualization_msgs::MarkerArray path_marker_array;
   int marker_id = 0;
-  for (int i = 0; i < path_list_->size(); i++)
+
+  for (const auto& info : *(path_list_->getListPtr()))
   {
-    PathInfo path;
-    if (path_list_->query(path, i))
+    QList<Point2D> path_points = info.getPathPoints();
+    for (unsigned int i = 0; i < path_points.size() - 1; i++)
     {
-      QList<Point2D> path_points = path.getPathPoints();
-      for (unsigned int j = 0; j < path_points.size() - 1; j++)
-      {
-        path_marker.ns = "path_marker";
-        path_marker.type = visualization_msgs::Marker::LINE_LIST;
-        path_marker.action = path_marker.ADD;
-        geometry_msgs::Point p;
-        p.x = path_points[j].x;
-        p.y = path_points[j].y;
-        p.z = 0.0;
-        path_marker.points.push_back(p);
-        p.x = path_points[j + 1].x;
-        p.y = path_points[j + 1].y;
-        p.z = 0.0;
-        path_marker.points.push_back(p);
+      path_marker.ns = "path_marker";
+      path_marker.type = visualization_msgs::Marker::LINE_LIST;
+      path_marker.action = path_marker.ADD;
+      geometry_msgs::Point p;
+      p.x = path_points[i].x;
+      p.y = path_points[i].y;
+      p.z = 0.0;
+      path_marker.points.push_back(p);
+      p.x = path_points[i + 1].x;
+      p.y = path_points[i + 1].y;
+      p.z = 0.0;
+      path_marker.points.push_back(p);
 
-        path_marker.pose.orientation.x = 0.0;
-        path_marker.pose.orientation.y = 0.0;
-        path_marker.pose.orientation.z = 0.0;
-        path_marker.pose.orientation.w = 1.0;
-        path_marker.scale.x = 0.1;
+      path_marker.pose.orientation.x = 0.0;
+      path_marker.pose.orientation.y = 0.0;
+      path_marker.pose.orientation.z = 0.0;
+      path_marker.pose.orientation.w = 1.0;
+      path_marker.scale.x = 0.1;
 
-        //设置线的颜色，a应该是透明度
-        path_marker.color.r = qRed(path.color.rgb()) / 255.0;
-        path_marker.color.g = qGreen(path.color.rgb()) / 255.0;
-        path_marker.color.b = qBlue(path.color.rgb()) / 255.0;
-        path_marker.color.a = 1.0;
+      // set path color
+      QColor path_color = info.getData(PathInfo::pathColor).value<QColor>();
+      path_marker.color.r = path_color.red() / 255.0;
+      path_marker.color.g = path_color.green() / 255.0;
+      path_marker.color.b = path_color.blue() / 255.0;
+      path_marker.color.a = 1.0;
 
-        path_marker.lifetime = ros::Duration();
-        path_marker.id = marker_id;
+      path_marker.lifetime = ros::Duration();
+      path_marker.id = marker_id;
 
-        path_marker.header.frame_id = "map";
-        path_marker.header.stamp = ros::Time::now();
-        path_marker_array.markers.push_back(path_marker);
-        path_marker.points.clear();
+      path_marker.header.frame_id = "map";
+      path_marker.header.stamp = ros::Time::now();
+      path_marker_array.markers.push_back(path_marker);
+      path_marker.points.clear();
 
-        marker_id++;
-      }
+      marker_id++;
     }
-    else
-      ROS_ERROR("Path request for index %d failed, this should not happen", i);
   }
   paths_pub_.publish(path_marker_array);
 }

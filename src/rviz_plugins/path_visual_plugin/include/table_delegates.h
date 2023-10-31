@@ -1,6 +1,6 @@
 /***********************************************************
 *
-* @file: table_delegate.h
+* @file: table_delegates.h
 * @breif: Contains delegate classes for table view
 * @author: Yang Haodong, Wu Maojia
 * @update: 2023-10-30
@@ -31,7 +31,7 @@ public:
   bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 
 Q_SIGNALS:
-  void checkBoxStateChanged(const QModelIndex &index, const bool &checked);
+  void selectStateChanged(const QModelIndex &index, const bool &checked);
 };
 } // namespace path_visual_plugin
 #endif  // TABLE_DELEGATE_H

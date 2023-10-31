@@ -141,35 +141,27 @@ public:
    */
   bool setSelect(const int& index, const bool& select);
 
-  /**
-   * @brief query the path info with some index
-   * @param path  the variable that stores queried value
-   * @param index the index of path to query
-   * @return true if query successfully
-   */
-  bool query(PathInfo& path, const int& index);
-
-  bool getSelect(const int& index);
+  const QList<PathInfo>* getListPtr() const;
 
   /**
    * @brief save the paths to a local JSON file
    * @param file_name  the file name to save
    * @return true if save successfully
    */
-  bool save(std::string file_name);
+  bool save(QString file_name) const;
 
   /**
    * @brief load the paths from a local JSON file
    * @param file_name  the file name to load
    * @return true if load successfully
    */
-  bool load(std::string file_name);
+  bool load(QString file_name);
 
   /**
    * @brief return the size of path list
    * @return the size of path list
    */
-  int size();
+  int size() const;
 
 private:
   QList<PathInfo> path_info_; // the path list

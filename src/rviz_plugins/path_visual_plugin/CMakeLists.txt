@@ -54,7 +54,7 @@ set(SOURCE_FILES
         src/path_visual_plugin.cpp
         src/core_path_visual_plugin.cpp
         src/path_list.cpp
-        src/table_delegate.cpp
+        src/table_delegates.cpp
         ${MOC_FILES}
         )
 
@@ -62,7 +62,7 @@ set(HEADER_FILES
         include/path_visual_plugin.h
         include/core_path_visual_plugin.h
         include/path_list.h
-        include/table_delegate.h
+        include/table_delegates.h
         include/ui_path_visual_plugin.h
         )
 

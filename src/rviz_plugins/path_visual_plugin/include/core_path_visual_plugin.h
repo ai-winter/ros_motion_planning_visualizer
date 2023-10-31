@@ -20,6 +20,10 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 
+#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/MarkerArray.h>
+#include <nav_msgs/Path.h>
+
 #include "include/path_list.h"
 
 namespace path_visual_plugin
@@ -50,15 +54,16 @@ public:
   void addPath(const QString& planner_name);
 
   /**
+   *  @brief save paths file
+   *  @param save_file  save paths to local workspace using .json format
+   */
+  void savePaths(const QString& save_file);
+
+  /**
    *  @brief load paths file
    *  @param open_file  load paths from local workspace using .json format
    */
-  void loadPaths(const std::string open_file);
-
-  /**
-   *  @brief save paths file
-   */
-  void savePaths();
+  void loadPaths(const QString open_file);
 
   /**
    *  @brief set the color of path with some index

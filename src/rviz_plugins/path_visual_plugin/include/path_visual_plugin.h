@@ -28,7 +28,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 
-#include "include/table_delegate.h"
+#include "include/table_delegates.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -72,11 +72,7 @@ protected Q_SLOTS:
    */
   void _onEditingFinished();
 
-  /**
-   *  @brief if state changed signal is from checkBox received, call this slot function
-   */
-  void _onCheckBoxStateChanged(const QModelIndex &index, const bool &checked);
-  void _onStateChanged(int state);
+  void _onSelectStateChanged(const QModelIndex &index, const bool &checked);
 
   /**
    *  @brief if value changed signal from core is received, call this slot function

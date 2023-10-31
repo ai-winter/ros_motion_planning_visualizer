@@ -1,6 +1,6 @@
 /***********************************************************
 *
-* @file: table_delegate.cpp
+* @file: table_delegates.cpp
 * @breif: Contains delegate classes for table view
 * @author: Yang Haodong, Wu Maojia
 * @update: 2023-10-30
@@ -12,7 +12,7 @@
 *
 **********************************************************/
 #include <QDebug>
-#include "include/table_delegate.h"
+#include "include/table_delegates.h"
 
 namespace path_visual_plugin
 {
@@ -50,7 +50,7 @@ bool CheckBoxListSelectDelegate::editorEvent(QEvent *event, QAbstractItemModel *
 
     bool checked = index.data(Qt::UserRole).toBool();
     model->setData(index, !checked, Qt::UserRole);
-    Q_EMIT checkBoxStateChanged(index, !checked);
+    Q_EMIT selectStateChanged(index, !checked);
 
     return QStyledItemDelegate::editorEvent(event,model,option,index);
 }
