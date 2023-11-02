@@ -3,23 +3,14 @@
  * @file: core_path_visual_plugin.cpp
  * @breif: Contains core of path visualization Rviz plugin class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-10-27
- * @version: 2.0
+ * @update: 2023-11-2
+ * @version: 1.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
  * All rights reserved.
  * --------------------------------------------------------
  *
  **********************************************************/
-#include <stdio.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <dirent.h>
-
-#include <visualization_msgs/Marker.h>
-#include "visualization_msgs/MarkerArray.h"
-#include <nav_msgs/Path.h>
-
 #include "wrapper_planner/CallPlan.h"
 #include "include/core_path_visual_plugin.h"
 
@@ -30,7 +21,7 @@ namespace path_visual_plugin
  */
 CorePathVisualPlugin::CorePathVisualPlugin() : path_list_(new PathList)
 {
-  start_x_ = start_y_ = goal_x_ = goal_y_ = 0.00;
+  start_ = goal_ = Point2D(0.0, 0.0);
 }
 
 /**
@@ -69,89 +60,77 @@ void CorePathVisualPlugin::setupROS()
 
 /**
  *  @brief call path planning service
+ *  @param name of planner
  */
-void CorePathVisualPlugin::addPath(const std::string& planner_name)
+void CorePathVisualPlugin::addPath(const QString& planner_name)
 {
   geometry_msgs::PoseStamped start, goal;
   start.header.frame_id = "map";
   start.header.stamp = ros::Time::now();
-  start.pose.position.x = start_x_;
-  start.pose.position.y = start_y_;
+  start.pose.position.x = start_.x;
+  start.pose.position.y = start_.y;
   goal.header.frame_id = "map";
   goal.header.stamp = ros::Time::now();
-  goal.pose.position.x = goal_x_;
-  goal.pose.position.y = goal_y_;
+  goal.pose.position.x = goal_.x;
+  goal.pose.position.y = goal_.y;
 
   wrapper_planner::CallPlan call_plan_srv;
   call_plan_srv.request.start = start;
   call_plan_srv.request.goal = goal;
-  call_plan_srv.request.planner_name = planner_name;
+  call_plan_srv.request.planner_name = planner_name.toStdString();
+
+  ROS_WARN("call planner %s", planner_name.toStdString().c_str());
+  ROS_WARN("start: %f, %f", start.pose.position.x, start.pose.position.y);
+  ROS_WARN("goal: %f, %f", goal.pose.position.x, goal.pose.position.y);
 
   if (call_plan_client_.call(call_plan_srv))
   {
-    PathInfo path(planner_name, start_x_, start_y_, goal_x_, goal_y_, Qt::darkBlue, true);
-    path.setPath(call_plan_srv.response.path);
+    // get path points from service response
+    QList<Point2D> path_points;
+    path_points.clear();
+    for (const auto p : call_plan_srv.response.path)
+      path_points.push_back(Point2D(p.pose.position.x, p.pose.position.y));
+
+    // construct path info
+    PathInfo path(planner_name, start_, goal_, path_points);
+
     if (path_list_->append(path))
     {
       refresh();
-      ROS_INFO("Planner %s planning successfully done.", planner_name.c_str());
+      ROS_INFO("Planner %s planning successfully done.", planner_name.toStdString().c_str());
     }
     else
     {
-      ROS_ERROR("Planner %s planning failed.", planner_name.c_str());
+      ROS_ERROR("Planner %s planning failed.", planner_name.toStdString().c_str());
       return;
     }
   }
   else
-    ROS_ERROR("Planner %s planning failed.", planner_name.c_str());
+  {
+    ROS_ERROR("Planner %s planning failed.", planner_name.toStdString().c_str());
+    return;
+  }
+}
+
+/**
+ *  @brief call save paths service
+ *  @param save_file  save paths to local workspace using .json format
+ */
+void CorePathVisualPlugin::savePaths(const QString& save_file)
+{
+  ROS_INFO("Saving path information at location %s", save_file.toStdString().c_str());
+  path_list_->save(save_file);
 }
 
 /**
  *  @brief call load paths service
  *  @param open_file  load paths from local workspace using .json format
  */
-void CorePathVisualPlugin::loadPaths(const std::string open_file)
+void CorePathVisualPlugin::loadPaths(const QString open_file)
 {
-  ROS_INFO("Loading path information at location %s", open_file.c_str());
-
+  ROS_INFO("Loading path information at location %s", open_file.toStdString().c_str());
   path_list_->load(open_file);
   refresh();
-}
-
-/**
- *  @brief call save paths service
- */
-void CorePathVisualPlugin::savePaths()
-{
-  // TODO if valid_size > 0
-  std::string cur_dir(std::getenv("PWD"));
-  std::string save_dir = cur_dir + std::string("/../../user_data");
-
-  if (access(save_dir.c_str(), F_OK) == -1)
-    mkdir(save_dir.c_str(), S_IRWXU);
-
-  int cnt = 0;
-  DIR* dir_ptr = opendir(save_dir.c_str());
-  struct dirent* dp = NULL;
-  while ((dp = readdir(dir_ptr)) != NULL)
-  {
-    std::string f_name = dp->d_name;
-    if (f_name == "." || f_name == "..")
-      continue;
-
-    if (dp->d_type == DT_REG)  // 文件
-      cnt++;
-  }
-  closedir(dir_ptr);
-  delete dp;
-
-  std::ostringstream ostr;
-  ostr << "/paths_" << cnt << ".json";
-  std::string save_file = save_dir + ostr.str();
-
-  ROS_INFO("Saving path information at location %s", save_file.c_str());
-
-  path_list_->save(save_file);
 }
 
 /**
@@ -173,19 +152,19 @@ void CorePathVisualPlugin::setPathColor(const int& index, const QColor& color)
 }
 
 /**
- *  @brief set the show status of path with some index
- *  @param index  the index of the path to set show status
- *  @param show   whether to show the path or not
+ *  @brief set the select status of path with some index
+ *  @param index  the index of the path to set select status
+ *  @param select   whether to select and visualize the path or not
  */
-void CorePathVisualPlugin::setPathShowStatus(const int& index, const bool& show)
+void CorePathVisualPlugin::setPathSelectStatus(const int& index, const bool& select)
 {
-  if (path_list_->setShow(index, show))
+  if (path_list_->setSelect(index, select))
   {
-    ROS_INFO("The show status of path with index %d is successfully set to %s!", index, show ? "true" : "false");
+    ROS_INFO("The select status of path with index %d is successfully set to %s!", index, select ? "true" : "false");
     refresh();
   }
   else
-    ROS_ERROR("Failed to set the show status of path with index %d.", index);
+    ROS_ERROR("Failed to set the select status of path with index %d.", index);
 }
 
 /**
@@ -202,57 +181,56 @@ void CorePathVisualPlugin::removePath(const int& index)
     ROS_ERROR("Failed to remove path with index %d.", index);
 }
 
+/**
+ *  @brief refresh paths displayed in rviz
+ */
 void CorePathVisualPlugin::refresh()
 {
-  // point_line_pub.publish(MarkerArray);
   visualization_msgs::Marker path_marker;
   visualization_msgs::MarkerArray path_marker_array;
   int marker_id = 0;
-  for (int i = 0; i < path_list_->size(); i++)
+
+  for (const auto& info : *(path_list_->getListPtr()))
   {
-    PathInfo path;
-    if (path_list_->query(path, i))
+    QList<Point2D> path_points = info.getPathPoints();
+    for (unsigned int i = 0; i < path_points.size() - 1; i++)
     {
-      for (unsigned int j = 0; j < path.path.size() - 1; j++)
-      {
-        path_marker.ns = "path_marker";
-        path_marker.type = visualization_msgs::Marker::LINE_LIST;
-        path_marker.action = path_marker.ADD;
-        geometry_msgs::Point p;
-        p.x = path.path[j].x;
-        p.y = path.path[j].y;
-        p.z = 0.0;
-        path_marker.points.push_back(p);
-        p.x = path.path[j + 1].x;
-        p.y = path.path[j + 1].y;
-        p.z = 0.0;
-        path_marker.points.push_back(p);
+      path_marker.ns = "path_marker";
+      path_marker.type = visualization_msgs::Marker::LINE_LIST;
+      path_marker.action = path_marker.ADD;
+      geometry_msgs::Point p;
+      p.x = path_points[i].x;
+      p.y = path_points[i].y;
+      p.z = 0.0;
+      path_marker.points.push_back(p);
+      p.x = path_points[i + 1].x;
+      p.y = path_points[i + 1].y;
+      p.z = 0.0;
+      path_marker.points.push_back(p);
 
-        path_marker.pose.orientation.x = 0.0;
-        path_marker.pose.orientation.y = 0.0;
-        path_marker.pose.orientation.z = 0.0;
-        path_marker.pose.orientation.w = 1.0;
-        path_marker.scale.x = 0.1;
+      path_marker.pose.orientation.x = 0.0;
+      path_marker.pose.orientation.y = 0.0;
+      path_marker.pose.orientation.z = 0.0;
+      path_marker.pose.orientation.w = 1.0;
+      path_marker.scale.x = 0.1;
 
-        //设置线的颜色，a应该是透明度
-        path_marker.color.r = qRed(path.color.rgb()) / 255.0;
-        path_marker.color.g = qGreen(path.color.rgb()) / 255.0;
-        path_marker.color.b = qBlue(path.color.rgb()) / 255.0;
-        path_marker.color.a = 1.0;
+      // set path color
+      QColor path_color = info.getData(PathInfo::pathColor).value<QColor>();
+      path_marker.color.r = path_color.red() / 255.0;
+      path_marker.color.g = path_color.green() / 255.0;
+      path_marker.color.b = path_color.blue() / 255.0;
+      path_marker.color.a = 1.0;
 
-        path_marker.lifetime = ros::Duration();
-        path_marker.id = marker_id;
+      path_marker.lifetime = ros::Duration();
+      path_marker.id = marker_id;
 
-        path_marker.header.frame_id = "map";
-        path_marker.header.stamp = ros::Time::now();
-        path_marker_array.markers.push_back(path_marker);
-        path_marker.points.clear();
+      path_marker.header.frame_id = "map";
+      path_marker.header.stamp = ros::Time::now();
+      path_marker_array.markers.push_back(path_marker);
+      path_marker.points.clear();
 
-        marker_id++;
-      }
+      marker_id++;
     }
-    else
-      ROS_ERROR("Path request for index %d failed, this should not happen", i);
   }
   paths_pub_.publish(path_marker_array);
 }
@@ -263,8 +241,7 @@ void CorePathVisualPlugin::refresh()
  */
 void CorePathVisualPlugin::_onStartUpdate(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose)
 {
-  start_x_ = pose->pose.pose.position.x;
-  start_y_ = pose->pose.pose.position.y;
+  start_ = Point2D(pose->pose.pose.position.x, pose->pose.pose.position.y);
   Q_EMIT valueChanged();
 
   // mark pose on the map
@@ -300,8 +277,8 @@ void CorePathVisualPlugin::_onStartUpdate(const geometry_msgs::PoseWithCovarianc
  */
 void CorePathVisualPlugin::_onGoalUpdate(const geometry_msgs::PoseStamped::ConstPtr& pose)
 {
-  goal_x_ = pose->pose.position.x;
-  goal_y_ = pose->pose.position.y;
+  goal_.x = pose->pose.position.x;
+  goal_.y = pose->pose.position.y;
   Q_EMIT valueChanged();
 
   // mark pose on the map

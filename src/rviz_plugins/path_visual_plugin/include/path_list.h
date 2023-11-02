@@ -1,10 +1,10 @@
 /***********************************************************
  *
  * @file: path_list.h
- * @breif: Contains PathInfo struct and PathList class
+ * @breif: Contains PathList class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-10-27
- * @version: 2.0
+ * @update: 2023-11-2
+ * @version: 1.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
  * All rights reserved.
@@ -14,49 +14,20 @@
 #ifndef PATH_LIST_H
 #define PATH_LIST_H
 
-#define MAX_PATH_NUM 10000
+#define MAX_PATH_NUM 10000  // the max number of paths in path list
 
-#include <QColor>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+
+#include <ros/ros.h>
 
 #include <geometry_msgs/PoseStamped.h>
 
+#include "include/path_info.h"
+
 namespace path_visual_plugin
 {
-struct Point2D
-{
-public:
-  double x;
-  double y;
-};
-
-class PathInfo
-{
-public:
-  PathInfo();
-  PathInfo(std::string p_name, double s_x, double s_y, double g_x, double g_y, QColor c, bool is_show);
-
-  void setPath(std::vector<geometry_msgs::PoseStamped>& ros_path);
-
-public:
-  // the name of planner
-  std::string planner_name;
-
-  // start and goal point
-  double start_x, start_y, goal_x, goal_y;
-
-  // path planned
-  std::vector<Point2D> path;
-
-  // path length and total turning angle
-  double length, turning_angle;
-
-  // the color of visualized path
-  QColor color;
-
-  // whether to visualize the path
-  bool show;
-};
-
 class PathList
 {
 public:
@@ -73,12 +44,14 @@ public:
   /**
    * @brief append a new path to the path list
    * @param path  the new path to append
+   * @return true if append successfully
    */
-  bool append(PathInfo path);
+  bool append(const PathInfo& path);
 
   /**
    * @brief remove the path with some index from path list
    * @param index the index of path to remove
+   * @return true if remove successfully
    */
   bool remove(const int& index);
 
@@ -86,42 +59,46 @@ public:
    * @brief set the color of path with some index
    * @param index the index of path to set color
    * @param color the color to set
+   * @return true if set successfully
    */
   bool setColor(const int& index, const QColor& color);
 
   /**
-   * @brief set the show status of path with some index
-   * @param index the index of path to set show status
-   * @param show  whether to show the path or not
+   * @brief set the select status of path with some index
+   * @param index the index of path to set select status
+   * @param select  whether to select and visualize the path or not
+   * @return true if set successfully
    */
-  bool setShow(const int& index, const bool& show);
+  bool setSelect(const int& index, const bool& select);
 
   /**
-   * @brief query the path info with some index
-   * @param path  the variable that stores queried value
-   * @param index the index of path to query
+   * @brief get the pointer of path info list
+   * @return the pointer of path info list
    */
-  bool query(PathInfo& path, const int& index);
+  const QList<PathInfo>* getListPtr() const;
 
   /**
-   * @brief save the paths to a local JSON file
+   * @brief save the selected paths to a local JSON file
    * @param file_name  the file name to save
+   * @return true if save successfully
    */
-  void save(std::string file_name);
+  bool save(QString file_name) const;
 
   /**
    * @brief load the paths from a local JSON file
    * @param file_name  the file name to load
+   * @return true if load successfully
    */
-  void load(std::string file_name);
+  bool load(QString file_name);
 
   /**
    * @brief return the size of path list
+   * @return the size of path list
    */
-  int size();
+  int size() const;
 
 private:
-  std::vector<PathInfo> path_info_;
+  QList<PathInfo> path_info_; // the path list
 };
 }  // namespace path_visual_plugin
 #endif  // PATH_LIST_H

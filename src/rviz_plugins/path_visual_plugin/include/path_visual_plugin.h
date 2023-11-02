@@ -3,7 +3,7 @@
  * @file: path_visual_plugin.h
  * @breif: Contains path visualization Rviz plugin class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-10-14
+ * @update: 2023-11-2
  * @version: 1.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
@@ -21,12 +21,18 @@
 #include <QColorDialog>
 #include <QRegularExpression>
 #include <QFileDialog>
+
 #include <rviz/panel.h>
+#include <rviz/properties/color_property.h>
+#include <rviz/properties/color_editor.h>
 
 #include <ros/ros.h>
 #include <std_msgs/String.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
+
+#include "include/select_delegate.h"
+#include "include/color_editor.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -71,27 +77,26 @@ protected Q_SLOTS:
   void _onEditingFinished();
 
   /**
-   *  @brief if editing finished signal is from checkBox received, call this slot function
+   *  @brief if color changed signal from colorEditor is received, call this slot function
+   *  @param index  row index of path
+   *  @param color  color of path
    */
-  void _onStateChanged(int state);
+  void _onColorChanged(const int &index, const QColor &color);
+
+  /**
+   *  @brief if select changed signal from selectDelegate is received, call this slot function
+   *  @param index  row index of path
+   *  @param checked  if path is selected
+   */
+  void _onSelectChanged(const int &index, const bool &checked);
 
   /**
    *  @brief if value changed signal from core is received, call this slot function
    */
   void _onValueChanged();
 
+
 protected:
-  /**
-   *  @brief add a path row in table view
-   */
-  void _addPathRow();
-
-  /**
-   *  @brief remove a path with some index row in table view
-   *  @param index  the index of the removed path
-   */
-  void _removePathRow(const int& index);
-
   /**
    *  @brief update the table_model_ to update the table view of Path List
    */
@@ -103,6 +108,8 @@ private:
 
   QStandardItemModel* table_model_; // model of table "Path List"
   QStringList table_header_;        // header of table "Path List"
+
+  selectDelegate selectDelegate_;  // delegate for select column
 };
 
 }  // namespace path_visual_plugin

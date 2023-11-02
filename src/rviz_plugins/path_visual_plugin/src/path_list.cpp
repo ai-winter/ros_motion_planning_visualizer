@@ -3,56 +3,24 @@
  * @file: path_list.cpp
  * @breif: Contains PathList class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-10-27
- * @version: 2.0
+ * @update: 2023-11-2
+ * @version: 1.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
  * All rights reserved.
  * --------------------------------------------------------
  *
  **********************************************************/
-#include <algorithm>
-#include <iostream>
-#include <fstream>
-#include <iomanip>
-#include <json/json.h>
-
-#include <ros/ros.h>
-
 #include "include/path_list.h"
 
 namespace path_visual_plugin
 {
-PathInfo::PathInfo()
-  : planner_name("None"), start_x(0.0), start_y(0.0), goal_x(0.0), goal_y(0.0), color(Qt::darkBlue), show(true)
-{
-}
-
-PathInfo::PathInfo(std::string p_name, double s_x, double s_y, double g_x, double g_y, QColor c, bool is_show)
-{
-  planner_name = p_name;
-  start_x = s_x;
-  start_y = s_y;
-  goal_x = g_x;
-  goal_y = g_y;
-  color = c;
-  show = is_show;
-}
-
-void PathInfo::setPath(std::vector<geometry_msgs::PoseStamped>& ros_path)
-{
-  path.clear();
-  for (const auto p : ros_path)
-    path.push_back(Point2D{ x : p.pose.position.x, y : p.pose.position.y });
-}
-
 /**
  * @brief Construct a new PathList object
  */
 PathList::PathList()
 {
   path_info_.clear();
-  // path_num_ = 0;
 }
 
 /**
@@ -65,8 +33,9 @@ PathList::~PathList()
 /**
  * @brief append a new path to the path list
  * @param path  the new path to append
+ * @return true if append successfully
  */
-bool PathList::append(PathInfo path)
+bool PathList::append(const PathInfo& path)
 {
   if (size() >= MAX_PATH_NUM)
     return false;
@@ -79,15 +48,14 @@ bool PathList::append(PathInfo path)
 /**
  * @brief remove the path with some index from path list
  * @param index the index of path to remove
+ * @return true if remove successfully
  */
 bool PathList::remove(const int& index)
 {
   if (index < 0 || index >= size())
     return false;
 
-  std::swap(*(std::begin(path_info_) + index), path_info_.back());
-  path_info_.pop_back();
-  // TODO index error?
+  path_info_.erase(path_info_.begin() + index);
 
   return true;
 }
@@ -96,133 +64,161 @@ bool PathList::remove(const int& index)
  * @brief set the color of path with some index
  * @param index the index of path to set color
  * @param color the color to set
+ * @return true if set successfully
  */
 bool PathList::setColor(const int& index, const QColor& color)
 {
   if (index < 0 || index >= size())
     return false;
 
-  path_info_[index].color = color;
-
-  return true;
+  return path_info_[index].setData(PathInfo::pathColor, color);
 }
 
 /**
- * @brief set the show status of path with some index
- * @param index the index of path to set show status
- * @param show  whether to show the path or not
+ * @brief set the select status of path with some index
+ * @param index the index of path to set select status
+ * @param select  whether to select and visualize the path or not
+ * @return true if set successfully
  */
-bool PathList::setShow(const int& index, const bool& show)
+bool PathList::setSelect(const int& index, const bool& select)
 {
   if (index < 0 || index >= size())
     return false;
 
-  path_info_[index].show = show;
-
-  return true;
+  return path_info_[index].setData(PathInfo::selectStatus, select);
 }
 
-/**
- * @brief query the path info with some index
- * @param path  the variable that stores queried value
- * @param index the index of path to query
- */
-bool PathList::query(PathInfo& path, const int& index)
+const QList<PathInfo>* PathList::getListPtr() const
 {
-  if (index < 0 || index >= size())
-    return false;
-
-  path = path_info_[index];
-
-  return true;
+  return &path_info_;
 }
 
 /**
- * @brief save the paths to a local JSON file
+ * @brief save the selected paths to a local JSON file
  * @param file_name  the file name to save
+ * @return true if save successfully
  */
-void PathList::save(std::string file_name)
+bool PathList::save(QString file_name) const
 {
-  Json::Value root;
+  QJsonArray paths_array;
 
-  for (int i = 0; i < size(); i++)
+  for (const auto& info : path_info_)
   {
-    Json::Value path_json;
-    PathInfo path;
-    query(path, i);
-    path_json["index"] = i;
-    path_json["planner"] = path.planner_name;
-    path_json["start_x"] = path.start_x;
-    path_json["start_y"] = path.start_y;
-    path_json["goal_x"] = path.goal_x;
-    path_json["goal_y"] = path.goal_y;
+    // save only the selected paths
+    if (!info.getData(PathInfo::selectStatus).toBool())
+      continue;
 
-    for (const auto p : path.path)
+    QJsonObject path_json;
+
+    // save the path info to JSON object
+    path_json["planner"] = info.getData(PathInfo::plannerName).toString();
+
+    QJsonObject start_json;
+    start_json["x"] = info.getData(PathInfo::startPointX).toDouble();
+    start_json["y"] = info.getData(PathInfo::startPointY).toDouble();
+    path_json["start"] = start_json;
+
+    QJsonObject goal_json;
+    goal_json["x"] = info.getData(PathInfo::goalPointX).toDouble();
+    goal_json["y"] = info.getData(PathInfo::goalPointY).toDouble();
+    path_json["goal"] = goal_json;
+
+    QJsonArray points_array;
+    for (const auto& p : info.getPathPoints())
     {
-      Json::Value points;
+      QJsonObject points;
       points["x"] = p.x;
       points["y"] = p.y;
-      path_json["path"].append(points);
+      points_array.append(points);
     }
+    path_json["path"] = points_array;
 
-    Json::Value color;
-    color["R"] = qRed(path.color.rgb());
-    color["G"] = qGreen(path.color.rgb());
-    color["B"] = qBlue(path.color.rgb());
+    QJsonObject color;
+    QColor path_color = info.getData(PathInfo::pathColor).value<QColor>();
+    color["R"] = path_color.red();
+    color["G"] = path_color.green();
+    color["B"] = path_color.blue();
     path_json["color"] = color;
 
-    // TODO Length and angle
-
-    root["paths"].append(path_json);
+    paths_array.append(path_json);
   }
 
-  std::ofstream file(file_name);
-
-  if (file.is_open())
+  // save the paths to the file
+  QFile file(file_name);
+  if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
   {
-    Json::StreamWriterBuilder builder;
-    builder["indentation"] = "";
-    std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
-    writer->write(root, &file);
-    file.close();
+    ROS_ERROR("Failed to create and open file when saving paths!");
+    return false;
   }
+  QJsonObject root;
+  root["paths"] = paths_array;
+  QJsonDocument document;
+  document.setObject(root);
+  file.write(document.toJson());
+  file.close();
+
+  return true;
 }
 
 /**
  * @brief load the paths from a local JSON file
  * @param file_name  the file name to load
+ * @return true if load successfully
  */
-void PathList::load(std::string file_name)
+bool PathList::load(QString file_name)
 {
-  Json::Reader reader;
-  Json::Value root;
-
-  std::ifstream infile(file_name, std::ios::in);
-  if (infile.is_open() && reader.parse(infile, root))
+  QFile file(file_name);
+  if (!file.open(QIODevice::ReadOnly))
   {
-    for (const auto p : root["paths"])
-    {
-      PathInfo path;
-      path.planner_name = p["planner"].asString();
-      path.start_x = p["start_x"].asDouble();
-      path.start_y = p["start_y"].asDouble();
-      path.goal_x = p["goal_x"].asDouble();
-      path.goal_y = p["goal_y"].asDouble();
-
-      for (const auto point : p["path"])
-        path.path.push_back(Point2D{ x : point["x"].asDouble(), y : point["y"].asDouble() });
-
-      path.color = QColor(p["color"]["R"].asInt(), p["color"]["G"].asInt(), p["color"]["B"].asInt());
-      path.show = true;
-      append(path);
-    }
+    ROS_ERROR("Failed to open file when loading paths!");
+    return false;
   }
+  QByteArray file_content = file.readAll();
+  file.close();
+
+  QJsonParseError json_error;
+  QJsonDocument document = QJsonDocument::fromJson(file_content, &json_error);
+  if (json_error.error != QJsonParseError::NoError)
+  {
+    ROS_ERROR("Failed to parse JSON file when loading paths!");
+    return false;
+  }
+
+  QJsonObject root = document.object();
+  QJsonArray paths_array = root["paths"].toArray();
+  for (const auto& p : paths_array)
+  {
+    QJsonObject path_json = p.toObject();
+    QJsonObject start = path_json["start"].toObject();
+    QJsonObject goal = path_json["goal"].toObject();
+    QJsonArray points_array = path_json["path"].toArray();
+    QList<Point2D> path_points;
+    path_points.clear();
+    for (const auto& point : points_array)
+      path_points.push_back(Point2D(point.toObject()["x"].toDouble(), point.toObject()["y"].toDouble()));
+    QJsonObject color = path_json["color"].toObject();
+
+    // construct a new PathInfo object with the parsed info
+    PathInfo path(
+        path_json["planner"].toString(),
+        Point2D(start["x"].toDouble(), start["y"].toDouble()),
+        Point2D(goal["x"].toDouble(), goal["y"].toDouble()),
+        path_points,
+        QColor(color["R"].toInt(), color["G"].toInt(), color["B"].toInt())
+    );
+
+    // add the path to path list
+    append(path);
+  }
+
+  return true;
 }
 
 /**
  * @brief return the size of path list
+ * @return the size of path list
  */
-int PathList::size()
+int PathList::size() const
 {
   return path_info_.size();
 }
