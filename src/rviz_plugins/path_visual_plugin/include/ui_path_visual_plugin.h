@@ -87,6 +87,8 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(tableView_list->sizePolicy().hasHeightForWidth());
         tableView_list->setSizePolicy(sizePolicy);
+        tableView_list->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        tableView_list->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
         tableView_list->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
         horizontalLayout_list->addWidget(tableView_list);
@@ -216,19 +218,52 @@ public:
     void retranslateUi(QWidget *PathVisualPlugin)
     {
         PathVisualPlugin->setWindowTitle(QApplication::translate("PathVisualPlugin", "PathVisualPlugin", nullptr));
+#ifndef QT_NO_TOOLTIP
+        groupBox_list->setToolTip(QString());
+#endif // QT_NO_TOOLTIP
         groupBox_list->setTitle(QApplication::translate("PathVisualPlugin", "Path List", nullptr));
+#ifndef QT_NO_TOOLTIP
+        groupBox_add->setToolTip(QString());
+#endif // QT_NO_TOOLTIP
         groupBox_add->setTitle(QApplication::translate("PathVisualPlugin", "Add a New Path", nullptr));
+#ifndef QT_NO_TOOLTIP
+        groupBox_add_start->setToolTip(QApplication::translate("PathVisualPlugin", "The start point of the new path", nullptr));
+#endif // QT_NO_TOOLTIP
         groupBox_add_start->setTitle(QApplication::translate("PathVisualPlugin", "Start Point", nullptr));
         label_add_start_x->setText(QApplication::translate("PathVisualPlugin", "x", nullptr));
         label_add_start_y->setText(QApplication::translate("PathVisualPlugin", "y", nullptr));
+#ifndef QT_NO_TOOLTIP
+        groupBox_add_goal->setToolTip(QApplication::translate("PathVisualPlugin", "The goal point of the new path", nullptr));
+#endif // QT_NO_TOOLTIP
         groupBox_add_goal->setTitle(QApplication::translate("PathVisualPlugin", "Goal Point", nullptr));
         label_add_goal_x->setText(QApplication::translate("PathVisualPlugin", "x", nullptr));
         label_add_goal_y->setText(QApplication::translate("PathVisualPlugin", "y", nullptr));
+#ifndef QT_NO_TOOLTIP
+        groupBox_add_planner->setToolTip(QApplication::translate("PathVisualPlugin", "The planner used to plan the new path", nullptr));
+#endif // QT_NO_TOOLTIP
         groupBox_add_planner->setTitle(QApplication::translate("PathVisualPlugin", "Planner", nullptr));
+#ifndef QT_NO_TOOLTIP
+        label_add_planner_global->setToolTip(QString());
+#endif // QT_NO_TOOLTIP
         label_add_planner_global->setText(QApplication::translate("PathVisualPlugin", "Global Planner", nullptr));
+#ifndef QT_NO_TOOLTIP
+        comboBox_add_planner_global->setToolTip(QString());
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_TOOLTIP
+        pushButton_add_add->setToolTip(QApplication::translate("PathVisualPlugin", "Plan and add the configured path to the path list", nullptr));
+#endif // QT_NO_TOOLTIP
         pushButton_add_add->setText(QApplication::translate("PathVisualPlugin", "Add Path", nullptr));
+#ifndef QT_NO_TOOLTIP
+        groupBox_files->setToolTip(QString());
+#endif // QT_NO_TOOLTIP
         groupBox_files->setTitle(QApplication::translate("PathVisualPlugin", "For Path Files", nullptr));
+#ifndef QT_NO_TOOLTIP
+        pushButton_files_load->setToolTip(QApplication::translate("PathVisualPlugin", "Load some .json path data files and append them to the path list", nullptr));
+#endif // QT_NO_TOOLTIP
         pushButton_files_load->setText(QApplication::translate("PathVisualPlugin", "Load Paths", nullptr));
+#ifndef QT_NO_TOOLTIP
+        pushButton_files_save->setToolTip(QApplication::translate("PathVisualPlugin", "Save selected paths data into a .json file", nullptr));
+#endif // QT_NO_TOOLTIP
         pushButton_files_save->setText(QApplication::translate("PathVisualPlugin", "Save Paths", nullptr));
         tabManager->setTabText(tabManager->indexOf(tab_pathVisualization), QApplication::translate("PathVisualPlugin", "Path Visualization", nullptr));
     } // retranslateUi

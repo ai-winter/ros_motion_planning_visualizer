@@ -3,7 +3,7 @@
 * @file: path_visual_plugin.cpp
 * @breif: Contains path visualization Rviz plugin class
 * @author: Yang Haodong, Wu Maojia
-* @update: 2023-10-14
+* @update: 2023-11-2
 * @version: 1.0
 *
 * Copyright (c) 2023， Yang Haodong, Wu Maojia
@@ -50,15 +50,14 @@ PathVisualPlugin::~PathVisualPlugin()
 */
 void PathVisualPlugin::setupUi()
 {
- table_model_ = new QStandardItemModel();
+ table_model_ = new QStandardItemModel(this);
  table_header_ = QStringList({ "Select", "Planner", "Start", "Goal", "Length", "Turning Angle", "Color", "Remove" });
  table_model_->setHorizontalHeaderLabels(table_header_);
  ui_->tableView_list->setModel(table_model_);
- ui_->tableView_list->setItemDelegateForColumn(0, &checkBoxListSelectDelegate_);
- connect(&checkBoxListSelectDelegate_, SIGNAL(selectStateChanged(QModelIndex, bool)), this,
-         SLOT(_onSelectStateChanged(QModelIndex, bool)));
+ ui_->tableView_list->setItemDelegateForColumn(0, &selectDelegate_);
+ _updateTableView();
 
- for (const auto p_name : core_->planner_list_)
+ for (const auto& p_name : core_->planner_list_)
    ui_->comboBox_add_planner_global->addItem(QString::fromStdString(p_name));
 
  _onValueChanged();
@@ -71,6 +70,7 @@ void PathVisualPlugin::setupUi()
  connect(ui_->lineEdit_add_start_y, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
  connect(ui_->lineEdit_add_goal_x, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
  connect(ui_->lineEdit_add_goal_y, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
+ connect(&selectDelegate_, SIGNAL(selectChanged(const int&, const bool&)), this, SLOT(_onSelectChanged(const int&, const bool&)));
 }
 
 /**
@@ -86,9 +86,7 @@ void PathVisualPlugin::_onClicked()
    QString senderName = senderPushButton->objectName();
 
    // regular expression to match button names
-   QRegularExpression re_color("pushButton_list_color_(\\d+)");
    QRegularExpression re_remove("pushButton_list_remove_(\\d+)");
-   QRegularExpressionMatch match_color = re_color.match(senderName);
    QRegularExpressionMatch match_remove = re_remove.match(senderName);
 
    if (senderName == QString::fromUtf8("pushButton_add_add"))
@@ -112,28 +110,6 @@ void PathVisualPlugin::_onClicked()
                                                         "JSON Files(*.json)", nullptr, QFileDialog::DontResolveSymlinks);
      if (!save_file.isEmpty())
        core_->savePaths(save_file);
-   }
-   else if (match_color.hasMatch())
-   {
-     QString capturedText = match_color.captured(1);
-     bool ok = false;
-     int index = capturedText.toInt(&ok);
-     if (ok)
-     {
-       QColor color = QColorDialog::getColor(Qt::darkBlue, this);
-       if (color.isValid())
-         core_->setPathColor(index, color);
-       else
-       {
-         ROS_ERROR("Invalid color!");
-         return;
-       }
-     }
-     else
-     {
-       ROS_ERROR("Failed to get the path index to set color!");
-       return;
-     };
    }
    else if (match_remove.hasMatch())
    {
@@ -199,9 +175,24 @@ void PathVisualPlugin::_onEditingFinished()
    ROS_ERROR("Failed to get signal sender QLineEdit.");
 }
 
-void PathVisualPlugin::_onSelectStateChanged(const QModelIndex &index, const bool &checked)
+/**
+ *  @brief if color changed signal from colorEditor is received, call this slot function
+ *  @param index  row index of path
+ *  @param color  color of path
+ */
+void PathVisualPlugin::_onColorChanged(const int &index, const QColor &color)
 {
- core_->setPathSelectStatus(index.row(), checked);
+ core_->setPathColor(index, color);
+}
+
+/**
+ *  @brief if select changed signal from selectDelegate is received, call this slot function
+ *  @param index  row index of path
+ *  @param checked  if path is selected
+ */
+void PathVisualPlugin::_onSelectChanged(const int &index, const bool &checked)
+{
+ core_->setPathSelectStatus(index, checked);
 }
 
 /**
@@ -215,11 +206,22 @@ void PathVisualPlugin::_onValueChanged()
  ui_->lineEdit_add_goal_y->setText(QString::number(core_->goal_.y, 'f', 3));
 }
 
+/**
+ *  @brief update the table_model_ to update the table view of Path List
+ */
 void PathVisualPlugin::_updateTableView()
 {
  // initialize table model
  table_model_->clear();
  table_model_->setHorizontalHeaderLabels(table_header_);
+ table_model_->setHeaderData(0, Qt::Horizontal, "Only the selected paths will be displayed or saved.", Qt::ToolTipRole);
+ table_model_->setHeaderData(1, Qt::Horizontal, "Planner used to plan the path", Qt::ToolTipRole);
+ table_model_->setHeaderData(2, Qt::Horizontal, "Start point of the path", Qt::ToolTipRole);
+ table_model_->setHeaderData(3, Qt::Horizontal, "Goal point of the path", Qt::ToolTipRole);
+ table_model_->setHeaderData(4, Qt::Horizontal, "Total length of the path", Qt::ToolTipRole);
+ table_model_->setHeaderData(5, Qt::Horizontal, "Total turning angle of the path", Qt::ToolTipRole);
+ table_model_->setHeaderData(6, Qt::Horizontal, "Color of the path displayed in rviz", Qt::ToolTipRole);
+ table_model_->setHeaderData(7, Qt::Horizontal, "Remove the path from path list", Qt::ToolTipRole);
  table_model_->setRowCount(core_->path_list_->size());
 
  int row = 0;
@@ -243,21 +245,36 @@ void PathVisualPlugin::_updateTableView()
                                                        .arg(QString::number(info.getData(PathInfo::goalPointY).toDouble(), 'f', 3))
                                                    ));
 
+   // 4th column: path length
+   table_model_->setItem(row, 4, new QStandardItem(QString("%1")
+                                                       .arg(QString::number(info.getData(PathInfo::pathLength).toDouble(), 'f', 3))
+                                                   ));
+
+   // 5th column: path turning angle
+   double turning_angle_rad = info.getData(PathInfo::turningAngle).toDouble();
+   double turning_angle_deg = turning_angle_rad * 180.0 / acos(-1);
+   table_model_->setItem(row, 5, new QStandardItem(QString("%1rad (%2°)")
+                                                       .arg(QString::number(turning_angle_rad, 'f', 3))
+                                                       .arg(QString::number(turning_angle_deg, 'f', 2))
+                                                   ));
+
    // 6th column: color
-   QPushButton* pushButton_list_color = new QPushButton();
-   pushButton_list_color->setObjectName(QString::fromUtf8("pushButton_list_color_%1").arg(QString::number(row)));
-   pushButton_list_color->setText(QApplication::translate("PathVisualPlugin", "set", nullptr));
-   ui_->tableView_list->setIndexWidget(table_model_->index(row, 6), pushButton_list_color);
-   connect(pushButton_list_color, SIGNAL(clicked()), this, SLOT(_onClicked()));
+   ColorEditor* colorEditor_list_color = new ColorEditor(row, info.getData(PathInfo::pathColor).value<QColor>(), this);
+   ui_->tableView_list->setIndexWidget(table_model_->index(row, 6), colorEditor_list_color);
+   connect(colorEditor_list_color, SIGNAL(colorChanged(const int&, const QColor&)), this,
+           SLOT(_onColorChanged(const int&, const QColor&)));
 
    // 7th column: remove button
-   QPushButton* pushButton_list_remove = new QPushButton();
+   QPushButton* pushButton_list_remove = new QPushButton(this);
    pushButton_list_remove->setObjectName(QString::fromUtf8("pushButton_list_remove_%1").arg(QString::number(row)));
-   pushButton_list_remove->setText(QApplication::translate("PathVisualPlugin", "X", nullptr));
+   pushButton_list_remove->setIcon(QIcon(":/icons/cross.png"));
+   pushButton_list_remove->setIconSize(QSize(24, 24));
    ui_->tableView_list->setIndexWidget(table_model_->index(row, 7), pushButton_list_remove);
    connect(pushButton_list_remove, SIGNAL(clicked()), this, SLOT(_onClicked()));
 
    ++row;
  }
+ ui_->tableView_list->resizeColumnsToContents();
+ ui_->tableView_list->resizeRowsToContents();
 }
 }  // namespace path_visual_plugin

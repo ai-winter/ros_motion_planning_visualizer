@@ -54,7 +54,9 @@ set(SOURCE_FILES
         src/path_visual_plugin.cpp
         src/core_path_visual_plugin.cpp
         src/path_list.cpp
-        src/table_delegates.cpp
+        src/path_info.cpp
+        src/select_delegate.cpp
+        src/color_editor.cpp
         ${MOC_FILES}
         )
 
@@ -62,13 +64,21 @@ set(HEADER_FILES
         include/path_visual_plugin.h
         include/core_path_visual_plugin.h
         include/path_list.h
-        include/table_delegates.h
+        include/path_info.h
+        include/point_2d.h
+        include/select_delegate.h
+        include/color_editor.h
         include/ui_path_visual_plugin.h
+        )
+
+set(RESOURCE_FILES
+        resources/resources.qrc
         )
 
 add_library(${PROJECT_NAME}
         ${SOURCE_FILES}
         ${HEADER_FILES}
+        ${RESOURCE_FILES}
         )
 
 target_link_libraries(${PROJECT_NAME}
@@ -85,7 +95,6 @@ install(TARGETS
 
 install(FILES
         plugin_description.xml
-        #        multi_nav_plugin.xml
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 

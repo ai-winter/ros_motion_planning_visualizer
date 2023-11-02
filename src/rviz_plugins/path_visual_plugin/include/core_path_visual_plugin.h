@@ -3,8 +3,8 @@
  * @file: core_path_visual_plugin.h
  * @breif: Contains core of path visualization Rviz plugin class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-10-27
- * @version: 2.0
+ * @update: 2023-11-2
+ * @version: 1.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
  * All rights reserved.
@@ -50,6 +50,7 @@ public:
 
   /**
    *  @brief call path planning service
+   *  @param name of planner
    */
   void addPath(const QString& planner_name);
 
@@ -85,6 +86,9 @@ public:
    */
   void removePath(const int& index);
 
+  /**
+   *  @brief refresh paths displayed in rviz
+   */
   void refresh();
 
 Q_SIGNALS:
@@ -132,6 +136,7 @@ public:
   // start and goal point
   Point2D start_, goal_;
 
+  // path info list
   PathList* path_list_;
 };
 }  // namespace path_visual_plugin

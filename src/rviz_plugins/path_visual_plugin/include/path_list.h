@@ -1,10 +1,10 @@
 /***********************************************************
  *
  * @file: path_list.h
- * @breif: Contains Point2D struct, PathInfo class and PathList class
+ * @breif: Contains PathList class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-10-27
- * @version: 2.0
+ * @update: 2023-11-2
+ * @version: 1.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
  * All rights reserved.
@@ -14,17 +14,8 @@
 #ifndef PATH_LIST_H
 #define PATH_LIST_H
 
-#define MAX_PATH_NUM 10000
+#define MAX_PATH_NUM 10000  // the max number of paths in path list
 
-#include <algorithm>
-#include <iostream>
-#include <fstream>
-#include <iomanip>
-
-#include <QColor>
-#include <QString>
-#include <QList>
-#include <QVariant>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -33,71 +24,10 @@
 
 #include <geometry_msgs/PoseStamped.h>
 
+#include "include/path_info.h"
+
 namespace path_visual_plugin
 {
-struct Point2D
-{
-public:
-  /**
-   * @brief Construct a new Point2D object
-   * @param x  the x coordinate of point
-   * @param y  the y coordinate of point
-   */
-  Point2D(double x = 0.0, double y = 0.0): x(x), y(y) {};
-
-public:
-  double x, y;  // the x and y coordinate of point
-};
-
-class PathInfo
-{
-public:
-  enum { plannerName, startPoint, startPointX, startPointY, goalPoint, goalPointX, goalPointY, pathLength, pathColor,
-    turningAngle, selectStatus };
-
-public:
-  /**
-   * @brief Construct a new PathInfo object with parameters
-   * @param p_name  the name of planner
-   * @param s  the start point
-   * @param g  the goal point
-   * @param pts  the path points
-   * @param c  the color of path
-   * @param slt  whether the path is selected
-   */
-  PathInfo(QString p_name = "None", Point2D s = Point2D(0.0, 0.0), Point2D g = Point2D(0.0, 0.0),
-           QList<Point2D> pts = QList<Point2D>(), QColor c = Qt::darkBlue, bool slt = true);
-
-  /**
-   * @brief Destroy the PathInfo object
-   */
-  ~PathInfo();
-
-  QVariant getData(const int& variant) const;
-
-  QList<Point2D> getPathPoints() const;
-
-public:
-  // the color of visualized path
-  QColor color;
-
-  // select and visualize the path
-  bool select;
-
-private:
-  // the name of planner
-  QString planner_name_;
-
-  // start and goal point
-  Point2D start_, goal_;
-
-  // path planned
-  QList<Point2D> path_;
-
-  // path length and total turning angle
-  double length_, turning_angle_;
-};
-
 class PathList
 {
 public:
@@ -141,10 +71,14 @@ public:
    */
   bool setSelect(const int& index, const bool& select);
 
+  /**
+   * @brief get the pointer of path info list
+   * @return the pointer of path info list
+   */
   const QList<PathInfo>* getListPtr() const;
 
   /**
-   * @brief save the paths to a local JSON file
+   * @brief save the selected paths to a local JSON file
    * @param file_name  the file name to save
    * @return true if save successfully
    */
@@ -167,5 +101,4 @@ private:
   QList<PathInfo> path_info_; // the path list
 };
 }  // namespace path_visual_plugin
-Q_DECLARE_METATYPE(path_visual_plugin::Point2D)
 #endif  // PATH_LIST_H

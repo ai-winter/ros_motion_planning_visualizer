@@ -3,8 +3,8 @@
  * @file: core_path_visual_plugin.cpp
  * @breif: Contains core of path visualization Rviz plugin class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-10-27
- * @version: 2.0
+ * @update: 2023-11-2
+ * @version: 1.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
  * All rights reserved.
@@ -60,6 +60,7 @@ void CorePathVisualPlugin::setupROS()
 
 /**
  *  @brief call path planning service
+ *  @param name of planner
  */
 void CorePathVisualPlugin::addPath(const QString& planner_name)
 {
@@ -113,6 +114,7 @@ void CorePathVisualPlugin::addPath(const QString& planner_name)
 
 /**
  *  @brief call save paths service
+ *  @param save_file  save paths to local workspace using .json format
  */
 void CorePathVisualPlugin::savePaths(const QString& save_file)
 {
@@ -179,9 +181,11 @@ void CorePathVisualPlugin::removePath(const int& index)
     ROS_ERROR("Failed to remove path with index %d.", index);
 }
 
+/**
+ *  @brief refresh paths displayed in rviz
+ */
 void CorePathVisualPlugin::refresh()
 {
-  // point_line_pub.publish(MarkerArray);
   visualization_msgs::Marker path_marker;
   visualization_msgs::MarkerArray path_marker_array;
   int marker_id = 0;

@@ -3,8 +3,8 @@
  * @file: path_list.cpp
  * @breif: Contains PathList class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-10-27
- * @version: 2.0
+ * @update: 2023-11-2
+ * @version: 1.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
  * All rights reserved.
@@ -15,68 +15,6 @@
 
 namespace path_visual_plugin
 {
-/**
- * @brief Construct a new PathInfo object
- * @param p_name  the name of planner
- * @param s  the start point
- * @param g  the goal point
- * @param pts  the path points
- * @param c  the color of path
- * @param slt  whether the path is selected
- */
-PathInfo::PathInfo(QString p_name, Point2D s, Point2D g, QList<Point2D> pts, QColor c, bool slt)
-{
-  planner_name_ = p_name;
-  start_ = s;
-  goal_ = g;
-  path_ = pts;
-  color = c;
-  select = slt;
-}
-
-/**
- * @brief Destroy the PathInfo object
- */
-PathInfo::~PathInfo()
-{
-}
-
-QVariant PathInfo::getData(const int& variant) const
-{
-  switch (variant)
-  {
-    case plannerName:
-      return planner_name_;
-    case startPoint:
-      return QVariant::fromValue(start_);
-    case startPointX:
-      return start_.x;
-    case startPointY:
-      return start_.y;
-    case goalPoint:
-      return QVariant::fromValue(goal_);
-    case goalPointX:
-      return goal_.x;
-    case goalPointY:
-      return goal_.y;
-    case pathLength:
-      return length_;
-    case pathColor:
-      return color;
-    case turningAngle:
-      return turning_angle_;
-    case selectStatus:
-      return select;
-    default:
-      return QVariant();
-  }
-}
-
-QList<Point2D> PathInfo::getPathPoints() const
-{
-  return path_;
-}
-
 /**
  * @brief Construct a new PathList object
  */
@@ -133,9 +71,7 @@ bool PathList::setColor(const int& index, const QColor& color)
   if (index < 0 || index >= size())
     return false;
 
-  path_info_[index].color = color;
-
-  return true;
+  return path_info_[index].setData(PathInfo::pathColor, color);
 }
 
 /**
@@ -149,9 +85,7 @@ bool PathList::setSelect(const int& index, const bool& select)
   if (index < 0 || index >= size())
     return false;
 
-  path_info_[index].select = select;
-
-  return true;
+  return path_info_[index].setData(PathInfo::selectStatus, select);
 }
 
 const QList<PathInfo>* PathList::getListPtr() const
@@ -160,7 +94,7 @@ const QList<PathInfo>* PathList::getListPtr() const
 }
 
 /**
- * @brief save the paths to a local JSON file
+ * @brief save the selected paths to a local JSON file
  * @param file_name  the file name to save
  * @return true if save successfully
  */
@@ -170,6 +104,10 @@ bool PathList::save(QString file_name) const
 
   for (const auto& info : path_info_)
   {
+    // save only the selected paths
+    if (!info.getData(PathInfo::selectStatus).toBool())
+      continue;
+
     QJsonObject path_json;
 
     // save the path info to JSON object
@@ -278,6 +216,7 @@ bool PathList::load(QString file_name)
 
 /**
  * @brief return the size of path list
+ * @return the size of path list
  */
 int PathList::size() const
 {

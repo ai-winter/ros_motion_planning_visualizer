@@ -35,6 +35,9 @@
       <layout class="QGridLayout" name="gridLayout_pathVisualization">
        <item row="0" column="0" rowspan="3" colspan="2">
         <widget class="QGroupBox" name="groupBox_list">
+         <property name="toolTip">
+          <string/>
+         </property>
          <property name="title">
           <string>Path List</string>
          </property>
@@ -46,6 +49,12 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAsNeeded</enum>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::AdjustIgnored</enum>
             </property>
             <property name="editTriggers">
              <set>QAbstractItemView::NoEditTriggers</set>
@@ -66,12 +75,18 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="toolTip">
+          <string/>
+         </property>
          <property name="title">
           <string>Add a New Path</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_add">
           <item>
            <widget class="QGroupBox" name="groupBox_add_start">
+            <property name="toolTip">
+             <string>The start point of the new path</string>
+            </property>
             <property name="title">
              <string>Start Point</string>
             </property>
@@ -101,6 +116,9 @@
           </item>
           <item>
            <widget class="QGroupBox" name="groupBox_add_goal">
+            <property name="toolTip">
+             <string>The goal point of the new path</string>
+            </property>
             <property name="title">
              <string>Goal Point</string>
             </property>
@@ -130,25 +148,38 @@
           </item>
           <item>
            <widget class="QGroupBox" name="groupBox_add_planner">
+            <property name="toolTip">
+             <string>The planner used to plan the new path</string>
+            </property>
             <property name="title">
              <string>Planner</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_add_planner">
              <item>
               <widget class="QLabel" name="label_add_planner_global">
+               <property name="toolTip">
+                <string/>
+               </property>
                <property name="text">
                 <string>Global Planner</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="comboBox_add_planner_global"/>
+              <widget class="QComboBox" name="comboBox_add_planner_global">
+               <property name="toolTip">
+                <string/>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_add_add">
+            <property name="toolTip">
+             <string>Plan and add the configured path to the path list</string>
+            </property>
             <property name="text">
              <string>Add Path</string>
             </property>
@@ -159,12 +190,18 @@
        </item>
        <item row="2" column="2">
         <widget class="QGroupBox" name="groupBox_files">
+         <property name="toolTip">
+          <string/>
+         </property>
          <property name="title">
           <string>For Path Files</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_files">
           <item>
            <widget class="QPushButton" name="pushButton_files_load">
+            <property name="toolTip">
+             <string>Load some .json path data files and append them to the path list</string>
+            </property>
             <property name="text">
              <string>Load Paths</string>
             </property>
@@ -172,6 +209,9 @@
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_files_save">
+            <property name="toolTip">
+             <string>Save selected paths data into a .json file</string>
+            </property>
             <property name="text">
              <string>Save Paths</string>
             </property>
