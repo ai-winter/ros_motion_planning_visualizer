@@ -97,7 +97,7 @@ void CorePathVisualPlugin::addPath(const QString& planner_name)
     if (path_list_->append(path))
     {
       refresh();
-      ROS_INFO("Planner %s planning successfully done.", planner_name.toStdString().c_str());
+      ROS_WARN("Planner %s planning successfully done.", planner_name.toStdString().c_str());
     }
     else
     {
@@ -118,7 +118,7 @@ void CorePathVisualPlugin::addPath(const QString& planner_name)
  */
 void CorePathVisualPlugin::savePaths(const QString& save_file)
 {
-  ROS_INFO("Saving path information at location %s", save_file.toStdString().c_str());
+  ROS_WARN("Saving path information at location %s", save_file.toStdString().c_str());
   path_list_->save(save_file);
 }
 
@@ -128,7 +128,7 @@ void CorePathVisualPlugin::savePaths(const QString& save_file)
  */
 void CorePathVisualPlugin::loadPaths(const QString open_file)
 {
-  ROS_INFO("Loading path information at location %s", open_file.toStdString().c_str());
+  ROS_WARN("Loading path information at location %s", open_file.toStdString().c_str());
   path_list_->load(open_file);
   refresh();
 }
@@ -143,7 +143,7 @@ void CorePathVisualPlugin::setPathColor(const int& index, const QColor& color)
   if (path_list_->setColor(index, color))
   {
     QRgb color_rgb = color.rgb();
-    ROS_INFO("The color of path with index %d is successfully set to RGB(%d, %d, %d)!", index, qRed(color_rgb),
+    ROS_WARN("The color of path with index %d is successfully set to RGB(%d, %d, %d)!", index, qRed(color_rgb),
              qGreen(color_rgb), qBlue(color_rgb));
     refresh();
   }
@@ -160,7 +160,7 @@ void CorePathVisualPlugin::setPathSelectStatus(const int& index, const bool& sel
 {
   if (path_list_->setSelect(index, select))
   {
-    ROS_INFO("The select status of path with index %d is successfully set to %s!", index, select ? "true" : "false");
+    ROS_WARN("The select status of path with index %d is successfully set to %s!", index, select ? "true" : "false");
     refresh();
   }
   else
@@ -175,7 +175,7 @@ void CorePathVisualPlugin::removePath(const int& index)
 {
   if (path_list_->remove(index))
   {
-    ROS_INFO("Path with index %d is successfully removed!", index);
+    ROS_WARN("Path with index %d is successfully removed!", index);
   }
   else
     ROS_ERROR("Failed to remove path with index %d.", index);
