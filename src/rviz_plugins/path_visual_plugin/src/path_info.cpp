@@ -136,7 +136,10 @@ double PathInfo::_calcTurningAngle()
     double y1 = path_[i + 1].y - path_[i].y;
     double x2 = path_[i + 2].x - path_[i + 1].x;
     double y2 = path_[i + 2].y - path_[i + 1].y;
-    angle += std::acos((x1 * x2 + y1 * y2) / (std::sqrt(x1 * x1 + y1 * y1) * std::sqrt(x2 * x2 + y2 * y2)));
+    angle += std::acos(
+        std::max(-1.0, std::min(1.0,
+                              (x1 * x2 + y1 * y2) / (std::sqrt(x1 * x1 + y1 * y1) * std::sqrt(x2 * x2 + y2 * y2))
+                              )));
   }
   return angle;
 }

@@ -51,7 +51,7 @@ PathVisualPlugin::~PathVisualPlugin()
 void PathVisualPlugin::setupUi()
 {
  table_model_ = new QStandardItemModel(this);
- table_header_ = QStringList({ "Select", "Planner", "Start", "Goal", "Length", "Turning Angle", "Color", "Remove" });
+ table_header_ = QStringList({ "Select", "Planner", "Start", "Goal", "Length", "Turning Angle (rad)", "Color", "Remove" });
  table_model_->setHorizontalHeaderLabels(table_header_);
  ui_->tableView_list->setModel(table_model_);
  ui_->tableView_list->setItemDelegateForColumn(0, &selectDelegate_);
@@ -246,17 +246,11 @@ void PathVisualPlugin::_updateTableView()
                                                    ));
 
    // 4th column: path length
-   table_model_->setItem(row, 4, new QStandardItem(QString("%1")
-                                                       .arg(QString::number(info.getData(PathInfo::pathLength).toDouble(), 'f', 3))
-                                                   ));
+   table_model_->setItem(row, 4, new QStandardItem(QString::number(info.getData(PathInfo::pathLength).toDouble(), 'f', 3)));
 
    // 5th column: path turning angle
    double turning_angle_rad = info.getData(PathInfo::turningAngle).toDouble();
-   double turning_angle_deg = turning_angle_rad * 180.0 / acos(-1);
-   table_model_->setItem(row, 5, new QStandardItem(QString("%1rad (%2°)")
-                                                       .arg(QString::number(turning_angle_rad, 'f', 3))
-                                                       .arg(QString::number(turning_angle_deg, 'f', 2))
-                                                   ));
+   table_model_->setItem(row, 5, new QStandardItem(QString::number(turning_angle_rad, 'f', 3)));
 
    // 6th column: color
    ColorEditor* colorEditor_list_color = new ColorEditor(row, info.getData(PathInfo::pathColor).value<QColor>(), this);
