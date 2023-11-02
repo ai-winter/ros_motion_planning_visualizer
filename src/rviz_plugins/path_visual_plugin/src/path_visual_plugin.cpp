@@ -268,7 +268,7 @@ void PathVisualPlugin::_updateTableView()
    QPushButton* pushButton_list_remove = new QPushButton(this);
    pushButton_list_remove->setObjectName(QString::fromUtf8("pushButton_list_remove_%1").arg(QString::number(row)));
    pushButton_list_remove->setIcon(QIcon(":/icons/cross.png"));
-   pushButton_list_remove->setIconSize(QSize(24, 24));
+   pushButton_list_remove->setIconSize(QSize(20, 20));
    ui_->tableView_list->setIndexWidget(table_model_->index(row, 7), pushButton_list_remove);
    connect(pushButton_list_remove, SIGNAL(clicked()), this, SLOT(_onClicked()));
 
