@@ -31,6 +31,7 @@ generate_messages(
     
 catkin_package(
   INCLUDE_DIRS include
+  LIBRARIES ${PROJECT_NAME}
   CATKIN_DEPENDS global_planner graph_planner sample_planner voronoi_layer
 )
 

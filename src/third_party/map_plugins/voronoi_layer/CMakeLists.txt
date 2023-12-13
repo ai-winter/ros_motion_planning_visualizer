@@ -19,7 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES voronoi_layer
+  LIBRARIES ${PROJECT_NAME}
   CATKIN_DEPENDS costmap_2d dynamic_reconfigure nav_msgs roscpp
 #  DEPENDS system_lib
 )
