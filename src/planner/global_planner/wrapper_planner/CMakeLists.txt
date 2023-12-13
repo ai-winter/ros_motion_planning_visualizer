@@ -30,8 +30,9 @@ generate_messages(
   )
     
 catkin_package(
-    INCLUDE_DIRS include
-  )
+  INCLUDE_DIRS include
+  CATKIN_DEPENDS global_planner graph_planner sample_planner voronoi_layer
+)
 
 include_directories(
   include
@@ -45,8 +46,4 @@ add_library(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
-  graph_planner
-  sample_planner
-  global_planner
-  voronoi_layer
 )

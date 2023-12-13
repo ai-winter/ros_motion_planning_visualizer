@@ -18,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(
  INCLUDE_DIRS include
+ CATKIN_DEPENDS global_planner voronoi_layer
 )
 
 include_directories(
@@ -39,6 +40,4 @@ add_library(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
-  global_planner
-  voronoi_layer
 )

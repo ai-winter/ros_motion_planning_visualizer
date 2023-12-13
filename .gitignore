@@ -1,5 +1,6 @@
 .vscode/
 .idea/
+.catkin_tools/
 
 src/CMakeLists.txt
 .catkin_workspace
