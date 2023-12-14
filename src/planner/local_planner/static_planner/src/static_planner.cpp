@@ -61,9 +61,9 @@ void StaticPlanner::initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d
 }
 
 /**
- * @brief  Set the plan that the controller is following
+ * @brief Set the plan that the controller is following
  * @param orig_global_plan the plan to pass to the controller
- * @return  true if the plan was updated successfully, else false
+ * @return true if the plan was updated successfully, else false
  */
 bool StaticPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped>& orig_global_plan)
 {
@@ -76,7 +76,7 @@ bool StaticPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped>& orig_
 }
 
 /**
- * @brief  Check if the goal pose has been achieved
+ * @brief Check if the goal pose has been achieved
  * @return True if achieved, false otherwise
  */
 bool StaticPlanner::isGoalReached()
@@ -98,7 +98,7 @@ bool StaticPlanner::isGoalReached()
 /**
  * @brief Static commands
  * @param cmd_vel will be filled with the velocity command to be passed to the robot base
- * @return  true if a valid trajectory was found, else false
+ * @return true if a valid trajectory was found, else false
  */
 bool StaticPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
 {
