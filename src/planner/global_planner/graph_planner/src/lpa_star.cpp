@@ -250,8 +250,8 @@ void LPAStar::extractPath(const Node& start, const Node& goal)
 
     // TODO: it happens to cannnot find a path to start sometimes...
     // use counter to solve it templately
-    if (count++ > 1000)
-      break;
+    // if (count++ > 1000)
+    //   break;
   }
 }
 
