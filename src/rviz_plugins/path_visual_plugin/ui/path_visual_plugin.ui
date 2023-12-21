@@ -181,7 +181,7 @@
              <string>Plan and add the configured path to the path list</string>
             </property>
             <property name="text">
-             <string>Add Path</string>
+             <string>Start Planning</string>
             </property>
            </widget>
           </item>
