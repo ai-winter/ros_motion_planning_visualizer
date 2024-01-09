@@ -28,8 +28,8 @@ namespace path_visual_plugin
 class PathInfo
 {
 public:
-  enum { plannerName, startPoint, startPointX, startPointY, goalPoint, goalPointX, goalPointY, pathLength, pathColor,
-    turningAngle, selectStatus };
+  enum { plannerName, startPoint, startPointX, startPointY, startPointYaw, goalPoint, goalPointX, goalPointY,
+    goalPointYaw, pathLength, pathColor, turningAngle, selectStatus };
 
 public:
   /**
@@ -42,7 +42,8 @@ public:
    * @param slt  whether the path is selected
    */
   PathInfo(QString p_name = "None", Point2D s = Point2D(0.0, 0.0), Point2D g = Point2D(0.0, 0.0),
-           QList<Point2D> pts = QList<Point2D>(), QColor c = Qt::darkBlue, bool slt = true);
+           double s_yaw = 0.0, double g_yaw = 0.0, QList<Point2D> pts = QList<Point2D>(),
+           QColor c = Qt::darkBlue, bool slt = true);
 
   /**
    * @brief Destroy the PathInfo object
@@ -89,6 +90,7 @@ private:
 
   // start and goal point
   Point2D start_, goal_;
+  double start_yaw_, goal_yaw_;
 
   // path planned
   QList<Point2D> path_;
