@@ -3,7 +3,7 @@
  * @file: path_info.cpp
  * @breif: Contains PathInfo class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-11-2
+ * @update: 2024-1-9
  * @version: 1.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
@@ -24,11 +24,14 @@ namespace path_visual_plugin
  * @param c  the color of path
  * @param slt  whether the path is selected
  */
-PathInfo::PathInfo(QString p_name, Point2D s, Point2D g, QList<Point2D> pts, QColor c, bool slt)
+PathInfo::PathInfo(QString p_name, Point2D s, Point2D g, double s_yaw, double g_yaw, QList<Point2D> pts,
+                   QColor c, bool slt)
 {
   planner_name_ = p_name;
   start_ = s;
   goal_ = g;
+  start_yaw_ = s_yaw;
+  goal_yaw_ = g_yaw;
   path_ = pts;
   color = c;
   select = slt;
@@ -61,12 +64,16 @@ QVariant PathInfo::getData(const int& variant) const
       return start_.x;
     case startPointY:
       return start_.y;
+    case startPointYaw:
+      return start_yaw_;
     case goalPoint:
       return QVariant::fromValue(goal_);
     case goalPointX:
       return goal_.x;
     case goalPointY:
       return goal_.y;
+    case goalPointYaw:
+      return goal_yaw_;
     case pathLength:
       return length_;
     case pathColor:
@@ -141,6 +148,8 @@ double PathInfo::_calcTurningAngle()
                               (x1 * x2 + y1 * y2) / (std::sqrt(x1 * x1 + y1 * y1) * std::sqrt(x2 * x2 + y2 * y2))
                               )));
   }
+  // take yaw angle into account
+  angle += std::abs(start_yaw_ - goal_yaw_);
   return angle;
 }
 }  // namespace path_visual_plugin

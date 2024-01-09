@@ -3,7 +3,7 @@
  * @file: path_list.cpp
  * @breif: Contains PathList class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-11-2
+ * @update: 2024-1-9
  * @version: 1.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
@@ -116,11 +116,13 @@ bool PathList::save(QString file_name) const
     QJsonObject start_json;
     start_json["x"] = info.getData(PathInfo::startPointX).toDouble();
     start_json["y"] = info.getData(PathInfo::startPointY).toDouble();
+    start_json["yaw"] = info.getData(PathInfo::startPointYaw).toDouble();
     path_json["start"] = start_json;
 
     QJsonObject goal_json;
     goal_json["x"] = info.getData(PathInfo::goalPointX).toDouble();
     goal_json["y"] = info.getData(PathInfo::goalPointY).toDouble();
+    goal_json["yaw"] = info.getData(PathInfo::goalPointYaw).toDouble();
     path_json["goal"] = goal_json;
 
     QJsonArray points_array;
@@ -203,6 +205,8 @@ bool PathList::load(QString file_name)
         path_json["planner"].toString(),
         Point2D(start["x"].toDouble(), start["y"].toDouble()),
         Point2D(goal["x"].toDouble(), goal["y"].toDouble()),
+        start["yaw"].toDouble(),
+        goal["yaw"].toDouble(),
         path_points,
         QColor(color["R"].toInt(), color["G"].toInt(), color["B"].toInt())
     );

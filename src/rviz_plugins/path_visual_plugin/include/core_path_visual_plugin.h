@@ -3,7 +3,7 @@
  * @file: core_path_visual_plugin.h
  * @breif: Contains core of path visualization Rviz plugin class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-11-2
+ * @update: 2024-1-9
  * @version: 1.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
@@ -19,6 +19,9 @@
 #include <std_msgs/String.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <tf/tf.h>
 
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
@@ -89,7 +92,17 @@ public:
   /**
    *  @brief refresh paths displayed in rviz
    */
-  void refresh();
+  void refresh_paths();
+
+  /**
+   *  @brief refresh start and goal poses displayed in rviz
+   */
+  void refresh_poses();
+
+  /**
+   *  @brief normalize yaw to be within the range [-π, π]
+   */
+  void normalizeYaw();
 
 Q_SIGNALS:
   /**
@@ -123,6 +136,8 @@ protected:
 public:
   ros::Publisher marker_pub_;  // map marker publisher
   ros::Publisher paths_pub_;   // paths publisher
+  ros::Publisher start_pub_;   // start pose publisher
+  ros::Publisher goal_pub_;    // goal pose publisher
 
   // start and goal point subscriber
   ros::Subscriber start_sub_, goal_sub_;
@@ -135,6 +150,7 @@ public:
 
   // start and goal point
   Point2D start_, goal_;
+  double start_yaw_, goal_yaw_;
 
   // path info list
   PathList* path_list_;

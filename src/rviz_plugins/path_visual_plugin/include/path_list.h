@@ -3,7 +3,7 @@
  * @file: path_list.h
  * @breif: Contains PathList class
  * @author: Yang Haodong, Wu Maojia
- * @update: 2023-11-2
+ * @update: 2024-1-9
  * @version: 1.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia

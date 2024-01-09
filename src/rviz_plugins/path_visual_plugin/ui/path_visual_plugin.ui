@@ -35,6 +35,12 @@
       <layout class="QGridLayout" name="gridLayout_pathVisualization">
        <item row="0" column="0" rowspan="3" colspan="2">
         <widget class="QGroupBox" name="groupBox_list">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="toolTip">
           <string/>
          </property>
@@ -64,16 +70,93 @@
          </layout>
         </widget>
        </item>
+       <item row="2" column="2">
+        <widget class="QGroupBox" name="groupBox_files">
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="title">
+          <string>For Path Files</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_files">
+          <item>
+           <spacer name="verticalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_files_load">
+            <property name="toolTip">
+             <string>Load some .json path data files and append them to the path list</string>
+            </property>
+            <property name="text">
+             <string>Load Paths</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_files_save">
+            <property name="toolTip">
+             <string>Save selected paths data into a .json file</string>
+            </property>
+            <property name="text">
+             <string>Save Paths</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
        <item row="0" column="2" rowspan="2">
         <widget class="QGroupBox" name="groupBox_add">
          <property name="enabled">
           <bool>true</bool>
          </property>
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>350</width>
+           <height>16777215</height>
+          </size>
          </property>
          <property name="toolTip">
           <string/>
@@ -111,6 +194,16 @@
              <item>
               <widget class="QLineEdit" name="lineEdit_add_start_y"/>
              </item>
+             <item>
+              <widget class="QLabel" name="label_add_start_yaw">
+               <property name="text">
+                <string>yaw</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_add_start_yaw"/>
+             </item>
             </layout>
            </widget>
           </item>
@@ -142,6 +235,16 @@
              </item>
              <item>
               <widget class="QLineEdit" name="lineEdit_add_goal_y"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_add_goal_yaw">
+               <property name="text">
+                <string>yaw</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_add_goal_yaw"/>
              </item>
             </layout>
            </widget>
@@ -176,6 +279,19 @@
            </widget>
           </item>
           <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
            <widget class="QPushButton" name="pushButton_add_add">
             <property name="toolTip">
              <string>Plan and add the configured path to the path list</string>
@@ -185,37 +301,18 @@
             </property>
            </widget>
           </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QGroupBox" name="groupBox_files">
-         <property name="toolTip">
-          <string/>
-         </property>
-         <property name="title">
-          <string>For Path Files</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_files">
           <item>
-           <widget class="QPushButton" name="pushButton_files_load">
-            <property name="toolTip">
-             <string>Load some .json path data files and append them to the path list</string>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
             </property>
-            <property name="text">
-             <string>Load Paths</string>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_files_save">
-            <property name="toolTip">
-             <string>Save selected paths data into a .json file</string>
-            </property>
-            <property name="text">
-             <string>Save Paths</string>
-            </property>
-           </widget>
+           </spacer>
           </item>
          </layout>
         </widget>

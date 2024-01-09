@@ -3,7 +3,7 @@
 * @file: path_visual_plugin.cpp
 * @breif: Contains path visualization Rviz plugin class
 * @author: Yang Haodong, Wu Maojia
-* @update: 2023-11-2
+* @update: 2024-1-9
 * @version: 1.0
 *
 * Copyright (c) 2023， Yang Haodong, Wu Maojia
@@ -68,8 +68,10 @@ void PathVisualPlugin::setupUi()
  connect(ui_->pushButton_files_save, SIGNAL(clicked()), this, SLOT(_onClicked()));
  connect(ui_->lineEdit_add_start_x, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
  connect(ui_->lineEdit_add_start_y, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
+ connect(ui_->lineEdit_add_start_yaw, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
  connect(ui_->lineEdit_add_goal_x, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
  connect(ui_->lineEdit_add_goal_y, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
+ connect(ui_->lineEdit_add_goal_yaw, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
  connect(&selectDelegate_, SIGNAL(selectChanged(const int&, const bool&)), this, SLOT(_onSelectChanged(const int&, const bool&)));
 }
 
@@ -157,10 +159,14 @@ void PathVisualPlugin::_onEditingFinished()
      valueToChange = &(core_->start_.x);
    else if (senderName == QString::fromUtf8("lineEdit_add_start_y"))
      valueToChange = &(core_->start_.y);
+   else if (senderName == QString::fromUtf8("lineEdit_add_start_yaw"))
+     valueToChange = &(core_->start_yaw_);
    else if (senderName == QString::fromUtf8("lineEdit_add_goal_x"))
      valueToChange = &(core_->goal_.x);
    else if (senderName == QString::fromUtf8("lineEdit_add_goal_y"))
      valueToChange = &(core_->goal_.y);
+   else if (senderName == QString::fromUtf8("lineEdit_add_goal_yaw"))
+     valueToChange = &(core_->goal_yaw_);
    else
    {
      ROS_ERROR("Unknown signal sender QLineEdit.");
@@ -168,7 +174,10 @@ void PathVisualPlugin::_onEditingFinished()
    }
 
    if (ok)
+   {
      *valueToChange = value;
+     core_->refresh_poses();
+   }
    senderLineEdit->setText(QString::number(*valueToChange, 'f', 3));
  }
  else
@@ -202,8 +211,10 @@ void PathVisualPlugin::_onValueChanged()
 {
  ui_->lineEdit_add_start_x->setText(QString::number(core_->start_.x, 'f', 3));
  ui_->lineEdit_add_start_y->setText(QString::number(core_->start_.y, 'f', 3));
+ ui_->lineEdit_add_start_yaw->setText(QString::number(core_->start_yaw_, 'f', 3));
  ui_->lineEdit_add_goal_x->setText(QString::number(core_->goal_.x, 'f', 3));
  ui_->lineEdit_add_goal_y->setText(QString::number(core_->goal_.y, 'f', 3));
+ ui_->lineEdit_add_goal_yaw->setText(QString::number(core_->goal_yaw_, 'f', 3));
 }
 
 /**
@@ -237,12 +248,14 @@ void PathVisualPlugin::_updateTableView()
    table_model_->setItem(row, 2, new QStandardItem(QString("(%1,%2)")
                                                        .arg(QString::number(info.getData(PathInfo::startPointX).toDouble(), 'f', 3))
                                                        .arg(QString::number(info.getData(PathInfo::startPointY).toDouble(), 'f', 3))
+                                                       .arg(QString::number(info.getData(PathInfo::startPointYaw).toDouble(), 'f', 3))
                                                    ));
 
    // 3rd column: goal point
    table_model_->setItem(row, 3, new QStandardItem(QString("(%1,%2)")
                                                        .arg(QString::number(info.getData(PathInfo::goalPointX).toDouble(), 'f', 3))
                                                        .arg(QString::number(info.getData(PathInfo::goalPointY).toDouble(), 'f', 3))
+                                                       .arg(QString::number(info.getData(PathInfo::goalPointYaw).toDouble(), 'f', 3))
                                                    ));
 
    // 4th column: path length
