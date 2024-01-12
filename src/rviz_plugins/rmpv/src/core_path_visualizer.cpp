@@ -1,33 +1,32 @@
 /***********************************************************
  *
- * @file: core_path_visual_plugin.cpp
- * @breif: Contains core of path visualization Rviz plugin class
- * @author: Yang Haodong, Wu Maojia
- * @update: 2024-1-9
+ * @file: core_path_visualizer.cpp
+ * @breif: Contains core of path visualizer class
+ * @author: Wu Maojia, Yang Haodong
+ * @update: 2024-1-12
  * @version: 1.0
  *
- * Copyright (c) 2023， Yang Haodong, Wu Maojia
+ * Copyright (c) 2024， Yang Haodong, Wu Maojia
  * All rights reserved.
  * --------------------------------------------------------
  *
  **********************************************************/
-#include "wrapper_planner/CallPlan.h"
-#include "include/core_path_visual_plugin.h"
+#include "include/core_path_visualizer.h"
 
-namespace path_visual_plugin
+namespace rmpv
 {
 /**
- * @brief Construct a new CorePathVisualPlugin object
+ * @brief Construct a new CorePathVisualizer object
  */
-CorePathVisualPlugin::CorePathVisualPlugin() : path_list_(new PathList)
+CorePathVisualizer::CorePathVisualizer() : path_list_(new PathList)
 {
   start_ = goal_ = Pose2D(0.0, 0.0, 0.0);
 }
 
 /**
- * @brief Destroy the CorePathVisualPlugin object
+ * @brief Destroy the CorePathVisualizer object
  */
-CorePathVisualPlugin::~CorePathVisualPlugin()
+CorePathVisualizer::~CorePathVisualizer()
 {
   if (path_list_)
     delete path_list_;
@@ -36,7 +35,7 @@ CorePathVisualPlugin::~CorePathVisualPlugin()
 /**
  * @brief ROS parameters initialization
  */
-void CorePathVisualPlugin::setupROS()
+void CorePathVisualizer::setupROS()
 {
   // initialize ROS node
   ros::NodeHandle private_nh("");
@@ -49,9 +48,9 @@ void CorePathVisualPlugin::setupROS()
 
   // subscribers
   start_sub_ = private_nh.subscribe<geometry_msgs::PoseWithCovarianceStamped>(
-      "/initialpose", 1, boost::bind(&CorePathVisualPlugin::_onStartUpdate, this, _1));
+      "/initialpose", 1, boost::bind(&CorePathVisualizer::_onStartUpdate, this, _1));
   goal_sub_ = private_nh.subscribe<geometry_msgs::PoseStamped>(
-      "move_base_simple/goal", 1, boost::bind(&CorePathVisualPlugin::_onGoalUpdate, this, _1));
+      "move_base_simple/goal", 1, boost::bind(&CorePathVisualizer::_onGoalUpdate, this, _1));
 
   // client
   call_plan_client_ = private_nh.serviceClient<wrapper_planner::CallPlan>("/move_base/WrapperPlanner/call_plan");
@@ -68,9 +67,8 @@ void CorePathVisualPlugin::setupROS()
  *  @brief call path planning service
  *  @param name of planner
  */
-void CorePathVisualPlugin::addPath(const QString& planner_name)
+void CorePathVisualizer::addPath(const QString& planner_name)
 {
-  ROS_WARN("add path");
   geometry_msgs::PoseStamped start, goal;
   start.header.frame_id = "map";
   start.header.stamp = ros::Time::now();
@@ -125,7 +123,7 @@ void CorePathVisualPlugin::addPath(const QString& planner_name)
  *  @brief call save paths service
  *  @param save_file  save paths to local workspace using .json format
  */
-void CorePathVisualPlugin::savePaths(const QString& save_file)
+void CorePathVisualizer::savePaths(const QString& save_file)
 {
   ROS_WARN("Saving path information at location %s", save_file.toStdString().c_str());
   path_list_->save(save_file);
@@ -135,7 +133,7 @@ void CorePathVisualPlugin::savePaths(const QString& save_file)
  *  @brief call load paths service
  *  @param open_file  load paths from local workspace using .json format
  */
-void CorePathVisualPlugin::loadPaths(const QString open_file)
+void CorePathVisualizer::loadPaths(const QString open_file)
 {
   ROS_WARN("Loading path information at location %s", open_file.toStdString().c_str());
   path_list_->load(open_file);
@@ -147,7 +145,7 @@ void CorePathVisualPlugin::loadPaths(const QString open_file)
  *  @param index  the index of the path to set color
  *  @param color  the color to set
  */
-void CorePathVisualPlugin::setPathColor(const int& index, const QColor& color)
+void CorePathVisualizer::setPathColor(const int& index, const QColor& color)
 {
   if (path_list_->setColor(index, color))
   {
@@ -165,7 +163,7 @@ void CorePathVisualPlugin::setPathColor(const int& index, const QColor& color)
  *  @param index  the index of the path to set select status
  *  @param select   whether to select and visualize the path or not
  */
-void CorePathVisualPlugin::setPathSelectStatus(const int& index, const bool& select)
+void CorePathVisualizer::setPathSelectStatus(const int& index, const bool& select)
 {
   if (path_list_->setSelect(index, select))
   {
@@ -180,7 +178,7 @@ void CorePathVisualPlugin::setPathSelectStatus(const int& index, const bool& sel
  *  @brief remove the path with some index from table view
  *  @param index  the index of the path to remove
  */
-void CorePathVisualPlugin::removePath(const int& index)
+void CorePathVisualizer::removePath(const int& index)
 {
   if (path_list_->remove(index))
   {
@@ -193,7 +191,7 @@ void CorePathVisualPlugin::removePath(const int& index)
 /**
  *  @brief refresh paths displayed in rviz
  */
-void CorePathVisualPlugin::refresh_paths()
+void CorePathVisualizer::refresh_paths()
 {
   visualization_msgs::Marker path_marker;
   visualization_msgs::MarkerArray path_marker_array;
@@ -247,7 +245,7 @@ void CorePathVisualPlugin::refresh_paths()
 /**
  *  @brief refresh start and goal poses displayed in rviz
  */
-void CorePathVisualPlugin::refresh_poses() {
+void CorePathVisualizer::refresh_poses() {
   // start pose topic "/initialpose"
   // goal pose topic "move_base_simple/goal"
   geometry_msgs::PoseWithCovarianceStamped start_pose;
@@ -278,7 +276,7 @@ void CorePathVisualPlugin::refresh_poses() {
  *  @brief update the start pose, it is a callback funciton
  *  @param  pose    the start setting in Rviz
  */
-void CorePathVisualPlugin::_onStartUpdate(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose)
+void CorePathVisualizer::_onStartUpdate(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose)
 {
   start_ = Pose2D(pose->pose.pose.position.x, pose->pose.pose.position.y, tf::getYaw(pose->pose.pose.orientation));
   Q_EMIT valueChanged();  // normalization may change the yaw value
@@ -314,7 +312,7 @@ void CorePathVisualPlugin::_onStartUpdate(const geometry_msgs::PoseWithCovarianc
  *  @brief update the goal pose, it is a callback funciton
  *  @param  pose    the goal user set in Rviz
  */
-void CorePathVisualPlugin::_onGoalUpdate(const geometry_msgs::PoseStamped::ConstPtr& pose)
+void CorePathVisualizer::_onGoalUpdate(const geometry_msgs::PoseStamped::ConstPtr& pose)
 {
   goal_ = Pose2D(pose->pose.position.x, pose->pose.position.y, tf::getYaw(pose->pose.orientation));
   Q_EMIT valueChanged();  // normalization may change the yaw value
@@ -345,4 +343,4 @@ void CorePathVisualPlugin::_onGoalUpdate(const geometry_msgs::PoseStamped::Const
   else
     ROS_ERROR("ROS node has been closed.");
 }
-}  // namespace path_visual_plugin
+}  // namespace rmpv

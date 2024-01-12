@@ -2,11 +2,11 @@
  *
  * @file: point_2d.h
  * @breif: Contains Point2D struct
- * @author: Yang Haodong, Wu Maojia
- * @update: 2023-11-2
+ * @author: Wu Maojia, Yang Haodong
+ * @update: 2024-1-12
  * @version: 1.0
  *
- * Copyright (c) 2023， Yang Haodong, Wu Maojia
+ * Copyright (c) 2024， Yang Haodong, Wu Maojia
  * All rights reserved.
  * --------------------------------------------------------
  *
@@ -16,7 +16,7 @@
 
 #include <QObject>
 
-namespace path_visual_plugin
+namespace rmpv
 {
 class Point2D
 {
@@ -36,6 +36,6 @@ public:
 public:
   double x, y;  // the x and y coordinate of point
 };
-}  // namespace path_visual_plugin
-Q_DECLARE_METATYPE(path_visual_plugin::Point2D)
+}  // namespace rmpv
+Q_DECLARE_METATYPE(rmpv::Point2D)
 #endif  // POINT_2D_H

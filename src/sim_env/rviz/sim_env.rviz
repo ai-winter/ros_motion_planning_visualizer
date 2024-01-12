@@ -32,8 +32,8 @@ Panels:
     Name: Time
     SyncMode: 0
     SyncSource: ""
-  - Class: path_visual_plugin/PathVisualPlugin
-    Name: PathVisualPlugin
+  - Class: rmpv/RMPV
+    Name: RMPV - ROS Motion Planning Visualizer
 Preferences:
   PromptSaveOnExit: true
 Toolbars:

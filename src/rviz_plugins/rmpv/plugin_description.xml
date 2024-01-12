@@ -1,0 +1,7 @@
+<library path="lib/librmpv">
+    <class name="rmpv/RMPV"
+           type="rmpv::RMPV"
+           base_class_type="rviz::Panel">
+        <description>The ROS Motion Planning Visualizer (RMPV) plugin.</description>
+    </class>
+</library>

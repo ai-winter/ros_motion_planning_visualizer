@@ -2,18 +2,18 @@
  *
  * @file: path_list.cpp
  * @breif: Contains PathList class
- * @author: Yang Haodong, Wu Maojia
- * @update: 2024-1-9
+ * @author: Wu Maojia, Yang Haodong
+ * @update: 2024-1-12
  * @version: 1.0
  *
- * Copyright (c) 2023， Yang Haodong, Wu Maojia
+ * Copyright (c) 2024， Yang Haodong, Wu Maojia
  * All rights reserved.
  * --------------------------------------------------------
  *
  **********************************************************/
 #include "include/path_list.h"
 
-namespace path_visual_plugin
+namespace rmpv
 {
 /**
  * @brief Construct a new PathList object
@@ -224,4 +224,4 @@ int PathList::size() const
 {
   return path_info_.size();
 }
-}  // namespace path_visual_plugin
+}  // namespace rmpv

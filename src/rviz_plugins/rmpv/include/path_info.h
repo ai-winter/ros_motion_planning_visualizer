@@ -2,11 +2,11 @@
  *
  * @file: path_info.h
  * @breif: Contains PathInfo class
- * @author: Yang Haodong, Wu Maojia
- * @update: 2023-11-2
+ * @author: Wu Maojia, Yang Haodong
+ * @update: 2024-1-12
  * @version: 1.0
  *
- * Copyright (c) 2023， Yang Haodong, Wu Maojia
+ * Copyright (c) 2024， Yang Haodong, Wu Maojia
  * All rights reserved.
  * --------------------------------------------------------
  *
@@ -24,7 +24,7 @@
 #include "include/point_2d.h"
 #include "include/pose_2d.h"
 
-namespace path_visual_plugin
+namespace rmpv
 {
 class PathInfo
 {
@@ -103,5 +103,5 @@ private:
   // select and visualize the path
   bool select;
 };
-}  // namespace path_visual_plugin
+}  // namespace rmpv
 #endif  // PATH_INFO_H

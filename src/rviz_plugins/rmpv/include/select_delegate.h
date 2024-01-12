@@ -3,10 +3,10 @@
 * @file: select_delegate.h
 * @breif: Contains select column delegate classes for table view
 * @author: Wu Maojia
-* @update: 2023-11-2
+* @update: 2024-1-12
 * @version: 1.0
 *
-* Copyright (c) 2023， Yang Haodong, Wu Maojia
+* Copyright (c) 2024， Yang Haodong, Wu Maojia
 * All rights reserved.
 * --------------------------------------------------------
 *
@@ -17,7 +17,7 @@
 #include <QtWidgets>
 #include <QStyledItemDelegate>
 
-namespace path_visual_plugin
+namespace rmpv
 {
 class selectDelegate : public QStyledItemDelegate
 {
@@ -59,5 +59,5 @@ Q_SIGNALS:
    */
   void selectChanged(const int &index, const bool &checked);
 };
-} // namespace path_visual_plugin
+} // namespace rmpv
 #endif  // TABLE_DELEGATE_H

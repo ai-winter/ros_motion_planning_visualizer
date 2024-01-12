@@ -3,17 +3,17 @@
 * @file: color_editor.cpp
 * @breif: Contains color editor class
 * @author: Wu Maojia
-* @update: 2023-11-2
+* @update: 2024-1-12
 * @version: 1.0
 *
-* Copyright (c) 2023， Yang Haodong, Wu Maojia
+* Copyright (c) 2024， Yang Haodong, Wu Maojia
 * All rights reserved.
 * --------------------------------------------------------
 *
 **********************************************************/
 #include "include/color_editor.h"
 
-namespace path_visual_plugin
+namespace rmpv
 {
 /*
  * @brief Construct a new Color Editor object
@@ -105,4 +105,4 @@ void ColorEditor::onButtonClick()
   QColor new_color = QColorDialog::getColor(color_, this);
   setColor(new_color);
 }
-} // namespace path_visual_plugin
+} // namespace rmpv

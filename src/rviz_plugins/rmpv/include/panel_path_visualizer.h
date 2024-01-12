@@ -1,18 +1,18 @@
 /***********************************************************
- *
- * @file: path_visual_plugin.h
- * @breif: Contains path visualization Rviz plugin class
- * @author: Yang Haodong, Wu Maojia
- * @update: 2023-11-2
- * @version: 1.0
- *
- * Copyright (c) 2023， Yang Haodong, Wu Maojia
- * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
-#ifndef PATH_VISUAL_PLUGIN_H
-#define PATH_VISUAL_PLUGIN_H
+*
+* @file: panel_path_visualizer.h
+* @breif: Contains panel of path visualizer class
+* @author: Wu Maojia, Yang Haodong
+* @update: 2024-1-12
+* @version: 1.0
+*
+* Copyright (c) 2024， Yang Haodong, Wu Maojia
+* All rights reserved.
+* --------------------------------------------------------
+*
+**********************************************************/
+#ifndef PANEL_PATH_VISUALIZER_H
+#define PANEL_PATH_VISUALIZER_H
 
 #include <QWidget>
 #include <QRegExpValidator>
@@ -31,34 +31,28 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 
+#include "wrapper_planner/CallPlan.h"
 #include "include/select_delegate.h"
 #include "include/color_editor.h"
+#include "include/core_path_visualizer.h"
+#include "include/ui_rmpv.h"
 
-QT_BEGIN_NAMESPACE
-namespace Ui
+namespace rmpv
 {
-class PathVisualPlugin;
-}
-QT_END_NAMESPACE
-
-namespace path_visual_plugin
-{
-class CorePathVisualPlugin;
-
-class PathVisualPlugin : public rviz::Panel
+class PanelPathVisualizer : public QObject
 {
   Q_OBJECT
 
 public:
   /**
-   * @brief Construct a new Path Visualization Plugin object
+   * @brief Construct a new PanelPathVisualizer object
    */
-  PathVisualPlugin(QWidget* parent = nullptr);
+  PanelPathVisualizer(rviz::Panel* parent_ = nullptr, Ui::RMPV* ui = nullptr);
 
   /**
-   * @brief Destroy the Path Visualization Plugin object
+   * @brief Destroy the PanelPathVisualizer object
    */
-  ~PathVisualPlugin();
+  ~PanelPathVisualizer();
 
   /**
    * @brief User interface parameters initialization
@@ -103,14 +97,15 @@ protected:
   void _updateTableView();
 
 private:
-  Ui::PathVisualPlugin* ui_;   // ui object
-  CorePathVisualPlugin* core_; // core object
+  rviz::Panel* parent_;       // parent panel rmpv
+  Ui::RMPV* ui_;              // ui object
+  CorePathVisualizer* core_;  // core object
 
   QStandardItemModel* table_model_; // model of table "Path List"
   QStringList table_header_;        // header of table "Path List"
 
   selectDelegate selectDelegate_;  // delegate for select column
 };
+}  // namespace rmpv
 
-}  // namespace path_visual_plugin
-#endif  // PATH_VISUAL_PLUGIN_H
+#endif  // PANEL_PATH_VISUALIZER_H
