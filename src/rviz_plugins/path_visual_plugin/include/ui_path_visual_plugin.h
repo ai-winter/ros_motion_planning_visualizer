@@ -465,7 +465,7 @@ public:
 
         retranslateUi(PathVisualPlugin);
 
-        tabManager->setCurrentIndex(1);
+        tabManager->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(PathVisualPlugin);
