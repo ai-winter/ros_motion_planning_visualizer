@@ -3,17 +3,17 @@
 * @file: select_delegate.cpp
 * @breif: Contains select column delegate classes for table view
 * @author: Wu Maojia
-* @update: 2023-11-2
+* @update: 2024-1-12
 * @version: 1.0
 *
-* Copyright (c) 2023， Yang Haodong, Wu Maojia
+* Copyright (c) 2024， Yang Haodong, Wu Maojia
 * All rights reserved.
 * --------------------------------------------------------
 *
 **********************************************************/
 #include "include/select_delegate.h"
 
-namespace path_visual_plugin
+namespace rmpv
 {
 /*
  * @brief Create a new checkBox in a cell in the table model
@@ -68,4 +68,4 @@ bool selectDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const
 
     return QStyledItemDelegate::editorEvent(event,model,option,index);
 }
-} // namespace path_visual_plugin
+} // namespace rmpv

@@ -2,11 +2,11 @@
  *
  * @file: path_list.h
  * @breif: Contains PathList class
- * @author: Yang Haodong, Wu Maojia
- * @update: 2024-1-9
+ * @author: Wu Maojia, Yang Haodong
+ * @update: 2024-1-12
  * @version: 1.0
  *
- * Copyright (c) 2023， Yang Haodong, Wu Maojia
+ * Copyright (c) 2024， Yang Haodong, Wu Maojia
  * All rights reserved.
  * --------------------------------------------------------
  *
@@ -26,7 +26,7 @@
 
 #include "include/path_info.h"
 
-namespace path_visual_plugin
+namespace rmpv
 {
 class PathList
 {
@@ -100,5 +100,5 @@ public:
 private:
   QList<PathInfo> path_info_; // the path list
 };
-}  // namespace path_visual_plugin
+}  // namespace rmpv
 #endif  // PATH_LIST_H

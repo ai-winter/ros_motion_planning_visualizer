@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'path_visual_plugin.ui'
+** Form generated from reading UI file 'rmpv.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.12.8
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef UI_PATH_VISUAL_PLUGIN_H
-#define UI_PATH_VISUAL_PLUGIN_H
+#ifndef UI_RMPV_H
+#define UI_RMPV_H
 
 #include <QtCore/QLocale>
 #include <QtCore/QVariant>
@@ -28,7 +28,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_PathVisualPlugin
+class Ui_RMPV
 {
 public:
     QVBoxLayout *verticalLayout_main;
@@ -106,14 +106,14 @@ public:
     QPushButton *pushButton_curve_addCurve_add;
     QSpacerItem *verticalSpacer_curve_addCurve_2;
 
-    void setupUi(QWidget *PathVisualPlugin)
+    void setupUi(QWidget *RMPV)
     {
-        if (PathVisualPlugin->objectName().isEmpty())
-            PathVisualPlugin->setObjectName(QString::fromUtf8("PathVisualPlugin"));
-        PathVisualPlugin->resize(800, 600);
-        verticalLayout_main = new QVBoxLayout(PathVisualPlugin);
+        if (RMPV->objectName().isEmpty())
+            RMPV->setObjectName(QString::fromUtf8("RMPV"));
+        RMPV->resize(800, 600);
+        verticalLayout_main = new QVBoxLayout(RMPV);
         verticalLayout_main->setObjectName(QString::fromUtf8("verticalLayout_main"));
-        tabManager = new QTabWidget(PathVisualPlugin);
+        tabManager = new QTabWidget(RMPV);
         tabManager->setObjectName(QString::fromUtf8("tabManager"));
         tabManager->setMinimumSize(QSize(100, 0));
         tabManager->setLocale(QLocale(QLocale::English, QLocale::Australia));
@@ -463,119 +463,119 @@ public:
         verticalLayout_main->addWidget(tabManager);
 
 
-        retranslateUi(PathVisualPlugin);
+        retranslateUi(RMPV);
 
         tabManager->setCurrentIndex(0);
 
 
-        QMetaObject::connectSlotsByName(PathVisualPlugin);
+        QMetaObject::connectSlotsByName(RMPV);
     } // setupUi
 
-    void retranslateUi(QWidget *PathVisualPlugin)
+    void retranslateUi(QWidget *RMPV)
     {
-        PathVisualPlugin->setWindowTitle(QApplication::translate("PathVisualPlugin", "PathVisualPlugin", nullptr));
+        RMPV->setWindowTitle(QApplication::translate("RMPV", "RMPV - ROS Motion Planning Visualizer", nullptr));
 #ifndef QT_NO_TOOLTIP
         groupBox_path_list->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
-        groupBox_path_list->setTitle(QApplication::translate("PathVisualPlugin", "Path List", nullptr));
+        groupBox_path_list->setTitle(QApplication::translate("RMPV", "Path List", nullptr));
 #ifndef QT_NO_TOOLTIP
         groupBox_path_add->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
-        groupBox_path_add->setTitle(QApplication::translate("PathVisualPlugin", "Add a New Path", nullptr));
+        groupBox_path_add->setTitle(QApplication::translate("RMPV", "Add a New Path", nullptr));
 #ifndef QT_NO_TOOLTIP
-        groupBox_path_add_start->setToolTip(QApplication::translate("PathVisualPlugin", "The start point of the new path", nullptr));
+        groupBox_path_add_start->setToolTip(QApplication::translate("RMPV", "The start point of the new path", nullptr));
 #endif // QT_NO_TOOLTIP
-        groupBox_path_add_start->setTitle(QApplication::translate("PathVisualPlugin", "Start Pose", nullptr));
-        label_path_add_start_x->setText(QApplication::translate("PathVisualPlugin", "x", nullptr));
-        label_path_add_start_y->setText(QApplication::translate("PathVisualPlugin", "y", nullptr));
-        label_path_add_start_yaw->setText(QApplication::translate("PathVisualPlugin", "yaw", nullptr));
+        groupBox_path_add_start->setTitle(QApplication::translate("RMPV", "Start Pose", nullptr));
+        label_path_add_start_x->setText(QApplication::translate("RMPV", "x", nullptr));
+        label_path_add_start_y->setText(QApplication::translate("RMPV", "y", nullptr));
+        label_path_add_start_yaw->setText(QApplication::translate("RMPV", "yaw", nullptr));
 #ifndef QT_NO_TOOLTIP
-        groupBox_path_add_goal->setToolTip(QApplication::translate("PathVisualPlugin", "The goal point of the new path", nullptr));
+        groupBox_path_add_goal->setToolTip(QApplication::translate("RMPV", "The goal point of the new path", nullptr));
 #endif // QT_NO_TOOLTIP
-        groupBox_path_add_goal->setTitle(QApplication::translate("PathVisualPlugin", "Goal Pose", nullptr));
-        label_path_add_goal_x->setText(QApplication::translate("PathVisualPlugin", "x", nullptr));
-        label_path_add_goal_y->setText(QApplication::translate("PathVisualPlugin", "y", nullptr));
-        label_path_add_goal_yaw->setText(QApplication::translate("PathVisualPlugin", "yaw", nullptr));
+        groupBox_path_add_goal->setTitle(QApplication::translate("RMPV", "Goal Pose", nullptr));
+        label_path_add_goal_x->setText(QApplication::translate("RMPV", "x", nullptr));
+        label_path_add_goal_y->setText(QApplication::translate("RMPV", "y", nullptr));
+        label_path_add_goal_yaw->setText(QApplication::translate("RMPV", "yaw", nullptr));
 #ifndef QT_NO_TOOLTIP
-        groupBox_path_add_planner->setToolTip(QApplication::translate("PathVisualPlugin", "The planner used to plan the new path", nullptr));
+        groupBox_path_add_planner->setToolTip(QApplication::translate("RMPV", "The planner used to plan the new path", nullptr));
 #endif // QT_NO_TOOLTIP
-        groupBox_path_add_planner->setTitle(QApplication::translate("PathVisualPlugin", "Planner", nullptr));
+        groupBox_path_add_planner->setTitle(QApplication::translate("RMPV", "Planner", nullptr));
 #ifndef QT_NO_TOOLTIP
         label_path_add_planner_global->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
-        label_path_add_planner_global->setText(QApplication::translate("PathVisualPlugin", "Global Planner", nullptr));
+        label_path_add_planner_global->setText(QApplication::translate("RMPV", "Global Planner", nullptr));
 #ifndef QT_NO_TOOLTIP
         comboBox_path_add_planner_global->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_TOOLTIP
-        pushButton_path_add_add->setToolTip(QApplication::translate("PathVisualPlugin", "Plan and add the configured path to the path list", nullptr));
+        pushButton_path_add_add->setToolTip(QApplication::translate("RMPV", "Plan and add the configured path to the path list", nullptr));
 #endif // QT_NO_TOOLTIP
-        pushButton_path_add_add->setText(QApplication::translate("PathVisualPlugin", "Start Planning", nullptr));
+        pushButton_path_add_add->setText(QApplication::translate("RMPV", "Start Planning", nullptr));
 #ifndef QT_NO_TOOLTIP
         groupBox_path_files->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
-        groupBox_path_files->setTitle(QApplication::translate("PathVisualPlugin", "For Path Files", nullptr));
+        groupBox_path_files->setTitle(QApplication::translate("RMPV", "For Path Files", nullptr));
 #ifndef QT_NO_TOOLTIP
-        pushButton_path_files_load->setToolTip(QApplication::translate("PathVisualPlugin", "Load some .json path data files and append them to the path list", nullptr));
+        pushButton_path_files_load->setToolTip(QApplication::translate("RMPV", "Load some .json path data files and append them to the path list", nullptr));
 #endif // QT_NO_TOOLTIP
-        pushButton_path_files_load->setText(QApplication::translate("PathVisualPlugin", "Load Paths", nullptr));
+        pushButton_path_files_load->setText(QApplication::translate("RMPV", "Load Paths", nullptr));
 #ifndef QT_NO_TOOLTIP
-        pushButton_path_files_save->setToolTip(QApplication::translate("PathVisualPlugin", "Save selected paths data into a .json file", nullptr));
+        pushButton_path_files_save->setToolTip(QApplication::translate("RMPV", "Save selected paths data into a .json file", nullptr));
 #endif // QT_NO_TOOLTIP
-        pushButton_path_files_save->setText(QApplication::translate("PathVisualPlugin", "Save Paths", nullptr));
-        tabManager->setTabText(tabManager->indexOf(tab_path), QApplication::translate("PathVisualPlugin", "Path Visualization", nullptr));
+        pushButton_path_files_save->setText(QApplication::translate("RMPV", "Save Paths", nullptr));
+        tabManager->setTabText(tabManager->indexOf(tab_path), QApplication::translate("RMPV", "Path Visualizer", nullptr));
 #ifndef QT_NO_TOOLTIP
         groupBox_curve_curves->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
-        groupBox_curve_curves->setTitle(QApplication::translate("PathVisualPlugin", "Curve List", nullptr));
+        groupBox_curve_curves->setTitle(QApplication::translate("RMPV", "Curve List", nullptr));
 #ifndef QT_NO_TOOLTIP
         groupBox_curve_files->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
-        groupBox_curve_files->setTitle(QApplication::translate("PathVisualPlugin", "For Curve Files", nullptr));
+        groupBox_curve_files->setTitle(QApplication::translate("RMPV", "For Curve Files", nullptr));
 #ifndef QT_NO_TOOLTIP
-        pushButton_curve_files_load->setToolTip(QApplication::translate("PathVisualPlugin", "Load some .json path data files and append them to the path list", nullptr));
+        pushButton_curve_files_load->setToolTip(QApplication::translate("RMPV", "Load some .json path data files and append them to the path list", nullptr));
 #endif // QT_NO_TOOLTIP
-        pushButton_curve_files_load->setText(QApplication::translate("PathVisualPlugin", "Load Curves", nullptr));
+        pushButton_curve_files_load->setText(QApplication::translate("RMPV", "Load Curves", nullptr));
 #ifndef QT_NO_TOOLTIP
-        pushButton_curve_files_save->setToolTip(QApplication::translate("PathVisualPlugin", "Save selected paths data into a .json file", nullptr));
+        pushButton_curve_files_save->setToolTip(QApplication::translate("RMPV", "Save selected paths data into a .json file", nullptr));
 #endif // QT_NO_TOOLTIP
-        pushButton_curve_files_save->setText(QApplication::translate("PathVisualPlugin", "Save Curves", nullptr));
+        pushButton_curve_files_save->setText(QApplication::translate("RMPV", "Save Curves", nullptr));
 #ifndef QT_NO_TOOLTIP
         groupBox_curve_poses->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
-        groupBox_curve_poses->setTitle(QApplication::translate("PathVisualPlugin", "Poses on the Curve", nullptr));
+        groupBox_curve_poses->setTitle(QApplication::translate("RMPV", "Poses on the Curve", nullptr));
 #ifndef QT_NO_TOOLTIP
-        groupBox_curve_addPose->setToolTip(QApplication::translate("PathVisualPlugin", "The start point of the new path", nullptr));
+        groupBox_curve_addPose->setToolTip(QApplication::translate("RMPV", "The start point of the new path", nullptr));
 #endif // QT_NO_TOOLTIP
-        groupBox_curve_addPose->setTitle(QApplication::translate("PathVisualPlugin", "Add a New Pose", nullptr));
-        label_curve_addPose_x->setText(QApplication::translate("PathVisualPlugin", "x", nullptr));
-        label_curve_addPose_y->setText(QApplication::translate("PathVisualPlugin", "y", nullptr));
-        label_curve_addPose_yaw->setText(QApplication::translate("PathVisualPlugin", "yaw", nullptr));
-        pushButton_curve_addPose_add->setText(QApplication::translate("PathVisualPlugin", "Add", nullptr));
+        groupBox_curve_addPose->setTitle(QApplication::translate("RMPV", "Add a New Pose", nullptr));
+        label_curve_addPose_x->setText(QApplication::translate("RMPV", "x", nullptr));
+        label_curve_addPose_y->setText(QApplication::translate("RMPV", "y", nullptr));
+        label_curve_addPose_yaw->setText(QApplication::translate("RMPV", "yaw", nullptr));
+        pushButton_curve_addPose_add->setText(QApplication::translate("RMPV", "Add", nullptr));
 #ifndef QT_NO_TOOLTIP
         groupBox_curve_addCurve->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
-        groupBox_curve_addCurve->setTitle(QApplication::translate("PathVisualPlugin", "Add a New Curve", nullptr));
+        groupBox_curve_addCurve->setTitle(QApplication::translate("RMPV", "Add a New Curve", nullptr));
 #ifndef QT_NO_TOOLTIP
         label_curve_addCurve_type->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
-        label_curve_addCurve_type->setText(QApplication::translate("PathVisualPlugin", "Curve Type", nullptr));
+        label_curve_addCurve_type->setText(QApplication::translate("RMPV", "Curve Type", nullptr));
 #ifndef QT_NO_TOOLTIP
         comboBox_curve_addCurve_type->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_TOOLTIP
-        pushButton_curve_addCurve_add->setToolTip(QApplication::translate("PathVisualPlugin", "Plan and add the configured path to the path list", nullptr));
+        pushButton_curve_addCurve_add->setToolTip(QApplication::translate("RMPV", "Plan and add the configured path to the path list", nullptr));
 #endif // QT_NO_TOOLTIP
-        pushButton_curve_addCurve_add->setText(QApplication::translate("PathVisualPlugin", "Add", nullptr));
-        tabManager->setTabText(tabManager->indexOf(tab_curve), QApplication::translate("PathVisualPlugin", "Curve Visualization", nullptr));
+        pushButton_curve_addCurve_add->setText(QApplication::translate("RMPV", "Add", nullptr));
+        tabManager->setTabText(tabManager->indexOf(tab_curve), QApplication::translate("RMPV", "Curve Visualizer", nullptr));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class PathVisualPlugin: public Ui_PathVisualPlugin {};
+    class RMPV: public Ui_RMPV {};
 } // namespace Ui
 
 QT_END_NAMESPACE
 
-#endif // UI_PATH_VISUAL_PLUGIN_H
+#endif // UI_RMPV_H

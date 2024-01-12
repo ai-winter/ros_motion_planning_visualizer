@@ -1,18 +1,18 @@
 /***********************************************************
  *
- * @file: core_path_visual_plugin.h
- * @breif: Contains core of path visualization Rviz plugin class
- * @author: Yang Haodong, Wu Maojia
- * @update: 2024-1-9
+ * @file: core_path_visualizer.h
+ * @breif: Contains core of path visualizer class
+ * @author: Wu Maojia, Yang Haodong
+ * @update: 2024-1-12
  * @version: 1.0
  *
- * Copyright (c) 2023， Yang Haodong, Wu Maojia
+ * Copyright (c) 2024， Yang Haodong, Wu Maojia
  * All rights reserved.
  * --------------------------------------------------------
  *
  **********************************************************/
-#ifndef CORE_PATH_VISUAL_PLUGIN_H
-#define CORE_PATH_VISUAL_PLUGIN_H
+#ifndef CORE_PATH_VISUALIZER_H
+#define CORE_PATH_VISUALIZER_H
 
 #include <rviz/panel.h>
 #include <ros/ros.h>
@@ -27,24 +27,25 @@
 #include <visualization_msgs/MarkerArray.h>
 #include <nav_msgs/Path.h>
 
+#include "wrapper_planner/CallPlan.h"
 #include "include/path_list.h"
 
-namespace path_visual_plugin
+namespace rmpv
 {
-class CorePathVisualPlugin : public QObject
+class CorePathVisualizer : public QObject
 {
   Q_OBJECT
 
 public:
   /**
-   * @brief Construct a new CorePathVisualPlugin object
+   * @brief Construct a new CorePathVisualizer object
    */
-  CorePathVisualPlugin();
+  CorePathVisualizer();
 
   /**
-   * @brief Destroy the CorePathVisualPlugin object
+   * @brief Destroy the CorePathVisualizer object
    */
-  ~CorePathVisualPlugin();
+  ~CorePathVisualizer();
 
   /**
    * @brief ROS parameters initialization
@@ -149,5 +150,5 @@ public:
   // path info list
   PathList* path_list_;
 };
-}  // namespace path_visual_plugin
-#endif  // CORE_PATH_VISUAL_PLUGIN_H
+}  // namespace rmpv
+#endif  // CORE_PATH_VISUALIZER_H

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PathVisualPlugin</class>
- <widget class="QWidget" name="PathVisualPlugin">
+ <class>RMPV</class>
+ <widget class="QWidget" name="RMPV">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>PathVisualPlugin</string>
+   <string>RMPV - ROS Motion Planning Visualizer</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_main">
    <item>
@@ -30,7 +30,7 @@
      </property>
      <widget class="QWidget" name="tab_path">
       <attribute name="title">
-       <string>Path Visualization</string>
+       <string>Path Visualizer</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_pathVisualization">
        <item row="0" column="0" rowspan="3" colspan="2">
@@ -321,7 +321,7 @@
      </widget>
      <widget class="QWidget" name="tab_curve">
       <attribute name="title">
-       <string>Curve Visualization</string>
+       <string>Curve Visualizer</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0" rowspan="3">

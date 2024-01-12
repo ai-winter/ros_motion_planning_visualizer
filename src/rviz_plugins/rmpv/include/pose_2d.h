@@ -3,10 +3,10 @@
  * @file: pose_2d.h
  * @breif: Contains Pose2D struct
  * @author: Wu Maojia
- * @update: 2024-1-9
+ * @update: 2024-1-12
  * @version: 1.0
  *
- * Copyright (c) 2023， Yang Haodong, Wu Maojia
+ * Copyright (c) 2024， Yang Haodong, Wu Maojia
  * All rights reserved.
  * --------------------------------------------------------
  *
@@ -17,7 +17,7 @@
 #include <cmath>
 #include <QObject>
 
-namespace path_visual_plugin
+namespace rmpv
 {
 class Pose2D
 {
@@ -43,6 +43,6 @@ public:
 public:
   double x, y, yaw;  // the x and y coordinate and yaw of pose
 };
-}  // namespace path_visual_plugin
-Q_DECLARE_METATYPE(path_visual_plugin::Pose2D)
+}  // namespace rmpv
+Q_DECLARE_METATYPE(rmpv::Pose2D)
 #endif  // POSE_2D_H

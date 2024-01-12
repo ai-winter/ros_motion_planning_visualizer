@@ -3,10 +3,10 @@
 * @file: color_editor.h
 * @breif: Contains color editor class
 * @author: Wu Maojia
-* @update: 2023-11-2
+* @update: 2024-1-12
 * @version: 1.0
 *
-* Copyright (c) 2023， Yang Haodong, Wu Maojia
+* Copyright (c) 2024， Yang Haodong, Wu Maojia
 * All rights reserved.
 * --------------------------------------------------------
 *
@@ -27,7 +27,7 @@
 #include <rviz/properties/parse_color.h>
 #include <rviz/properties/line_edit_with_button.h>
 
-namespace path_visual_plugin
+namespace rmpv
 {
 class ColorEditor : public rviz::LineEditWithButton
 {
@@ -93,5 +93,5 @@ private:
   int index_;     // the index of path
   QColor color_;  // the color of path
 };
-} // namespace path_visual_plugin
+} // namespace rmpv
 #endif  // COLOR_EDITOR_H

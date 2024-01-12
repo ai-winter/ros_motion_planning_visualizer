@@ -3,17 +3,17 @@
 * @file: pose_2d.h
 * @breif: Contains Pose2D struct
 * @author: Wu Maojia
-* @update: 2024-1-9
+* @update: 2024-1-12
 * @version: 1.0
 *
-* Copyright (c) 2023， Yang Haodong, Wu Maojia
+* Copyright (c) 2024， Yang Haodong, Wu Maojia
 * All rights reserved.
 * --------------------------------------------------------
 *
 **********************************************************/
 #include "include/pose_2d.h"
 
-namespace path_visual_plugin
+namespace rmpv
 {
 /**
  * @brief Construct a new Pose2D object
@@ -42,4 +42,4 @@ void Pose2D::normalizeYaw() {
   else if (yaw < -pi)
     yaw += 2.0 * pi;
 }
-}  // namespace path_visual_plugin
+}  // namespace rmpv

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(path_visual LANGUAGES CXX)
+project(rmpv LANGUAGES CXX)
 
 find_package(catkin REQUIRED COMPONENTS
         rviz
@@ -51,8 +51,9 @@ endif()
 add_definitions(-DQT_NO_KEYWORDS)
 
 set(SOURCE_FILES
-        src/path_visual_plugin.cpp
-        src/core_path_visual_plugin.cpp
+        src/rmpv.cpp
+        src/panel_path_visualizer.cpp
+        src/core_path_visualizer.cpp
         src/path_list.cpp
         src/path_info.cpp
         src/pose_2d.cpp
@@ -62,15 +63,16 @@ set(SOURCE_FILES
         )
 
 set(HEADER_FILES
-        include/path_visual_plugin.h
-        include/core_path_visual_plugin.h
+        include/rmpv.h
+        include/panel_path_visualizer.h
+        include/core_path_visualizer.h
         include/path_list.h
         include/path_info.h
         include/point_2d.h
         include/pose_2d.h
         include/select_delegate.h
         include/color_editor.h
-        include/ui_path_visual_plugin.h
+        include/ui_rmpv.h
         )
 
 set(RESOURCE_FILES
