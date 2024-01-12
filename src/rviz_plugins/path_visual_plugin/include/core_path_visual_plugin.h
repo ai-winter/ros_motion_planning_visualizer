@@ -99,11 +99,6 @@ public:
    */
   void refresh_poses();
 
-  /**
-   *  @brief normalize yaw to be within the range [-π, π]
-   */
-  void normalizeYaw();
-
 Q_SIGNALS:
   /**
    *  @brief the signal informs values start_x_, start_y_, goal_x_, goal_y_ changed
@@ -149,8 +144,7 @@ public:
   std::vector<std::string> planner_list_;
 
   // start and goal point
-  Point2D start_, goal_;
-  double start_yaw_, goal_yaw_;
+  Pose2D start_, goal_;
 
   // path info list
   PathList* path_list_;

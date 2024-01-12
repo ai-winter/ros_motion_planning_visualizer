@@ -53,25 +53,25 @@ void PathVisualPlugin::setupUi()
  table_model_ = new QStandardItemModel(this);
  table_header_ = QStringList({ "Select", "Planner", "Start", "Goal", "Length", "Turning Angle (rad)", "Color", "Remove" });
  table_model_->setHorizontalHeaderLabels(table_header_);
- ui_->tableView_list->setModel(table_model_);
- ui_->tableView_list->setItemDelegateForColumn(0, &selectDelegate_);
+ ui_->tableView_path_list->setModel(table_model_);
+ ui_->tableView_path_list->setItemDelegateForColumn(0, &selectDelegate_);
  _updateTableView();
 
  for (const auto& p_name : core_->planner_list_)
-   ui_->comboBox_add_planner_global->addItem(QString::fromStdString(p_name));
+   ui_->comboBox_path_add_planner_global->addItem(QString::fromStdString(p_name));
 
  _onValueChanged();
 
  connect(core_, SIGNAL(valueChanged()), this, SLOT(_onValueChanged()));
- connect(ui_->pushButton_add_add, SIGNAL(clicked()), this, SLOT(_onClicked()));
- connect(ui_->pushButton_files_load, SIGNAL(clicked()), this, SLOT(_onClicked()));
- connect(ui_->pushButton_files_save, SIGNAL(clicked()), this, SLOT(_onClicked()));
- connect(ui_->lineEdit_add_start_x, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
- connect(ui_->lineEdit_add_start_y, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
- connect(ui_->lineEdit_add_start_yaw, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
- connect(ui_->lineEdit_add_goal_x, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
- connect(ui_->lineEdit_add_goal_y, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
- connect(ui_->lineEdit_add_goal_yaw, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
+ connect(ui_->pushButton_path_add_add, SIGNAL(clicked()), this, SLOT(_onClicked()));
+ connect(ui_->pushButton_path_files_load, SIGNAL(clicked()), this, SLOT(_onClicked()));
+ connect(ui_->pushButton_path_files_save, SIGNAL(clicked()), this, SLOT(_onClicked()));
+ connect(ui_->lineEdit_path_add_start_x, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
+ connect(ui_->lineEdit_path_add_start_y, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
+ connect(ui_->lineEdit_path_add_start_yaw, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
+ connect(ui_->lineEdit_path_add_goal_x, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
+ connect(ui_->lineEdit_path_add_goal_y, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
+ connect(ui_->lineEdit_path_add_goal_yaw, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
  connect(&selectDelegate_, SIGNAL(selectChanged(const int&, const bool&)), this, SLOT(_onSelectChanged(const int&, const bool&)));
 }
 
@@ -88,15 +88,15 @@ void PathVisualPlugin::_onClicked()
    QString senderName = senderPushButton->objectName();
 
    // regular expression to match button names
-   QRegularExpression re_remove("pushButton_list_remove_(\\d+)");
+   QRegularExpression re_remove("pushButton_path_list_remove_(\\d+)");
    QRegularExpressionMatch match_remove = re_remove.match(senderName);
 
-   if (senderName == QString::fromUtf8("pushButton_add_add"))
+   if (senderName == QString::fromUtf8("pushButton_path_add_add"))
    {
-     core_->addPath(ui_->comboBox_add_planner_global->currentText());
+     core_->addPath(ui_->comboBox_path_add_planner_global->currentText());
      _updateTableView();
    }
-   else if (senderName == QString::fromUtf8("pushButton_files_load"))
+   else if (senderName == QString::fromUtf8("pushButton_path_files_load"))
    {
      QString open_dir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
      QStringList open_files = QFileDialog::getOpenFileNames(this, QStringLiteral("Select Path Files"), open_dir,
@@ -105,7 +105,7 @@ void PathVisualPlugin::_onClicked()
        core_->loadPaths(open_file);
      _updateTableView();
    }
-   else if (senderName == QString::fromUtf8("pushButton_files_save"))
+   else if (senderName == QString::fromUtf8("pushButton_path_files_save"))
    {
      QString save_dir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QString("/path.json");
      QString save_file = QFileDialog::getSaveFileName(this, QStringLiteral("Save Path File"), save_dir,
@@ -155,18 +155,18 @@ void PathVisualPlugin::_onEditingFinished()
    double value = text.toDouble(&ok);
    double* valueToChange;
 
-   if (senderName == QString::fromUtf8("lineEdit_add_start_x"))
+   if (senderName == QString::fromUtf8("lineEdit_path_add_start_x"))
      valueToChange = &(core_->start_.x);
-   else if (senderName == QString::fromUtf8("lineEdit_add_start_y"))
+   else if (senderName == QString::fromUtf8("lineEdit_path_add_start_y"))
      valueToChange = &(core_->start_.y);
-   else if (senderName == QString::fromUtf8("lineEdit_add_start_yaw"))
-     valueToChange = &(core_->start_yaw_);
-   else if (senderName == QString::fromUtf8("lineEdit_add_goal_x"))
+   else if (senderName == QString::fromUtf8("lineEdit_path_add_start_yaw"))
+     valueToChange = &(core_->start_.yaw);
+   else if (senderName == QString::fromUtf8("lineEdit_path_add_goal_x"))
      valueToChange = &(core_->goal_.x);
-   else if (senderName == QString::fromUtf8("lineEdit_add_goal_y"))
+   else if (senderName == QString::fromUtf8("lineEdit_path_add_goal_y"))
      valueToChange = &(core_->goal_.y);
-   else if (senderName == QString::fromUtf8("lineEdit_add_goal_yaw"))
-     valueToChange = &(core_->goal_yaw_);
+   else if (senderName == QString::fromUtf8("lineEdit_path_add_goal_yaw"))
+     valueToChange = &(core_->goal_.yaw);
    else
    {
      ROS_ERROR("Unknown signal sender QLineEdit.");
@@ -209,12 +209,12 @@ void PathVisualPlugin::_onSelectChanged(const int &index, const bool &checked)
 */
 void PathVisualPlugin::_onValueChanged()
 {
- ui_->lineEdit_add_start_x->setText(QString::number(core_->start_.x, 'f', 3));
- ui_->lineEdit_add_start_y->setText(QString::number(core_->start_.y, 'f', 3));
- ui_->lineEdit_add_start_yaw->setText(QString::number(core_->start_yaw_, 'f', 3));
- ui_->lineEdit_add_goal_x->setText(QString::number(core_->goal_.x, 'f', 3));
- ui_->lineEdit_add_goal_y->setText(QString::number(core_->goal_.y, 'f', 3));
- ui_->lineEdit_add_goal_yaw->setText(QString::number(core_->goal_yaw_, 'f', 3));
+ ui_->lineEdit_path_add_start_x->setText(QString::number(core_->start_.x, 'f', 3));
+ ui_->lineEdit_path_add_start_y->setText(QString::number(core_->start_.y, 'f', 3));
+ ui_->lineEdit_path_add_start_yaw->setText(QString::number(core_->start_.yaw, 'f', 3));
+ ui_->lineEdit_path_add_goal_x->setText(QString::number(core_->goal_.x, 'f', 3));
+ ui_->lineEdit_path_add_goal_y->setText(QString::number(core_->goal_.y, 'f', 3));
+ ui_->lineEdit_path_add_goal_yaw->setText(QString::number(core_->goal_.yaw, 'f', 3));
 }
 
 /**
@@ -227,8 +227,8 @@ void PathVisualPlugin::_updateTableView()
  table_model_->setHorizontalHeaderLabels(table_header_);
  table_model_->setHeaderData(0, Qt::Horizontal, "Only the selected paths will be displayed or saved.", Qt::ToolTipRole);
  table_model_->setHeaderData(1, Qt::Horizontal, "Planner used to plan the path", Qt::ToolTipRole);
- table_model_->setHeaderData(2, Qt::Horizontal, "Start point of the path", Qt::ToolTipRole);
- table_model_->setHeaderData(3, Qt::Horizontal, "Goal point of the path", Qt::ToolTipRole);
+ table_model_->setHeaderData(2, Qt::Horizontal, "Start pose of the path", Qt::ToolTipRole);
+ table_model_->setHeaderData(3, Qt::Horizontal, "Goal pose of the path", Qt::ToolTipRole);
  table_model_->setHeaderData(4, Qt::Horizontal, "Total length of the path", Qt::ToolTipRole);
  table_model_->setHeaderData(5, Qt::Horizontal, "Total turning angle of the path", Qt::ToolTipRole);
  table_model_->setHeaderData(6, Qt::Horizontal, "Color of the path displayed in rviz", Qt::ToolTipRole);
@@ -244,18 +244,18 @@ void PathVisualPlugin::_updateTableView()
    // 1st column: planner name
    table_model_->setItem(row, 1, new QStandardItem(info.getData(PathInfo::plannerName).toString()));
 
-   // 2nd column: start point
+   // 2nd column: start pose
    table_model_->setItem(row, 2, new QStandardItem(QString("(%1,%2)")
-                                                       .arg(QString::number(info.getData(PathInfo::startPointX).toDouble(), 'f', 3))
-                                                       .arg(QString::number(info.getData(PathInfo::startPointY).toDouble(), 'f', 3))
-                                                       .arg(QString::number(info.getData(PathInfo::startPointYaw).toDouble(), 'f', 3))
+                                                       .arg(QString::number(info.getData(PathInfo::startPoseX).toDouble(), 'f', 3))
+                                                       .arg(QString::number(info.getData(PathInfo::startPoseY).toDouble(), 'f', 3))
+                                                       .arg(QString::number(info.getData(PathInfo::startPoseYaw).toDouble(), 'f', 3))
                                                    ));
 
-   // 3rd column: goal point
+   // 3rd column: goal pose
    table_model_->setItem(row, 3, new QStandardItem(QString("(%1,%2)")
-                                                       .arg(QString::number(info.getData(PathInfo::goalPointX).toDouble(), 'f', 3))
-                                                       .arg(QString::number(info.getData(PathInfo::goalPointY).toDouble(), 'f', 3))
-                                                       .arg(QString::number(info.getData(PathInfo::goalPointYaw).toDouble(), 'f', 3))
+                                                       .arg(QString::number(info.getData(PathInfo::goalPoseX).toDouble(), 'f', 3))
+                                                       .arg(QString::number(info.getData(PathInfo::goalPoseY).toDouble(), 'f', 3))
+                                                       .arg(QString::number(info.getData(PathInfo::goalPoseYaw).toDouble(), 'f', 3))
                                                    ));
 
    // 4th column: path length
@@ -267,21 +267,21 @@ void PathVisualPlugin::_updateTableView()
 
    // 6th column: color
    ColorEditor* colorEditor_list_color = new ColorEditor(row, info.getData(PathInfo::pathColor).value<QColor>(), this);
-   ui_->tableView_list->setIndexWidget(table_model_->index(row, 6), colorEditor_list_color);
+   ui_->tableView_path_list->setIndexWidget(table_model_->index(row, 6), colorEditor_list_color);
    connect(colorEditor_list_color, SIGNAL(colorChanged(const int&, const QColor&)), this,
            SLOT(_onColorChanged(const int&, const QColor&)));
 
    // 7th column: remove button
    QPushButton* pushButton_list_remove = new QPushButton(this);
-   pushButton_list_remove->setObjectName(QString::fromUtf8("pushButton_list_remove_%1").arg(QString::number(row)));
+   pushButton_list_remove->setObjectName(QString::fromUtf8("pushButton_path_list_remove_%1").arg(QString::number(row)));
    pushButton_list_remove->setIcon(QIcon(":/icons/cross.png"));
    pushButton_list_remove->setIconSize(QSize(20, 20));
-   ui_->tableView_list->setIndexWidget(table_model_->index(row, 7), pushButton_list_remove);
+   ui_->tableView_path_list->setIndexWidget(table_model_->index(row, 7), pushButton_list_remove);
    connect(pushButton_list_remove, SIGNAL(clicked()), this, SLOT(_onClicked()));
 
    ++row;
  }
- ui_->tableView_list->resizeColumnsToContents();
- ui_->tableView_list->resizeRowsToContents();
+ ui_->tableView_path_list->resizeColumnsToContents();
+ ui_->tableView_path_list->resizeRowsToContents();
 }
 }  // namespace path_visual_plugin

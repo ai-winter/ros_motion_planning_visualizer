@@ -18,20 +18,17 @@ namespace path_visual_plugin
 /**
  * @brief Construct a new PathInfo object
  * @param p_name  the name of planner
- * @param s  the start point
- * @param g  the goal point
+ * @param s  the start pose
+ * @param g  the goal pose
  * @param pts  the path points
  * @param c  the color of path
  * @param slt  whether the path is selected
  */
-PathInfo::PathInfo(QString p_name, Point2D s, Point2D g, double s_yaw, double g_yaw, QList<Point2D> pts,
-                   QColor c, bool slt)
+PathInfo::PathInfo(QString p_name, Pose2D s, Pose2D g, QList<Point2D> pts, QColor c, bool slt)
 {
   planner_name_ = p_name;
   start_ = s;
   goal_ = g;
-  start_yaw_ = s_yaw;
-  goal_yaw_ = g_yaw;
   path_ = pts;
   color = c;
   select = slt;
@@ -58,22 +55,22 @@ QVariant PathInfo::getData(const int& variant) const
   {
     case plannerName:
       return planner_name_;
-    case startPoint:
+    case startPose:
       return QVariant::fromValue(start_);
-    case startPointX:
+    case startPoseX:
       return start_.x;
-    case startPointY:
+    case startPoseY:
       return start_.y;
-    case startPointYaw:
-      return start_yaw_;
-    case goalPoint:
+    case startPoseYaw:
+      return start_.yaw;
+    case goalPose:
       return QVariant::fromValue(goal_);
-    case goalPointX:
+    case goalPoseX:
       return goal_.x;
-    case goalPointY:
+    case goalPoseY:
       return goal_.y;
-    case goalPointYaw:
-      return goal_yaw_;
+    case goalPoseYaw:
+      return goal_.yaw;
     case pathLength:
       return length_;
     case pathColor:
@@ -149,7 +146,7 @@ double PathInfo::_calcTurningAngle()
                               )));
   }
   // take yaw angle into account
-  angle += std::abs(start_yaw_ - goal_yaw_);
+  angle += std::abs(start_.yaw - goal_.yaw);
   return angle;
 }
 }  // namespace path_visual_plugin

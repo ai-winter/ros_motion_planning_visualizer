@@ -10,10 +10,12 @@
 
 
 ## <span id="0">0. Introduction
+
+### Notice: This project is still under development. Please wait for our official release.
+
 This repository provides a ROS-based visualization Rviz plugins for path planning and curve generation algorithms.
 
 In scientific research, this repository allows researchers to observe, study, understand and analyze the working mechanisms of different algorithms, making it easier to identify strengths and weaknesses. This helps in the development of more efficient and optimized algorithms for various applications, such as robotics, transportation, and computer graphics.
-
 
 ## 1. <span id="1"> File Tree
 The file structure is shown below.
