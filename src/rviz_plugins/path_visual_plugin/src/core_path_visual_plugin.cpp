@@ -21,8 +21,7 @@ namespace path_visual_plugin
  */
 CorePathVisualPlugin::CorePathVisualPlugin() : path_list_(new PathList)
 {
-  start_ = goal_ = Point2D(0.0, 0.0);
-  start_yaw_ = goal_yaw_ = 0.0;
+  start_ = goal_ = Pose2D(0.0, 0.0, 0.0);
 }
 
 /**
@@ -59,6 +58,10 @@ void CorePathVisualPlugin::setupROS()
 
   // parameters
   private_nh.getParam("/move_base/planner", planner_list_);
+
+  // refresh poses and paths displayed in rviz
+  refresh_poses();
+  refresh_paths();
 }
 
 /**
@@ -67,17 +70,18 @@ void CorePathVisualPlugin::setupROS()
  */
 void CorePathVisualPlugin::addPath(const QString& planner_name)
 {
+  ROS_WARN("add path");
   geometry_msgs::PoseStamped start, goal;
   start.header.frame_id = "map";
   start.header.stamp = ros::Time::now();
   start.pose.position.x = start_.x;
   start.pose.position.y = start_.y;
-  start.pose.orientation = tf2::toMsg(tf2::Quaternion(tf2::Vector3(0, 0, 1), start_yaw_));
+  start.pose.orientation = tf::createQuaternionMsgFromYaw(start_.yaw);
   goal.header.frame_id = "map";
   goal.header.stamp = ros::Time::now();
   goal.pose.position.x = goal_.x;
   goal.pose.position.y = goal_.y;
-  goal.pose.orientation = tf2::toMsg(tf2::Quaternion(tf2::Vector3(0, 0, 1), goal_yaw_));
+  goal.pose.orientation = tf::createQuaternionMsgFromYaw(goal_.yaw);
 
   wrapper_planner::CallPlan call_plan_srv;
   call_plan_srv.request.start = start;
@@ -85,8 +89,8 @@ void CorePathVisualPlugin::addPath(const QString& planner_name)
   call_plan_srv.request.planner_name = planner_name.toStdString();
 
   ROS_WARN("call planner %s", planner_name.toStdString().c_str());
-  ROS_WARN("start: %f, %f, %f", start.pose.position.x, start.pose.position.y, start_yaw_);
-  ROS_WARN("goal: %f, %f, %f", goal.pose.position.x, goal.pose.position.y, goal_yaw_);
+  ROS_WARN("start: %f, %f, %f", start.pose.position.x, start.pose.position.y, start_.yaw);
+  ROS_WARN("goal: %f, %f, %f", goal.pose.position.x, goal.pose.position.y, goal_.yaw);
 
   if (call_plan_client_.call(call_plan_srv))
   {
@@ -97,7 +101,7 @@ void CorePathVisualPlugin::addPath(const QString& planner_name)
       path_points.push_back(Point2D(p.pose.position.x, p.pose.position.y));
 
     // construct path info
-    PathInfo path(planner_name, start_, goal_, start_yaw_, goal_yaw_, path_points);
+    PathInfo path(planner_name, start_, goal_, path_points);
 
     if (path_list_->append(path))
     {
@@ -248,61 +252,36 @@ void CorePathVisualPlugin::refresh_poses() {
   // goal pose topic "move_base_simple/goal"
   geometry_msgs::PoseWithCovarianceStamped start_pose;
   geometry_msgs::PoseStamped goal_pose;
-  normalizeYaw();
+  start_.normalizeYaw();
+  goal_.normalizeYaw();
+  Q_EMIT valueChanged();  // normalization may change the yaw value
 
   start_pose.header.frame_id = "map";
   start_pose.header.stamp = ros::Time::now();
   start_pose.pose.pose.position.x = start_.x;
   start_pose.pose.pose.position.y = start_.y;
   start_pose.pose.pose.position.z = 0.0;
-  start_pose.pose.pose.orientation = tf::createQuaternionMsgFromYaw(start_yaw_);
+  start_pose.pose.pose.orientation = tf::createQuaternionMsgFromYaw(start_.yaw);
 
   goal_pose.header.frame_id = "map";
   goal_pose.header.stamp = ros::Time::now();
   goal_pose.pose.position.x = goal_.x;
   goal_pose.pose.position.y = goal_.y;
   goal_pose.pose.position.z = 0.0;
-  goal_pose.pose.orientation = tf::createQuaternionMsgFromYaw(goal_yaw_);
+  goal_pose.pose.orientation = tf::createQuaternionMsgFromYaw(goal_.yaw);
 
   start_pub_.publish(start_pose);
   goal_pub_.publish(goal_pose);
 }
 
 /**
- *  @brief normalize yaw to be within the range [-π, π]
- */
-void CorePathVisualPlugin::normalizeYaw() {
-  double pi = std::acos(-1);
-
-  start_yaw_ = fmod(start_yaw_, 2.0 * pi); // get the remainder of yaw / (2*pi)
-  if (start_yaw_ > pi) {
-    start_yaw_ -= 2.0 * pi;
-    Q_EMIT valueChanged();
-  } else if (start_yaw_ < -pi) {
-    start_yaw_ += 2.0 * pi;
-    Q_EMIT valueChanged();
-  }
-
-  goal_yaw_ = fmod(goal_yaw_, 2.0 * pi);
-  if (goal_yaw_ > pi) {
-    goal_yaw_ -= 2.0 * pi;
-    Q_EMIT valueChanged();
-  } else if (goal_yaw_ < -pi) {
-    goal_yaw_ += 2.0 * pi;
-    Q_EMIT valueChanged();
-  }
-}
-
-/**
- *  @brief update the start point, it is a callback funciton
+ *  @brief update the start pose, it is a callback funciton
  *  @param  pose    the start setting in Rviz
  */
 void CorePathVisualPlugin::_onStartUpdate(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose)
 {
-  start_ = Point2D(pose->pose.pose.position.x, pose->pose.pose.position.y);
-  start_yaw_ = tf::getYaw(pose->pose.pose.orientation);
-  normalizeYaw();
-  Q_EMIT valueChanged();
+  start_ = Pose2D(pose->pose.pose.position.x, pose->pose.pose.position.y, tf::getYaw(pose->pose.pose.orientation));
+  Q_EMIT valueChanged();  // normalization may change the yaw value
 
   // mark pose on the map
   if (ros::ok())
@@ -332,15 +311,13 @@ void CorePathVisualPlugin::_onStartUpdate(const geometry_msgs::PoseWithCovarianc
 }
 
 /**
- *  @brief update the goal point, it is a callback funciton
+ *  @brief update the goal pose, it is a callback funciton
  *  @param  pose    the goal user set in Rviz
  */
 void CorePathVisualPlugin::_onGoalUpdate(const geometry_msgs::PoseStamped::ConstPtr& pose)
 {
-  goal_ = Point2D(pose->pose.position.x, pose->pose.position.y);
-  goal_yaw_ = tf::getYaw(pose->pose.orientation);
-  normalizeYaw();
-  Q_EMIT valueChanged();
+  goal_ = Pose2D(pose->pose.position.x, pose->pose.position.y, tf::getYaw(pose->pose.orientation));
+  Q_EMIT valueChanged();  // normalization may change the yaw value
 
   // mark pose on the map
   if (ros::ok())

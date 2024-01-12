@@ -22,28 +22,28 @@
 #include <QVariant>
 
 #include "include/point_2d.h"
+#include "include/pose_2d.h"
 
 namespace path_visual_plugin
 {
 class PathInfo
 {
 public:
-  enum { plannerName, startPoint, startPointX, startPointY, startPointYaw, goalPoint, goalPointX, goalPointY,
-    goalPointYaw, pathLength, pathColor, turningAngle, selectStatus };
+  enum { plannerName, startPose, startPoseX, startPoseY, startPoseYaw, goalPose, goalPoseX, goalPoseY,
+    goalPoseYaw, pathLength, pathColor, turningAngle, selectStatus };
 
 public:
   /**
    * @brief Construct a new PathInfo object with parameters
    * @param p_name  the name of planner
-   * @param s  the start point
-   * @param g  the goal point
+   * @param s  the start pose
+   * @param g  the goal pose
    * @param pts  the path points
    * @param c  the color of path
    * @param slt  whether the path is selected
    */
-  PathInfo(QString p_name = "None", Point2D s = Point2D(0.0, 0.0), Point2D g = Point2D(0.0, 0.0),
-           double s_yaw = 0.0, double g_yaw = 0.0, QList<Point2D> pts = QList<Point2D>(),
-           QColor c = Qt::darkBlue, bool slt = true);
+  PathInfo(QString p_name = "None", Pose2D s = Pose2D(0.0, 0.0, 0.0), Pose2D g = Pose2D(0.0, 0.0, 0.0),
+           QList<Point2D> pts = QList<Point2D>(), QColor c = Qt::darkBlue, bool slt = true);
 
   /**
    * @brief Destroy the PathInfo object
@@ -88,9 +88,8 @@ private:
   // the name of planner
   QString planner_name_;
 
-  // start and goal point
-  Point2D start_, goal_;
-  double start_yaw_, goal_yaw_;
+  // start and goal pose
+  Pose2D start_, goal_;
 
   // path planned
   QList<Point2D> path_;

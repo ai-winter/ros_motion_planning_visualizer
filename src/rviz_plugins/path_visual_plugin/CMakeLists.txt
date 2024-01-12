@@ -55,6 +55,7 @@ set(SOURCE_FILES
         src/core_path_visual_plugin.cpp
         src/path_list.cpp
         src/path_info.cpp
+        src/pose_2d.cpp
         src/select_delegate.cpp
         src/color_editor.cpp
         ${MOC_FILES}
@@ -66,6 +67,7 @@ set(HEADER_FILES
         include/path_list.h
         include/path_info.h
         include/point_2d.h
+        include/pose_2d.h
         include/select_delegate.h
         include/color_editor.h
         include/ui_path_visual_plugin.h

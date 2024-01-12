@@ -1,9 +1,9 @@
 /***********************************************************
  *
- * @file: point_2d.h
- * @breif: Contains Point2D struct
- * @author: Yang Haodong, Wu Maojia
- * @update: 2023-11-2
+ * @file: pose_2d.h
+ * @breif: Contains Pose2D struct
+ * @author: Wu Maojia
+ * @update: 2024-1-9
  * @version: 1.0
  *
  * Copyright (c) 2023， Yang Haodong, Wu Maojia
@@ -11,24 +11,38 @@
  * --------------------------------------------------------
  *
  **********************************************************/
-#ifndef POINT_2D_H
-#define POINT_2D_H
+#ifndef POSE_2D_H
+#define POSE_2D_H
+
+#include <cmath>
+#include <QObject>
 
 namespace path_visual_plugin
 {
-struct Point2D
+class Pose2D
 {
 public:
   /**
-   * @brief Construct a new Point2D object
-   * @param x  the x coordinate of point
-   * @param y  the y coordinate of point
+   * @brief Construct a new Pose2D object
+   * @param x  the x coordinate of pose
+   * @param y  the y coordinate of pose
+   * @param yaw the yaw of pose
    */
-  Point2D(double x = 0.0, double y = 0.0): x(x), y(y) {};
+  Pose2D(double x = 0.0, double y = 0.0, double yaw = 0.0);
+
+  /**
+   * @brief Destroy the Pose2D object
+   */
+  ~Pose2D();
+
+  /**
+   * @brief normalize yaw to be within the range [-π, π]
+   */
+  void normalizeYaw();
 
 public:
-  double x, y;  // the x and y coordinate of point
+  double x, y, yaw;  // the x and y coordinate and yaw of pose
 };
 }  // namespace path_visual_plugin
-Q_DECLARE_METATYPE(path_visual_plugin::Point2D)
-#endif  // POINT_2D_H
+Q_DECLARE_METATYPE(path_visual_plugin::Pose2D)
+#endif  // POSE_2D_H

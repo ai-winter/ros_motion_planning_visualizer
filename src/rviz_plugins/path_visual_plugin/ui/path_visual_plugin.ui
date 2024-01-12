@@ -26,15 +26,15 @@
       <locale language="English" country="Australia"/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
-     <widget class="QWidget" name="tab_pathVisualization">
+     <widget class="QWidget" name="tab_path">
       <attribute name="title">
        <string>Path Visualization</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_pathVisualization">
        <item row="0" column="0" rowspan="3" colspan="2">
-        <widget class="QGroupBox" name="groupBox_list">
+        <widget class="QGroupBox" name="groupBox_path_list">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -49,7 +49,7 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_list">
           <item>
-           <widget class="QTableView" name="tableView_list">
+           <widget class="QTableView" name="tableView_path_list">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -70,79 +70,8 @@
          </layout>
         </widget>
        </item>
-       <item row="2" column="2">
-        <widget class="QGroupBox" name="groupBox_files">
-         <property name="toolTip">
-          <string/>
-         </property>
-         <property name="title">
-          <string>For Path Files</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_files">
-          <item>
-           <spacer name="verticalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_files_load">
-            <property name="toolTip">
-             <string>Load some .json path data files and append them to the path list</string>
-            </property>
-            <property name="text">
-             <string>Load Paths</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_files_save">
-            <property name="toolTip">
-             <string>Save selected paths data into a .json file</string>
-            </property>
-            <property name="text">
-             <string>Save Paths</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_5">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item row="0" column="2" rowspan="2">
-        <widget class="QGroupBox" name="groupBox_add">
+        <widget class="QGroupBox" name="groupBox_path_add">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -166,91 +95,91 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_add">
           <item>
-           <widget class="QGroupBox" name="groupBox_add_start">
+           <widget class="QGroupBox" name="groupBox_path_add_start">
             <property name="toolTip">
              <string>The start point of the new path</string>
             </property>
             <property name="title">
-             <string>Start Point</string>
+             <string>Start Pose</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_add_start">
              <item>
-              <widget class="QLabel" name="label_add_start_x">
+              <widget class="QLabel" name="label_path_add_start_x">
                <property name="text">
                 <string>x</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_add_start_x"/>
+              <widget class="QLineEdit" name="lineEdit_path_add_start_x"/>
              </item>
              <item>
-              <widget class="QLabel" name="label_add_start_y">
+              <widget class="QLabel" name="label_path_add_start_y">
                <property name="text">
                 <string>y</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_add_start_y"/>
+              <widget class="QLineEdit" name="lineEdit_path_add_start_y"/>
              </item>
              <item>
-              <widget class="QLabel" name="label_add_start_yaw">
+              <widget class="QLabel" name="label_path_add_start_yaw">
                <property name="text">
                 <string>yaw</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_add_start_yaw"/>
+              <widget class="QLineEdit" name="lineEdit_path_add_start_yaw"/>
              </item>
             </layout>
            </widget>
           </item>
           <item>
-           <widget class="QGroupBox" name="groupBox_add_goal">
+           <widget class="QGroupBox" name="groupBox_path_add_goal">
             <property name="toolTip">
              <string>The goal point of the new path</string>
             </property>
             <property name="title">
-             <string>Goal Point</string>
+             <string>Goal Pose</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_add_goal">
              <item>
-              <widget class="QLabel" name="label_add_goal_x">
+              <widget class="QLabel" name="label_path_add_goal_x">
                <property name="text">
                 <string>x</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_add_goal_x"/>
+              <widget class="QLineEdit" name="lineEdit_path_add_goal_x"/>
              </item>
              <item>
-              <widget class="QLabel" name="label_add_goal_y">
+              <widget class="QLabel" name="label_path_add_goal_y">
                <property name="text">
                 <string>y</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_add_goal_y"/>
+              <widget class="QLineEdit" name="lineEdit_path_add_goal_y"/>
              </item>
              <item>
-              <widget class="QLabel" name="label_add_goal_yaw">
+              <widget class="QLabel" name="label_path_add_goal_yaw">
                <property name="text">
                 <string>yaw</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_add_goal_yaw"/>
+              <widget class="QLineEdit" name="lineEdit_path_add_goal_yaw"/>
              </item>
             </layout>
            </widget>
           </item>
           <item>
-           <widget class="QGroupBox" name="groupBox_add_planner">
+           <widget class="QGroupBox" name="groupBox_path_add_planner">
             <property name="toolTip">
              <string>The planner used to plan the new path</string>
             </property>
@@ -259,7 +188,7 @@
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_add_planner">
              <item>
-              <widget class="QLabel" name="label_add_planner_global">
+              <widget class="QLabel" name="label_path_add_planner_global">
                <property name="toolTip">
                 <string/>
                </property>
@@ -269,7 +198,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="comboBox_add_planner_global">
+              <widget class="QComboBox" name="comboBox_path_add_planner_global">
                <property name="toolTip">
                 <string/>
                </property>
@@ -279,7 +208,7 @@
            </widget>
           </item>
           <item>
-           <spacer name="verticalSpacer">
+           <spacer name="verticalSpacer_path_add_1">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -292,7 +221,7 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_add_add">
+           <widget class="QPushButton" name="pushButton_path_add_add">
             <property name="toolTip">
              <string>Plan and add the configured path to the path list</string>
             </property>
@@ -302,7 +231,399 @@
            </widget>
           </item>
           <item>
-           <spacer name="verticalSpacer_2">
+           <spacer name="verticalSpacer_path_add_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QGroupBox" name="groupBox_path_files">
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="title">
+          <string>For Path Files</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_files">
+          <item>
+           <spacer name="verticalSpacer_path_files_1">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_path_files_load">
+            <property name="toolTip">
+             <string>Load some .json path data files and append them to the path list</string>
+            </property>
+            <property name="text">
+             <string>Load Paths</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_path_files_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_path_files_save">
+            <property name="toolTip">
+             <string>Save selected paths data into a .json file</string>
+            </property>
+            <property name="text">
+             <string>Save Paths</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_path_files_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_curve">
+      <attribute name="title">
+       <string>Curve Visualization</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0" rowspan="3">
+        <widget class="QGroupBox" name="groupBox_curve_curves">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="title">
+          <string>Curve List</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_list_2">
+          <item>
+           <widget class="QTableView" name="tableView_curve_curves">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAsNeeded</enum>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::AdjustIgnored</enum>
+            </property>
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QGroupBox" name="groupBox_curve_files">
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="title">
+          <string>For Curve Files</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_files_2">
+          <item>
+           <spacer name="verticalSpacer_curve_files_1">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_curve_files_load">
+            <property name="toolTip">
+             <string>Load some .json path data files and append them to the path list</string>
+            </property>
+            <property name="text">
+             <string>Load Curves</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_curve_files_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_curve_files_save">
+            <property name="toolTip">
+             <string>Save selected paths data into a .json file</string>
+            </property>
+            <property name="text">
+             <string>Save Curves</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_curve_files_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1" rowspan="3">
+        <widget class="QGroupBox" name="groupBox_curve_poses">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="title">
+          <string>Poses on the Curve</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_list_3">
+          <item>
+           <widget class="QTableView" name="tableView_curve_poses">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAsNeeded</enum>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::AdjustIgnored</enum>
+            </property>
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QGroupBox" name="groupBox_curve_addPose">
+         <property name="toolTip">
+          <string>The start point of the new path</string>
+         </property>
+         <property name="title">
+          <string>Add a New Pose</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_curve_addPose">
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_curve_addPose_x">
+              <property name="text">
+               <string>x</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_curve_addPose_y">
+              <property name="text">
+               <string>y</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="lineEdit_curve_addPose_yaw"/>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="lineEdit_curve_addPose_x"/>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_curve_addPose_yaw">
+              <property name="text">
+               <string>yaw</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="lineEdit_curve_addPose_y"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_curve_addPose_1">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_curve_addPose_add">
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_curve_addPose_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QGroupBox" name="groupBox_curve_addCurve">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="title">
+          <string>Add a New Curve</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_add_2">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_curve_addCurve_type">
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_curve_addCurve_type">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="text">
+               <string>Curve Type</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboBox_curve_addCurve_type">
+              <property name="toolTip">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_curve_addCurve_1">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_curve_addCurve_add">
+            <property name="toolTip">
+             <string>Plan and add the configured path to the path list</string>
+            </property>
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_curve_addCurve_2">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
