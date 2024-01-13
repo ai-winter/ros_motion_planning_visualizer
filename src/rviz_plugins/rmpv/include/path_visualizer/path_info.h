@@ -21,8 +21,8 @@
 #include <QList>
 #include <QVariant>
 
-#include "include/point_2d.h"
-#include "include/pose_2d.h"
+#include "utils/point_2d.h"
+#include "utils/pose_2d.h"
 
 namespace rmpv
 {
@@ -98,10 +98,10 @@ private:
   double length_, turning_angle_;
 
   // the color of visualized path
-  QColor color;
+  QColor color_;
 
   // select and visualize the path
-  bool select;
+  bool select_;
 };
 }  // namespace rmpv
 #endif  // PATH_INFO_H

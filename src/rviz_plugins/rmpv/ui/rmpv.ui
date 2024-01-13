@@ -83,7 +83,7 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>350</width>
+           <width>300</width>
            <height>16777215</height>
           </size>
          </property>
@@ -97,7 +97,7 @@
           <item>
            <widget class="QGroupBox" name="groupBox_path_add_start">
             <property name="toolTip">
-             <string>The start point of the new path</string>
+             <string>The start pose of the new path</string>
             </property>
             <property name="title">
              <string>Start Pose</string>
@@ -139,7 +139,7 @@
           <item>
            <widget class="QGroupBox" name="groupBox_path_add_goal">
             <property name="toolTip">
-             <string>The goal point of the new path</string>
+             <string>The goal pose of the new path</string>
             </property>
             <property name="title">
              <string>Goal Pose</string>
@@ -248,6 +248,12 @@
        </item>
        <item row="2" column="2">
         <widget class="QGroupBox" name="groupBox_path_files">
+         <property name="maximumSize">
+          <size>
+           <width>300</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string/>
          </property>
@@ -363,6 +369,12 @@
        </item>
        <item row="2" column="2">
         <widget class="QGroupBox" name="groupBox_curve_files">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string/>
          </property>
@@ -444,7 +456,7 @@
           <string/>
          </property>
          <property name="title">
-          <string>Poses on the Curve</string>
+          <string>Poses List</string>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_list_3">
           <item>
@@ -471,6 +483,12 @@
        </item>
        <item row="1" column="2">
         <widget class="QGroupBox" name="groupBox_curve_addPose">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>The start point of the new path</string>
          </property>
@@ -564,7 +582,7 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>16777215</width>
+           <width>200</width>
            <height>16777215</height>
           </size>
          </property>
@@ -644,6 +662,30 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabManager</tabstop>
+  <tabstop>tableView_path_list</tabstop>
+  <tabstop>lineEdit_path_add_start_x</tabstop>
+  <tabstop>lineEdit_path_add_start_y</tabstop>
+  <tabstop>lineEdit_path_add_start_yaw</tabstop>
+  <tabstop>lineEdit_path_add_goal_x</tabstop>
+  <tabstop>lineEdit_path_add_goal_y</tabstop>
+  <tabstop>lineEdit_path_add_goal_yaw</tabstop>
+  <tabstop>comboBox_path_add_planner_global</tabstop>
+  <tabstop>pushButton_path_add_add</tabstop>
+  <tabstop>pushButton_path_files_load</tabstop>
+  <tabstop>pushButton_path_files_save</tabstop>
+  <tabstop>tableView_curve_curves</tabstop>
+  <tabstop>tableView_curve_poses</tabstop>
+  <tabstop>comboBox_curve_addCurve_type</tabstop>
+  <tabstop>pushButton_curve_addCurve_add</tabstop>
+  <tabstop>lineEdit_curve_addPose_x</tabstop>
+  <tabstop>lineEdit_curve_addPose_y</tabstop>
+  <tabstop>lineEdit_curve_addPose_yaw</tabstop>
+  <tabstop>pushButton_curve_addPose_add</tabstop>
+  <tabstop>pushButton_curve_files_load</tabstop>
+  <tabstop>pushButton_curve_files_save</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

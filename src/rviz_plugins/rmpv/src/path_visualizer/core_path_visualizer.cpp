@@ -11,7 +11,7 @@
  * --------------------------------------------------------
  *
  **********************************************************/
-#include "include/core_path_visualizer.h"
+#include "path_visualizer/core_path_visualizer.h"
 
 namespace rmpv
 {
@@ -65,7 +65,7 @@ void CorePathVisualizer::setupROS()
 
 /**
  *  @brief call path planning service
- *  @param name of planner
+ *  @param planner_name name of planner
  */
 void CorePathVisualizer::addPath(const QString& planner_name)
 {

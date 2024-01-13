@@ -3,15 +3,15 @@
 * @file: rmpv.cpp
 * @breif: Contains ROS Motion Planning Visualizer (RMPV) Rviz plugin class
 * @author: Wu Maojia, Yang Haodong
-* @update: 2024-1-12
+* @update: 2024-1-13
 * @version: 1.0
 *
-* Copyright (c) 2023， Yang Haodong, Wu Maojia
+* Copyright (c) 2024， Yang Haodong, Wu Maojia
 * All rights reserved.
 * --------------------------------------------------------
 *
 **********************************************************/
-#include "include/rmpv.h"
+#include "rmpv/rmpv.h"
 
 #include <pluginlib/class_list_macros.h>
 PLUGINLIB_EXPORT_CLASS(rmpv::RMPV, rviz::Panel)
@@ -26,6 +26,7 @@ RMPV::RMPV(QWidget* parent)
 {
   ui_->setupUi(this);
   panel_path_ = new PanelPathVisualizer(this, ui_);
+  panel_curve_ = new PanelCurveVisualizer(this, ui_);
 }
 
 /**
@@ -37,5 +38,7 @@ RMPV::~RMPV()
     delete ui_;
   if (panel_path_)
     delete panel_path_;
+  if (panel_curve_)
+    delete panel_curve_;
 }
 }  // namespace rmpv

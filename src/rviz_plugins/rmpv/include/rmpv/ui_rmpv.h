@@ -151,7 +151,7 @@ public:
         groupBox_path_add->setEnabled(true);
         sizePolicy.setHeightForWidth(groupBox_path_add->sizePolicy().hasHeightForWidth());
         groupBox_path_add->setSizePolicy(sizePolicy);
-        groupBox_path_add->setMaximumSize(QSize(350, 16777215));
+        groupBox_path_add->setMaximumSize(QSize(300, 16777215));
         verticalLayout_add = new QVBoxLayout(groupBox_path_add);
         verticalLayout_add->setObjectName(QString::fromUtf8("verticalLayout_add"));
         groupBox_path_add_start = new QGroupBox(groupBox_path_add);
@@ -263,6 +263,7 @@ public:
 
         groupBox_path_files = new QGroupBox(tab_path);
         groupBox_path_files->setObjectName(QString::fromUtf8("groupBox_path_files"));
+        groupBox_path_files->setMaximumSize(QSize(300, 16777215));
         verticalLayout_files = new QVBoxLayout(groupBox_path_files);
         verticalLayout_files->setObjectName(QString::fromUtf8("verticalLayout_files"));
         verticalSpacer_path_files_1 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -316,6 +317,7 @@ public:
 
         groupBox_curve_files = new QGroupBox(tab_curve);
         groupBox_curve_files->setObjectName(QString::fromUtf8("groupBox_curve_files"));
+        groupBox_curve_files->setMaximumSize(QSize(200, 16777215));
         verticalLayout_files_2 = new QVBoxLayout(groupBox_curve_files);
         verticalLayout_files_2->setObjectName(QString::fromUtf8("verticalLayout_files_2"));
         verticalSpacer_curve_files_1 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -364,6 +366,7 @@ public:
 
         groupBox_curve_addPose = new QGroupBox(tab_curve);
         groupBox_curve_addPose->setObjectName(QString::fromUtf8("groupBox_curve_addPose"));
+        groupBox_curve_addPose->setMaximumSize(QSize(200, 16777215));
         verticalLayout = new QVBoxLayout(groupBox_curve_addPose);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         gridLayout_curve_addPose = new QGridLayout();
@@ -423,7 +426,7 @@ public:
         groupBox_curve_addCurve->setEnabled(true);
         sizePolicy.setHeightForWidth(groupBox_curve_addCurve->sizePolicy().hasHeightForWidth());
         groupBox_curve_addCurve->setSizePolicy(sizePolicy);
-        groupBox_curve_addCurve->setMaximumSize(QSize(16777215, 16777215));
+        groupBox_curve_addCurve->setMaximumSize(QSize(200, 16777215));
         verticalLayout_add_2 = new QVBoxLayout(groupBox_curve_addCurve);
         verticalLayout_add_2->setObjectName(QString::fromUtf8("verticalLayout_add_2"));
         horizontalLayout_curve_addCurve_type = new QHBoxLayout();
@@ -462,6 +465,27 @@ public:
 
         verticalLayout_main->addWidget(tabManager);
 
+        QWidget::setTabOrder(tabManager, tableView_path_list);
+        QWidget::setTabOrder(tableView_path_list, lineEdit_path_add_start_x);
+        QWidget::setTabOrder(lineEdit_path_add_start_x, lineEdit_path_add_start_y);
+        QWidget::setTabOrder(lineEdit_path_add_start_y, lineEdit_path_add_start_yaw);
+        QWidget::setTabOrder(lineEdit_path_add_start_yaw, lineEdit_path_add_goal_x);
+        QWidget::setTabOrder(lineEdit_path_add_goal_x, lineEdit_path_add_goal_y);
+        QWidget::setTabOrder(lineEdit_path_add_goal_y, lineEdit_path_add_goal_yaw);
+        QWidget::setTabOrder(lineEdit_path_add_goal_yaw, comboBox_path_add_planner_global);
+        QWidget::setTabOrder(comboBox_path_add_planner_global, pushButton_path_add_add);
+        QWidget::setTabOrder(pushButton_path_add_add, pushButton_path_files_load);
+        QWidget::setTabOrder(pushButton_path_files_load, pushButton_path_files_save);
+        QWidget::setTabOrder(pushButton_path_files_save, tableView_curve_curves);
+        QWidget::setTabOrder(tableView_curve_curves, tableView_curve_poses);
+        QWidget::setTabOrder(tableView_curve_poses, comboBox_curve_addCurve_type);
+        QWidget::setTabOrder(comboBox_curve_addCurve_type, pushButton_curve_addCurve_add);
+        QWidget::setTabOrder(pushButton_curve_addCurve_add, lineEdit_curve_addPose_x);
+        QWidget::setTabOrder(lineEdit_curve_addPose_x, lineEdit_curve_addPose_y);
+        QWidget::setTabOrder(lineEdit_curve_addPose_y, lineEdit_curve_addPose_yaw);
+        QWidget::setTabOrder(lineEdit_curve_addPose_yaw, pushButton_curve_addPose_add);
+        QWidget::setTabOrder(pushButton_curve_addPose_add, pushButton_curve_files_load);
+        QWidget::setTabOrder(pushButton_curve_files_load, pushButton_curve_files_save);
 
         retranslateUi(RMPV);
 
@@ -483,14 +507,14 @@ public:
 #endif // QT_NO_TOOLTIP
         groupBox_path_add->setTitle(QApplication::translate("RMPV", "Add a New Path", nullptr));
 #ifndef QT_NO_TOOLTIP
-        groupBox_path_add_start->setToolTip(QApplication::translate("RMPV", "The start point of the new path", nullptr));
+        groupBox_path_add_start->setToolTip(QApplication::translate("RMPV", "The start pose of the new path", nullptr));
 #endif // QT_NO_TOOLTIP
         groupBox_path_add_start->setTitle(QApplication::translate("RMPV", "Start Pose", nullptr));
         label_path_add_start_x->setText(QApplication::translate("RMPV", "x", nullptr));
         label_path_add_start_y->setText(QApplication::translate("RMPV", "y", nullptr));
         label_path_add_start_yaw->setText(QApplication::translate("RMPV", "yaw", nullptr));
 #ifndef QT_NO_TOOLTIP
-        groupBox_path_add_goal->setToolTip(QApplication::translate("RMPV", "The goal point of the new path", nullptr));
+        groupBox_path_add_goal->setToolTip(QApplication::translate("RMPV", "The goal pose of the new path", nullptr));
 #endif // QT_NO_TOOLTIP
         groupBox_path_add_goal->setTitle(QApplication::translate("RMPV", "Goal Pose", nullptr));
         label_path_add_goal_x->setText(QApplication::translate("RMPV", "x", nullptr));
@@ -543,7 +567,7 @@ public:
 #ifndef QT_NO_TOOLTIP
         groupBox_curve_poses->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
-        groupBox_curve_poses->setTitle(QApplication::translate("RMPV", "Poses on the Curve", nullptr));
+        groupBox_curve_poses->setTitle(QApplication::translate("RMPV", "Poses List", nullptr));
 #ifndef QT_NO_TOOLTIP
         groupBox_curve_addPose->setToolTip(QApplication::translate("RMPV", "The start point of the new path", nullptr));
 #endif // QT_NO_TOOLTIP

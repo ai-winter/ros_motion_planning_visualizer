@@ -11,12 +11,14 @@
 * --------------------------------------------------------
 *
 **********************************************************/
-#include "include/panel_path_visualizer.h"
+#include "path_visualizer/panel_path_visualizer.h"
 
 namespace rmpv
 {
 /**
  * @brief Construct a new PanelPathVisualizer object
+ * @param parent: parent widget rmpv
+ * @param ui: ui object
  */
 PanelPathVisualizer::PanelPathVisualizer(rviz::Panel* parent, Ui::RMPV* ui)
   : parent_(parent), ui_(ui), core_(new CorePathVisualizer)
@@ -26,7 +28,7 @@ PanelPathVisualizer::PanelPathVisualizer(rviz::Panel* parent, Ui::RMPV* ui)
 }
 
 /**
-* @brief Destroy the PanelPathVisualizer object
+ * @brief Destroy the PanelPathVisualizer object
  */
 PanelPathVisualizer::~PanelPathVisualizer()
 {
@@ -39,13 +41,12 @@ PanelPathVisualizer::~PanelPathVisualizer()
 }
 
 /**
-* @brief User interface parameters initialization
+ * @brief User interface parameters initialization
  */
 void PanelPathVisualizer::setupUi()
 {
   table_model_ = new QStandardItemModel(parent_);
-  table_header_ = QStringList({ "Select", "Planner", "Start", "Goal", "Length", "Turning Angle (rad)", "Color", "Remove" });
-  table_model_->setHorizontalHeaderLabels(table_header_);
+  table_header_ = QStringList({ "Select", "Planner", "Start", "Goal", "Length", "Turning Angle", "Color", "Remove" });
   ui_->tableView_path_list->setModel(table_model_);
   ui_->tableView_path_list->setItemDelegateForColumn(0, &selectDelegate_);
   _updateTableView();
@@ -223,7 +224,7 @@ void PanelPathVisualizer::_updateTableView()
   table_model_->setHeaderData(2, Qt::Horizontal, "Start pose of the path", Qt::ToolTipRole);
   table_model_->setHeaderData(3, Qt::Horizontal, "Goal pose of the path", Qt::ToolTipRole);
   table_model_->setHeaderData(4, Qt::Horizontal, "Total length of the path", Qt::ToolTipRole);
-  table_model_->setHeaderData(5, Qt::Horizontal, "Total turning angle of the path", Qt::ToolTipRole);
+  table_model_->setHeaderData(5, Qt::Horizontal, "Total turning angle of the path, in radians", Qt::ToolTipRole);
   table_model_->setHeaderData(6, Qt::Horizontal, "Color of the path displayed in rviz", Qt::ToolTipRole);
   table_model_->setHeaderData(7, Qt::Horizontal, "Remove the path from path list", Qt::ToolTipRole);
   table_model_->setRowCount(core_->path_list_->size());
@@ -255,8 +256,8 @@ void PanelPathVisualizer::_updateTableView()
     table_model_->setItem(row, 4, new QStandardItem(QString::number(info.getData(PathInfo::pathLength).toDouble(), 'f', 3)));
 
     // 5th column: path turning angle
-    double turning_angle_rad = info.getData(PathInfo::turningAngle).toDouble();
-    table_model_->setItem(row, 5, new QStandardItem(QString::number(turning_angle_rad, 'f', 3)));
+    double turning_angle = info.getData(PathInfo::turningAngle).toDouble();
+    table_model_->setItem(row, 5, new QStandardItem(QString::number(turning_angle, 'f', 3)));
 
     // 6th column: color
     ColorEditor* colorEditor_list_color = new ColorEditor(row, info.getData(PathInfo::pathColor).value<QColor>(), parent_);

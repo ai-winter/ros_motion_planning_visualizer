@@ -32,10 +32,10 @@
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 
 #include "wrapper_planner/CallPlan.h"
-#include "include/select_delegate.h"
-#include "include/color_editor.h"
-#include "include/core_path_visualizer.h"
-#include "include/ui_rmpv.h"
+#include "utils/select_delegate.h"
+#include "utils/color_editor.h"
+#include "path_visualizer/core_path_visualizer.h"
+#include "rmpv/ui_rmpv.h"
 
 namespace rmpv
 {
@@ -46,6 +46,8 @@ class PanelPathVisualizer : public QObject
 public:
   /**
    * @brief Construct a new PanelPathVisualizer object
+   * @param parent: parent widget rmpv
+   * @param ui: ui object
    */
   PanelPathVisualizer(rviz::Panel* parent_ = nullptr, Ui::RMPV* ui = nullptr);
 
