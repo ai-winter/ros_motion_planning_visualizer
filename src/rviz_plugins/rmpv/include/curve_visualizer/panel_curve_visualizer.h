@@ -2,7 +2,7 @@
 *
 * @file: panel_curve_visualizer.h
 * @breif: Contains panel of curve visualizer class
-* @author: Wu Maojia, Yang Haodong
+* @author: Wu Maojia
 * @update: 2024-1-12
 * @version: 1.0
 *
@@ -44,6 +44,8 @@ class PanelCurveVisualizer : public QObject
 public:
   /**
    * @brief Construct a new PanelCurveVisualizer object
+   * @param parent: parent widget rmpv
+   * @param ui: ui object
    */
   PanelCurveVisualizer(rviz::Panel* parent_ = nullptr, Ui::RMPV* ui = nullptr);
 
@@ -57,10 +59,33 @@ public:
    */
   void setupUi();
 
+protected Q_SLOTS:
+  /**
+   *  @brief if clicked signal from pushButton is received, call this slot function
+   */
+  void _onClicked();
+
+protected:
+  /**
+   *  @brief update the curves_model_ to update the table view of Curve List
+   */
+  void _updateTableViewCurves();
+
+  /**
+   *  @brief update the poses_model_ to update the table view of Pose List
+   */
+  void _updateTableViewPoses();
+
 private:
   rviz::Panel* parent_;       // parent panel rmpv
   Ui::RMPV* ui_;              // ui object
   CoreCurveVisualizer* core_;  // core object
+
+  QStandardItemModel* curves_model_; // model of table "Curve List"
+  QStringList curves_header_;        // header of table "Curve List"
+
+  QStandardItemModel* poses_model_;  // model of table "Poses List"
+  QStringList poses_header_;         // header of table "Poses List"
 };
 }  // namespace rmpv
 

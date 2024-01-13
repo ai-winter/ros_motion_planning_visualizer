@@ -46,6 +46,8 @@ class PanelPathVisualizer : public QObject
 public:
   /**
    * @brief Construct a new PanelPathVisualizer object
+   * @param parent: parent widget rmpv
+   * @param ui: ui object
    */
   PanelPathVisualizer(rviz::Panel* parent_ = nullptr, Ui::RMPV* ui = nullptr);
 

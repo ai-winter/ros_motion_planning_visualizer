@@ -16,7 +16,6 @@
 
 #include <rviz/panel.h>
 #include <ros/ros.h>
-#include <std_msgs/String.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <tf2/LinearMath/Quaternion.h>
@@ -54,7 +53,7 @@ public:
 
   /**
    *  @brief call path planning service
-   *  @param name of planner
+   *  @param planner_name name of planner
    */
   void addPath(const QString& planner_name);
 

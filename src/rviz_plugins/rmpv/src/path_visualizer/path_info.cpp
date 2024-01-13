@@ -30,8 +30,8 @@ PathInfo::PathInfo(QString p_name, Pose2D s, Pose2D g, QList<Point2D> pts, QColo
   start_ = s;
   goal_ = g;
   path_ = pts;
-  color = c;
-  select = slt;
+  color_ = c;
+  select_ = slt;
 
   length_ = _calcPathLength();
   turning_angle_ = _calcTurningAngle();
@@ -74,11 +74,11 @@ QVariant PathInfo::getData(const int& variant) const
     case pathLength:
       return length_;
     case pathColor:
-      return color;
+      return color_;
     case turningAngle:
       return turning_angle_;
     case selectStatus:
-      return select;
+      return select_;
     default:
       return QVariant();
   }
@@ -103,10 +103,10 @@ bool PathInfo::setData(const int& variant, const QVariant& value)
   switch (variant)
   {
     case pathColor:
-      color = value.value<QColor>();
+      color_ = value.value<QColor>();
       break;
     case selectStatus:
-      select = value.toBool();
+      select_ = value.toBool();
       break;
     default:
       return false;

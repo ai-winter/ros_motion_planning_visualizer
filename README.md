@@ -85,4 +85,11 @@ uic -o ./include/rmpv/ui_rmpv.h ./ui/rmpv.ui
 
 ## 5. <span id="5"> More
 
-More examples could be found at [https://github.com/ai-winter/ros_motion_planning_visualizer](https://github.com/ai-winter/ros_motion_planning_visualizer). 
+Our motion planning toolchain:
+* [ROS Motion Planning](https://github.com/ai-winter/ros_motion_planning)
+  * [ROS Pedestrians Simulation](https://github.com/ai-winter/ros_pedestrians_simulation)
+  * [ROS Motion Planning Visualizer](https://github.com/ai-winter/ros_motion_planning_visualizer)
+* [Python Motion Planning](https://github.com/ai-winter/python_motion_planning)
+* [Matlab Motion Planning](https://github.com/ai-winter/matlab_motion_planning)
+
+Your stars, forks and PRs are welcome! Wishing you all the best in your research!

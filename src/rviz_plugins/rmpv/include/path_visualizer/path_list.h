@@ -22,8 +22,6 @@
 
 #include <ros/ros.h>
 
-#include <geometry_msgs/PoseStamped.h>
-
 #include "path_visualizer/path_info.h"
 
 namespace rmpv
@@ -98,7 +96,7 @@ public:
   int size() const;
 
 private:
-  QList<PathInfo> path_info_; // the path list
+  QList<PathInfo> paths_; // the path list
 };
 }  // namespace rmpv
 #endif  // PATH_LIST_H

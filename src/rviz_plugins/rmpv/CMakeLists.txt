@@ -58,6 +58,8 @@ set(SOURCE_FILES
         src/path_visualizer/path_info.cpp
         src/curve_visualizer/panel_curve_visualizer.cpp
         src/curve_visualizer/core_curve_visualizer.cpp
+        src/curve_visualizer/curve_list.cpp
+        src/curve_visualizer/curve_info.cpp
         src/utils/pose_2d.cpp
         src/utils/select_delegate.cpp
         src/utils/color_editor.cpp
@@ -73,6 +75,8 @@ set(HEADER_FILES
         include/path_visualizer/path_info.h
         include/curve_visualizer/panel_curve_visualizer.h
         include/curve_visualizer/core_curve_visualizer.h
+        include/curve_visualizer/curve_list.h
+        include/curve_visualizer/curve_info.h
         include/utils/point_2d.h
         include/utils/pose_2d.h
         include/utils/select_delegate.h

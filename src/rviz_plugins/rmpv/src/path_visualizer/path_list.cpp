@@ -20,7 +20,7 @@ namespace rmpv
  */
 PathList::PathList()
 {
-  path_info_.clear();
+  paths_.clear();
 }
 
 /**
@@ -40,7 +40,7 @@ bool PathList::append(const PathInfo& path)
   if (size() >= MAX_PATH_NUM)
     return false;
 
-  path_info_.push_back(path);
+  paths_.push_back(path);
 
   return true;
 }
@@ -55,7 +55,7 @@ bool PathList::remove(const int& index)
   if (index < 0 || index >= size())
     return false;
 
-  path_info_.erase(path_info_.begin() + index);
+  paths_.erase(paths_.begin() + index);
 
   return true;
 }
@@ -71,7 +71,7 @@ bool PathList::setColor(const int& index, const QColor& color)
   if (index < 0 || index >= size())
     return false;
 
-  return path_info_[index].setData(PathInfo::pathColor, color);
+  return paths_[index].setData(PathInfo::pathColor, color);
 }
 
 /**
@@ -85,12 +85,12 @@ bool PathList::setSelect(const int& index, const bool& select)
   if (index < 0 || index >= size())
     return false;
 
-  return path_info_[index].setData(PathInfo::selectStatus, select);
+  return paths_[index].setData(PathInfo::selectStatus, select);
 }
 
 const QList<PathInfo>* PathList::getListPtr() const
 {
-  return &path_info_;
+  return &paths_;
 }
 
 /**
@@ -102,7 +102,7 @@ bool PathList::save(QString file_name) const
 {
   QJsonArray paths_array;
 
-  for (const auto& info : path_info_)
+  for (const auto& info : paths_)
   {
     // save only the selected paths
     if (!info.getData(PathInfo::selectStatus).toBool())
@@ -222,6 +222,6 @@ bool PathList::load(QString file_name)
  */
 int PathList::size() const
 {
-  return path_info_.size();
+  return paths_.size();
 }
 }  // namespace rmpv
