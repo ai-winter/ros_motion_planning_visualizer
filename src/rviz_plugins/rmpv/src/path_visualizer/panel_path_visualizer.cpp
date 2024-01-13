@@ -11,7 +11,7 @@
 * --------------------------------------------------------
 *
 **********************************************************/
-#include "include/panel_path_visualizer.h"
+#include "path_visualizer/panel_path_visualizer.h"
 
 namespace rmpv
 {

@@ -11,7 +11,7 @@
 * --------------------------------------------------------
 *
 **********************************************************/
-#include "include/rmpv.h"
+#include "rmpv/rmpv.h"
 
 #include <pluginlib/class_list_macros.h>
 PLUGINLIB_EXPORT_CLASS(rmpv::RMPV, rviz::Panel)

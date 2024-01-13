@@ -21,8 +21,8 @@
 #include <QList>
 #include <QVariant>
 
-#include "include/point_2d.h"
-#include "include/pose_2d.h"
+#include "utils/point_2d.h"
+#include "utils/pose_2d.h"
 
 namespace rmpv
 {

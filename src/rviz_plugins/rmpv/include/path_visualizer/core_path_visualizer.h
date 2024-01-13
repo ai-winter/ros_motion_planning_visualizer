@@ -28,7 +28,7 @@
 #include <nav_msgs/Path.h>
 
 #include "wrapper_planner/CallPlan.h"
-#include "include/path_list.h"
+#include "path_visualizer/path_list.h"
 
 namespace rmpv
 {

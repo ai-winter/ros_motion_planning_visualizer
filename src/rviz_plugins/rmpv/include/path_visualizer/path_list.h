@@ -24,7 +24,7 @@
 
 #include <geometry_msgs/PoseStamped.h>
 
-#include "include/path_info.h"
+#include "path_visualizer/path_info.h"
 
 namespace rmpv
 {

@@ -15,8 +15,8 @@
 #define RMPV_H
 
 #include <rviz/panel.h>
-#include "include/ui_rmpv.h"
-#include "include/panel_path_visualizer.h"
+#include "rmpv/ui_rmpv.h"
+#include "path_visualizer/panel_path_visualizer.h"
 
 namespace rmpv
 {
