@@ -1,16 +1,13 @@
-/***********************************************************
- *
- * @file: curve_list.h
- * @breif: Contains CurveList class
- * @author: Wu Maojia, Yang Haodong
- * @update: 2024-1-12
- * @version: 1.0
- *
- * Copyright (c) 2024， Yang Haodong, Wu Maojia
- * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+/**
+* @file: curve_list.h
+* @brief: Contains CurveList class
+* @author: Wu Maojia, Yang Haodong
+* @date: 2024-1-12
+* @version: 1.0
+*
+* Copyright (c) 2024, Yang Haodong, Wu Maojia.
+* All rights reserved.
+*/
 #ifndef CURVE_LIST_H
 #define CURVE_LIST_H
 

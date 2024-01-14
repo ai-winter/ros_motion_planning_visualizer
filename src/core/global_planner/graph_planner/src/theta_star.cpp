@@ -1,16 +1,13 @@
-/***********************************************************
- *
- * @file: theta_star.cpp
- * @breif: Contains the Theta* planner class
- * @author: Wu Maojia, Yang Haodong
- * @update: 2023-10-1
- * @version: 1.3
- *
- * Copyright (c) 2023， Wu Maojia
- * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+/**
+* @file: theta_star.cpp
+* @brief: Contains the Theta* planner class
+* @author: Wu Maojia, Yang Haodong
+* @date: 2023-10-1
+* @version: 1.3
+*
+* Copyright (c) 2023, Wu Maojia.
+* All rights reserved.
+ */
 #include "theta_star.h"
 #include <iostream>
 

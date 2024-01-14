@@ -1,16 +1,13 @@
-/***********************************************************
-*
-* @file: panel_curve_visualizer.h
-* @breif: Contains panel of curve visualizer class
-* @author: Wu Maojia
-* @update: 2024-1-13
-* @version: 1.0
-*
-* Copyright (c) 2024， Yang Haodong, Wu Maojia
-* All rights reserved.
-* --------------------------------------------------------
-*
-**********************************************************/
+/**
+ * @file: panel_curve_visualizer.cpp
+ * @brief: Contains panel of curve visualizer class
+ * @author: Wu Maojia
+ * @date: 2024-1-13
+ * @version: 1.0
+ *
+ * Copyright (c) 2024, Yang Haodong, Wu Maojia.
+ * All rights reserved.
+ */
 #include "curve_visualizer/panel_curve_visualizer.h"
 
 namespace rmpv

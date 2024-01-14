@@ -1,16 +1,13 @@
-/***********************************************************
- *
- * @file: math_helper.cpp
- * @breif: Contains common/commonly used function
- * @author: Yang Haodong
- * @update: 2024-1-3
- * @version: 1.0
- *
- * Copyright (c) 2024， Yang Haodong
- * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+/**
+* @file: math_helper.cpp
+* @brief: Contains common/commonly used math function
+* @author: Yang Haodong
+* @date: 2024-1-3
+* @version: 1.0
+*
+* Copyright (c) 2024, Yang Haodong.
+* All rights reserved.
+ */
 #include "math_helper.h"
 
 namespace helper

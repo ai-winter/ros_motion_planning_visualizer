@@ -1,16 +1,13 @@
-/***********************************************************
- *
+/**
  * @file: path_list.h
- * @breif: Contains PathList class
+ * @brief: Contains PathList class
  * @author: Wu Maojia, Yang Haodong
- * @update: 2024-1-12
+ * @date: 2024-1-12
  * @version: 1.0
  *
- * Copyright (c) 2024， Yang Haodong, Wu Maojia
+ * Copyright (c) 2024, Yang Haodong, Wu Maojia.
  * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+ */
 #ifndef PATH_LIST_H
 #define PATH_LIST_H
 

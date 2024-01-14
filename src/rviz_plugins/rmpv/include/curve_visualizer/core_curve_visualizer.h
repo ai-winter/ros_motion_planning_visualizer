@@ -1,16 +1,13 @@
-/***********************************************************
- *
- * @file: core_curve_visualizer.h
- * @breif: Contains core of curve visualizer class
- * @author: Wu Maojia, Yang Haodong
- * @update: 2024-1-12
- * @version: 1.0
- *
- * Copyright (c) 2024， Yang Haodong, Wu Maojia
- * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+/**
+* @file: core_curve_visualizer.h
+* @brief: Contains core of curve visualizer class
+* @author: Wu Maojia, Yang Haodong
+* @date: 2024-1-13
+* @version: 1.0
+*
+* Copyright (c) 2024, Yang Haodong, Wu Maojia.
+* All rights reserved.
+*/
 #ifndef CORE_CURVE_VISUALIZER_H
 #define CORE_CURVE_VISUALIZER_H
 

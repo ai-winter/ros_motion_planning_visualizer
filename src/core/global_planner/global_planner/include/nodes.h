@@ -1,16 +1,13 @@
-/***********************************************************
- *
- * @file: nodes.h
- * @breif: Contains common/commonly used nodes data strcutre
- * @author: Yang Haodong
- * @update: 2023-7-21
- * @version: 2.1
- *
- * Copyright (c) 2023， Yang Haodong
- * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+/**
+* @file: nodes.h
+* @brief: Contains common/commonly used nodes data strcutre
+* @author: Yang Haodong
+* @date: 2023-7-21
+* @version: 2.1
+*
+* Copyright (c) 2023, Yang Haodong.
+* All rights reserved.
+ */
 #ifndef NODES_H
 #define NODES_H
 

@@ -1,16 +1,13 @@
-/***********************************************************
- *
+/**
  * @file: point_2d.h
- * @breif: Contains Point2D struct
+ * @brief: Contains Point2D struct
  * @author: Wu Maojia, Yang Haodong
- * @update: 2024-1-12
+ * @date: 2024-1-12
  * @version: 1.0
  *
- * Copyright (c) 2024， Yang Haodong, Wu Maojia
+ * Copyright (c) 2024, Yang Haodong, Wu Maojia.
  * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+ */
 #ifndef POINT_2D_H
 #define POINT_2D_H
 

@@ -1,16 +1,13 @@
-/***********************************************************
-*
-* @file: select_delegate.cpp
-* @breif: Contains select column delegate classes for table view
-* @author: Wu Maojia
-* @update: 2024-1-12
-* @version: 1.0
-*
-* Copyright (c) 2024， Yang Haodong, Wu Maojia
-* All rights reserved.
-* --------------------------------------------------------
-*
-**********************************************************/
+/**
+ * @file: select_delegate.cpp
+ * @brief: Contains select column delegate classes for table view
+ * @author: Wu Maojia
+ * @date: 2024-1-12
+ * @version: 1.0
+ *
+ * Copyright (c) 2024, Yang Haodong, Wu Maojia.
+ * All rights reserved.
+ */
 #include "utils/select_delegate.h"
 
 namespace rmpv

@@ -1,16 +1,13 @@
-/***********************************************************
- *
- * @file: nodes.cpp
- * @breif: Contains common/commonly used nodes data strcutre
- * @author: Yang Haodong
- * @update: 2023-7-21
- * @version: 2.1
- *
- * Copyright (c) 2023， Yang Haodong
- * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+/**
+* @file: nodes.cpp
+* @brief: Contains common/commonly used nodes data strcutre
+* @author: Yang Haodong
+* @date: 2023-7-21
+* @version: 1.0
+*
+* Copyright (c) 2023, Yang Haodong.
+* All rights reserved.
+ */
 #include "nodes.h"
 
 /**

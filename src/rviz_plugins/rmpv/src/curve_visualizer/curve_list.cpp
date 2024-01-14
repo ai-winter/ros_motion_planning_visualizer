@@ -1,16 +1,13 @@
-/***********************************************************
- *
+/**
  * @file: curve_list.cpp
- * @breif: Contains CurveList class
+ * @brief: Contains CurveList class
  * @author: Wu Maojia, Yang Haodong
- * @update: 2024-1-12
+ * @date: 2024-1-12
  * @version: 1.0
  *
- * Copyright (c) 2024， Yang Haodong, Wu Maojia
+ * Copyright (c) 2024, Yang Haodong, Wu Maojia.
  * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+ */
 #include "curve_visualizer/curve_list.h"
 
 namespace rmpv
