@@ -44,7 +44,7 @@ Then run the following commands in your terminal to generate doxygen documentati
 cd ./
 doxygen
 ```
-Then you can find the documentation in `./src/docs/html/index.html`. You can configure the doxygen settings in `./Doxyfile`.
+Then you can find the documentation in `./docs/html/index.html`. You can configure the doxygen settings in `./Doxyfile`.
 ## 4. <span id="4"> Examples
 ### 4.1 Path Planning
 |     Planner      |                                                                                             Version                                                                                              |                         Demo                          |
