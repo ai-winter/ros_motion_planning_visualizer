@@ -1,16 +1,13 @@
-/***********************************************************
-*
-* @file: panel_path_visualizer.h
-* @breif: Contains panel of path visualizer class
-* @author: Wu Maojia, Yang Haodong
-* @update: 2024-1-12
-* @version: 1.0
-*
-* Copyright (c) 2024， Yang Haodong, Wu Maojia
-* All rights reserved.
-* --------------------------------------------------------
-*
-**********************************************************/
+/**
+ * @file: panel_path_visualizer.cpp
+ * @brief: Contains panel of path visualizer class
+ * @author: Wu Maojia, Yang Haodong
+ * @date: 2024-1-12
+ * @version: 1.0
+ *
+ * Copyright (c) 2024, Yang Haodong, Wu Maojia.
+ * All rights reserved.
+ */
 #include "path_visualizer/panel_path_visualizer.h"
 
 namespace rmpv

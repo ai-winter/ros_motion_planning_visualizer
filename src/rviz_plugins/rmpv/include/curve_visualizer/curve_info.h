@@ -1,16 +1,13 @@
-/***********************************************************
- *
- * @file: curve_info.h
- * @breif: Contains CurveInfo class
- * @author: Wu Maojia, Yang Haodong
- * @update: 2024-1-12
- * @version: 1.0
- *
- * Copyright (c) 2024， Yang Haodong, Wu Maojia
- * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+/**
+* @file: curve_info.h
+* @brief: Contains CurveInfo class
+* @author: Wu Maojia, Yang Haodong
+* @date: 2024-1-12
+* @version: 1.0
+*
+* Copyright (c) 2024, Yang Haodong, Wu Maojia.
+* All rights reserved.
+*/
 #ifndef CURVE_INFO_H
 #define CURVE_INFO_H
 

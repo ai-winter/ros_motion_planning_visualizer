@@ -1,16 +1,13 @@
-/***********************************************************
- *
- * @file: rrt_star.h
- * @breif: Contains the Rapidly-Exploring Random Tree Star(RRT*) planner class
- * @author: Yang Haodong
- * @update: 2022-10-29
- * @version: 1.0
- *
- * Copyright (c) 2023， Yang Haodong
- * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+/**
+* @file: rrt_star.h
+* @brief: Contains the Rapidly-Exploring Random Tree Star(RRT*) planner class
+* @author: Yang Haodong
+* @date: 2022-10-29
+* @version: 1.0
+*
+* Copyright (c) 2023, Yang Haodong.
+* All rights reserved.
+ */
 #ifndef RRT_STAR_H
 #define RRT_STAR_H
 

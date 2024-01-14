@@ -1,16 +1,13 @@
-/***********************************************************
-*
-* @file: pose_2d.h
-* @breif: Contains Pose2D struct
-* @author: Wu Maojia
-* @update: 2024-1-12
-* @version: 1.0
-*
-* Copyright (c) 2024， Yang Haodong, Wu Maojia
-* All rights reserved.
-* --------------------------------------------------------
-*
-**********************************************************/
+/**
+ * @file: pose_2d.cpp
+ * @brief: Contains Pose2D struct
+ * @author: Wu Maojia
+ * @date: 2024-1-12
+ * @version: 1.0
+ *
+ * Copyright (c) 2024, Yang Haodong, Wu Maojia.
+ * All rights reserved.
+ */
 #include "utils/pose_2d.h"
 
 namespace rmpv

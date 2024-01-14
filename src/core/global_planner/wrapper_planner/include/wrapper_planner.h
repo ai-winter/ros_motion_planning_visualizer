@@ -1,16 +1,13 @@
-/***********************************************************
- *
- * @file: wrapper_planner.h
- * @breif: Contains the planner ROS wrapper class
- * @author: Yang Haodong
- * @update: 2023-10-2
- * @version: 1.0
- *
- * Copyright (c) 2023， Yang Haodong
- * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+/**
+* @file: wrapper_planner.h
+* @brief: Contains the planner ROS wrapper class
+* @author: Yang Haodong
+* @date: 2023-10-2
+* @version: 1.0
+*
+* Copyright (c) 2023, Yang Haodong.
+* All rights reserved.
+ */
 #ifndef WRAPPER_PLANNER_H
 #define WRAPPER_PLANNER_H
 

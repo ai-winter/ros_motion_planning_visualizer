@@ -1,16 +1,13 @@
-/***********************************************************
- *
- * @file: lpa_star.cpp
- * @breif: Contains the LPA* planner class
- * @author: Zhanyu Guo
- * @update: 2023-03-19
- * @version: 1.0
- *
- * Copyright (c) 2023, Zhanyu Guo
- * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+/**
+* @file: lpa_star.cpp
+* @brief: Contains the LPA* planner class
+* @author: Zhanyu Guo
+* @date: 2023-03-19
+* @version: 1.0
+*
+* Copyright (c) 2023, Zhanyu Guo.
+* All rights reserved.
+ */
 #include "lpa_star.h"
 
 namespace global_planner

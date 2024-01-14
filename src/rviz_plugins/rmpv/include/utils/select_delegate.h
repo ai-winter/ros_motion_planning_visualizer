@@ -1,16 +1,13 @@
-/***********************************************************
-*
+/**
 * @file: select_delegate.h
-* @breif: Contains select column delegate classes for table view
+* @brief: Contains select column delegate classes for table view
 * @author: Wu Maojia
-* @update: 2024-1-12
+* @date: 2024-1-12
 * @version: 1.0
 *
-* Copyright (c) 2024， Yang Haodong, Wu Maojia
+* Copyright (c) 2024, Yang Haodong, Wu Maojia.
 * All rights reserved.
-* --------------------------------------------------------
-*
-**********************************************************/
+*/
 #ifndef TABLE_DELEGATE_H
 #define TABLE_DELEGATE_H
 

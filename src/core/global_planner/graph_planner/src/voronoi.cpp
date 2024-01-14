@@ -1,16 +1,13 @@
-/***********************************************************
- *
- * @file: voronoi.cpp
- * @breif: Contains the Voronoi-based planner class
- * @author: Yang Haodong
- * @update: 2023-7-21
- * @version: 1.0
- *
- * Copyright (c) 2023， Yang Haodong
- * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+/**
+* @file: voronoi.cpp
+* @brief: Contains the Voronoi-based planner class
+* @author: Yang Haodong
+* @date: 2023-7-21
+* @version: 1.0
+*
+* Copyright (c) 2023, Yang Haodong.
+* All rights reserved.
+ */
 #include <algorithm>
 #include <queue>
 #include <cmath>

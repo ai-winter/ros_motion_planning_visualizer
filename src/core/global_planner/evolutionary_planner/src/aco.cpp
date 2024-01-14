@@ -1,16 +1,13 @@
-/***********************************************************
- *
- * @file: aco.cpp
- * @breif: Contains the Ant Colony Optimization(ACO) planner class
- * @author: Yang Haodong
- * @update: 2023-7-16
- * @version: 1.0
- *
- * Copyright (c) 2023， Yang Haodong
- * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+/**
+* @file: aco.cpp
+* @brief: Contains the Ant Colony Optimization(ACO) planner class
+* @author: Yang Haodong
+* @date: 2023-7-16
+* @version: 1.0
+*
+* Copyright (c) 2023, Yang Haodong.
+* All rights reserved.
+ */
 #include <random>
 #include <unordered_map>
 #include <algorithm>

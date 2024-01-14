@@ -1,16 +1,13 @@
-/***********************************************************
- *
- * @file: curve.cpp
- * @breif: Trajectory generation
- * @author: Yang Haodong
- * @update: 2023-12-20
- * @version: 1.0
- *
- * Copyright (c) 2023, Yang Haodong
- * All rights reserved.
- * --------------------------------------------------------
- *
- **********************************************************/
+/**
+* @file: curve.cpp
+* @brief: Trajectory generation
+* @author: Yang Haodong
+* @date: 2023-12-20
+* @version: 1.0
+*
+* Copyright (c) 2023, Yang Haodong.
+* All rights reserved.
+ */
 #include <cassert>
 #include "curve.h"
 
