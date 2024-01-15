@@ -13,11 +13,14 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_geometry_msgs
   tf2_ros
   global_planner
+  curve_generation
+  utils
 )
 
 catkin_package(
  INCLUDE_DIRS include
- CATKIN_DEPENDS global_planner
+ LIBRARIES ${PROJECT_NAME}
+ CATKIN_DEPENDS global_planner curve_generation utils
 )
 
 include_directories(
@@ -25,12 +28,11 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-## Declare a C++ library
 add_library(${PROJECT_NAME}
-  src/evolutionary_planner.cpp
   src/aco.cpp
+  src/pso.cpp
+  src/ga.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}
-  ${catkin_LIBRARIES}
 )

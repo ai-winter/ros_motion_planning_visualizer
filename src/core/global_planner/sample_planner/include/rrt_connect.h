@@ -1,13 +1,16 @@
-/**
-* @file: rrt_connect.h
-* @brief: Contains the RRT Connect planner class
-* @author: Yang Haodong
-* @date: 2023-1-18
-* @version: 1.0
-*
-* Copyright (c) 2023, Yang Haodong.
-* All rights reserved.
- */
+/***********************************************************
+ *
+ * @file: rrt_connect.h
+ * @breif: Contains the RRT Connect planner class
+ * @author: Yang Haodong
+ * @update: 2023-1-18
+ * @version: 1.0
+ *
+ * Copyright (c) 2023， Yang Haodong
+ * All rights reserved.
+ * --------------------------------------------------------
+ *
+ **********************************************************/
 #ifndef RRT_CONNECT_H
 #define RRT_CONNECT_H
 
@@ -52,9 +55,9 @@ protected:
 
 protected:
   // Sampled list forward
-  std::unordered_set<Node, NodeIdAsHash, compare_coordinates> sample_list_f_;
+  std::unordered_map<int, Node> sample_list_f_;
   // Sampled list backward
-  std::unordered_set<Node, NodeIdAsHash, compare_coordinates> sample_list_b_;
+  std::unordered_map<int, Node> sample_list_b_;
 };
 }  // namespace global_planner
 

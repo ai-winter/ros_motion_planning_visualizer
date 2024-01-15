@@ -1,13 +1,16 @@
-/**
-* @file: voronoi.h
-* @brief: Contains the Voronoi-based planner class
-* @author: Yang Haodong
-* @date: 2023-7-21
-* @version: 1.0
-*
-* Copyright (c) 2023, Yang Haodong.
-* All rights reserved.
- */
+/***********************************************************
+ *
+ * @file: voronoi.h
+ * @breif: Contains the Voronoi-based planner class
+ * @author: Yang Haodong
+ * @update: 2023-7-21
+ * @version: 1.0
+ *
+ * Copyright (c) 2023， Yang Haodong
+ * All rights reserved.
+ * --------------------------------------------------------
+ *
+ **********************************************************/
 #ifndef VORONOI_H
 #define VORONOI_H
 
@@ -38,6 +41,7 @@ public:
    * @param circumscribed_radius  the circumscribed radius of robot
    */
   VoronoiPlanner(int nx, int ny, double resolution, double circumscribed_radius);
+  ~VoronoiPlanner();
 
   /**
    * @brief Voronoi-based planning implementation
@@ -50,7 +54,7 @@ public:
    */
   bool plan(const unsigned char* global_costmap, const Node& start, const Node& goal, std::vector<Node>& path,
             std::vector<Node>& expand);
-  bool plan(VoronoiData** voronoi_diagram, const Node& start, const Node& goal, std::vector<Node>& path);
+  bool plan(const DynamicVoronoi& voronoi, const Node& start, const Node& goal, std::vector<Node>& path);
 
 protected:
   /**

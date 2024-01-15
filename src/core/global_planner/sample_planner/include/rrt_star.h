@@ -1,13 +1,16 @@
-/**
-* @file: rrt_star.h
-* @brief: Contains the Rapidly-Exploring Random Tree Star(RRT*) planner class
-* @author: Yang Haodong
-* @date: 2022-10-29
-* @version: 1.0
-*
-* Copyright (c) 2023, Yang Haodong.
-* All rights reserved.
- */
+/***********************************************************
+ *
+ * @file: rrt_star.h
+ * @breif: Contains the Rapidly-Exploring Random Tree Star(RRT*) planner class
+ * @author: Yang Haodong
+ * @update: 2022-10-29
+ * @version: 1.0
+ *
+ * Copyright (c) 2023， Yang Haodong
+ * All rights reserved.
+ * --------------------------------------------------------
+ *
+ **********************************************************/
 #ifndef RRT_STAR_H
 #define RRT_STAR_H
 
@@ -49,7 +52,7 @@ protected:
    * @param node     sample node
    * @return nearest node
    */
-  Node _findNearestPoint(std::unordered_set<Node, NodeIdAsHash, compare_coordinates> list, Node& node);
+  Node _findNearestPoint(std::unordered_map<int, Node> list, Node& node);
 
 protected:
   double r_;  // optimization radius

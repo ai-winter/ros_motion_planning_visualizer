@@ -1,12 +1,12 @@
 /**
-* @file: wrapper_planner.cpp
-* @brief: Contains the planner ROS wrapper class
-* @author: Yang Haodong
-* @date: 2023-10-2
-* @version: 1.0
-*
-* Copyright (c) 2023, Yang Haodong.
-* All rights reserved.
+ * @file: wrapper_planner.cpp
+ * @brief: Contains the planner ROS wrapper class
+ * @author: Yang Haodong
+ * @date: 2023-10-2
+ * @version: 1.0
+ *
+ * Copyright (c) 2023, Yang Haodong.
+ * All rights reserved.
  */
 #include <pluginlib/class_list_macros.h>
 
@@ -27,6 +27,11 @@
 #include "rrt_star.h"
 #include "rrt_connect.h"
 #include "informed_rrt.h"
+
+// evolutionary_planner
+#include "aco.h"
+#include "pso.h"
+#include "ga.h"
 
 PLUGINLIB_EXPORT_CLASS(wrapper_planner::WrapperPlanner, nav_core::BaseGlobalPlanner)
 
@@ -101,6 +106,7 @@ void WrapperPlanner::initialize(std::string name)
     private_nh.param("convert_offset", convert_offset_, 0.0);  // offset of transform from world(x,y) to grid
     private_nh.param("default_tolerance", tolerance_, 0.0);    // error tolerance
     private_nh.param("outline_map", is_outline_, false);       // whether outline the map or not
+    private_nh.param("voronoi_map", is_voronoi_map_, false);   // whether to store Voronoi map or not
 
     call_plan_srv_ = private_nh.advertiseService("call_plan", &WrapperPlanner::callPlanService, this);
 
@@ -144,6 +150,8 @@ bool WrapperPlanner::makePlan(const geometry_msgs::PoseStamped& start, const geo
  */
 bool WrapperPlanner::callPlanService(CallPlan::Request& req, CallPlan::Response& resp)
 {
+  planner_name_ = req.planner_name;
+
   // build planner
   if (req.planner_name == "a_star")
     g_planner_ = new global_planner::AStar(nx_, ny_, resolution_);
@@ -174,6 +182,13 @@ bool WrapperPlanner::callPlanService(CallPlan::Request& req, CallPlan::Response&
     g_planner_ = new global_planner::RRTConnect(nx_, ny_, resolution_, 2000, 10.0);
   else if (req.planner_name == "informed_rrt")
     g_planner_ = new global_planner::InformedRRT(nx_, ny_, resolution_, 3000, 10.0, 20.0);
+
+  else if (req.planner_name == "aco")
+    g_planner_ = new global_planner::ACO(nx_, ny_, resolution_, 50, 10, 5, 1.0, 5.0, 0.1, 1.0, GEN_MODE_CIRCLE, 100);
+  else if (req.planner_name == "pso")
+    g_planner_ = new global_planner::PSO(nx_, ny_, resolution_, 50, 10, 5, 1.0, 2.0, 1.2, 40, GEN_MODE_CIRCLE, 30);
+  else if (req.planner_name == "ga")
+    g_planner_ = new global_planner::GA(nx_, ny_, resolution_, 50, 20, 5, 0.5, 0.8, 0.3, 40, GEN_MODE_CIRCLE, 30);
   else
     ROS_ERROR("Unknown planner name: %s", req.planner_name.c_str());
 
@@ -204,22 +219,17 @@ bool WrapperPlanner::callPlanService(CallPlan::Request& req, CallPlan::Response&
   g_planner_->map2Grid(m_goal_x, m_goal_y, g_goal_x, g_goal_y);
 
   // NOTE: how to init start and goal?
-  global_planner::Node start_node(g_start_x, g_start_y, 0, 0, g_planner_->grid2Index(g_start_x, g_start_y), 0);
-  global_planner::Node goal_node(g_goal_x, g_goal_y, 0, 0, g_planner_->grid2Index(g_goal_x, g_goal_y), 0);
+  Node start_node(g_start_x, g_start_y, 0, 0, g_planner_->grid2Index(g_start_x, g_start_y), 0);
+  Node goal_node(g_goal_x, g_goal_y, 0, 0, g_planner_->grid2Index(g_goal_x, g_goal_y), 0);
 
   // outline the map
   if (is_outline_)
     g_planner_->outlineMap(costmap_->getCharMap());
 
-  // calculate path
-  std::vector<global_planner::Node> path;
-  std::vector<global_planner::Node> expand;
-  bool path_found = false;
-  ros::Publisher plan_pub_;  // path planning publisher
-  if (req.planner_name == "voronoi")
+  // calculate voronoi map
+  bool voronoi_layer_exist = false;
+  if (is_voronoi_map_)
   {
-    bool voronoi_layer_exist = false;
-    // check if the costmap has a Voronoi layer
     for (auto layer = costmap_ros_->getLayeredCostmap()->getPlugins()->begin();
          layer != costmap_ros_->getLayeredCostmap()->getPlugins()->end(); ++layer)
     {
@@ -228,28 +238,27 @@ bool WrapperPlanner::callPlanService(CallPlan::Request& req, CallPlan::Response&
       if (voronoi_layer)
       {
         voronoi_layer_exist = true;
-        global_planner::VoronoiData** voronoi_diagram;
-        voronoi_diagram = new global_planner::VoronoiData*[nx_];
-        for (unsigned int i = 0; i < nx_; i++)
-          voronoi_diagram[i] = new global_planner::VoronoiData[ny_];
-
         boost::unique_lock<boost::mutex> lock(voronoi_layer->getMutex());
-        const DynamicVoronoi& voronoi = voronoi_layer->getVoronoi();
-        for (unsigned int j = 0; j < ny_; j++)
-        {
-          for (unsigned int i = 0; i < nx_; i++)
-          {
-            voronoi_diagram[i][j].dist = voronoi.getDistance(i, j) * resolution_;
-            voronoi_diagram[i][j].is_voronoi = voronoi.isVoronoi(i, j);
-          }
-        }
-        path_found = dynamic_cast<global_planner::VoronoiPlanner*>(g_planner_)
-                         ->plan(voronoi_diagram, start_node, goal_node, path);
+        voronoi_ = voronoi_layer->getVoronoi();
         break;
       }
     }
     if (!voronoi_layer_exist)
-      ROS_ERROR("Failed to get a Voronoi layer for Voronoi planner");
+      ROS_WARN("Failed to get a Voronoi layer for potentional application.");
+  }
+
+  // calculate path
+  std::vector<Node> path;
+  std::vector<Node> expand;
+  bool path_found = false;
+  ros::Publisher plan_pub_;  // path planning publisher
+
+  // planning
+  if (planner_name_ == "voronoi")
+  {
+    if (!voronoi_layer_exist)
+      ROS_ERROR("Failed to get a Voronoi layer for Voronoi planner.");
+    path_found = dynamic_cast<global_planner::VoronoiPlanner*>(g_planner_)->plan(voronoi_, start_node, goal_node, path);
   }
   else
     path_found = g_planner_->plan(costmap_->getCharMap(), start_node, goal_node, path, expand);
@@ -279,8 +288,7 @@ bool WrapperPlanner::callPlanService(CallPlan::Request& req, CallPlan::Response&
  * @param plan plan transfromed from path, i.e. [start, ..., goal]
  * @return bool true if successful, else false
  */
-bool WrapperPlanner::_getPlanFromPath(std::vector<global_planner::Node>& path,
-                                      std::vector<geometry_msgs::PoseStamped>& plan)
+bool WrapperPlanner::_getPlanFromPath(std::vector<Node>& path, std::vector<geometry_msgs::PoseStamped>& plan)
 {
   if (!initialized_)
   {

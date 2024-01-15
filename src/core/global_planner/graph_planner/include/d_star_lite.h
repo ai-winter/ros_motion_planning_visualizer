@@ -1,13 +1,16 @@
-/**
-* @file: d_star_lite.h
-* @brief: Contains the D* lite planner class
-* @author: Zhanyu Guo
-* @date: 2023-03-19
-* @version: 1.0
-*
-* Copyright (c) 2023, Zhanyu Guo.
-* All rights reserved.
- */
+/***********************************************************
+ *
+ * @file: d_star_lite.h
+ * @breif: Contains the D* lite planner class
+ * @author: Zhanyu Guo
+ * @update: 2023-03-19
+ * @version: 1.0
+ *
+ * Copyright (c) 2023, Zhanyu Guo
+ * All rights reserved.
+ * --------------------------------------------------------
+ *
+ **********************************************************/
 #ifndef D_STAR_LITE_H
 #define D_STAR_LITE_H
 
@@ -109,8 +112,9 @@ public:
    *
    * @param start start node
    * @param goal  goal node
+   * @return flag true if extract successfully else do not
    */
-  void extractPath(const Node& start, const Node& goal);
+  bool extractPath(const Node& start, const Node& goal);
 
   /**
    * @brief Get the closest Node of the path to current state

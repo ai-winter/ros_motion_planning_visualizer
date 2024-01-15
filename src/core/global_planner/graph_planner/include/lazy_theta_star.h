@@ -1,13 +1,16 @@
-/**
-* @file: lazy_theta_star.h
-* @brief: Contains the lazy Theta* planner class
-* @author: Wu Maojia, Yang Haodong
-* @date: 2023-10-1
-* @version: 1.3
-*
-* Copyright (c) 2023, Wu Maojia.
-* All rights reserved.
- */
+/***********************************************************
+ *
+ * @file: lazy_theta_star.h
+ * @breif: Contains the lazy Theta* planner class
+ * @author: Wu Maojia, Yang Haodong
+ * @update: 2023-10-1
+ * @version: 1.3
+ *
+ * Copyright (c) 2023， Wu Maojia
+ * All rights reserved.
+ * --------------------------------------------------------
+ *
+ **********************************************************/
 #ifndef LAZY_THETA_STAR_H
 #define LAZY_THETA_STAR_H
 
@@ -58,8 +61,8 @@ protected:
   void _setVertex(Node& node);
 
 private:
-  std::unordered_set<Node, NodeIdAsHash, compare_coordinates> closed_list_;  // closed list
-  std::vector<Node> motion_;                                                 // possible motions
+  std::unordered_map<int, Node> closed_list_;  // closed list
+  std::vector<Node> motion_;                   // possible motions
 };
 }  // namespace global_planner
 #endif

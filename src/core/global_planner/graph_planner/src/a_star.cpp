@@ -1,13 +1,16 @@
-/**
-* @file: a_star.cpp
-* @brief: Contains the A* (dijkstra and GBFS) planner class
-* @author: Yang Haodong, Wu Maojia
-* @date: 2023-10-1
-* @version: 1.2
-*
-* Copyright (c) 2023, Yang Haodong.
-* All rights reserved.
- */
+/***********************************************************
+ *
+ * @file: a_star.cpp
+ * @breif: Contains the A* (dijkstra and GBFS) planner class
+ * @author: Yang Haodong, Wu Maojia
+ * @update: 2023-12-12
+ * @version: 1.2
+ *
+ * Copyright (c) 2023， Yang Haodong
+ * All rights reserved.
+ * --------------------------------------------------------
+ *
+ **********************************************************/
 #include "a_star.h"
 
 #include <queue>
@@ -18,11 +21,11 @@ namespace global_planner
 {
 /**
  * @brief Construct a new AStar object
- * @param nx          pixel number in costmap x direction
- * @param ny          pixel number in costmap y direction
- * @param resolution  costmap resolution
- * @param dijkstra    using diksktra implementation
- * @param gbfs        using gbfs implementation
+ * @param nx         pixel number in costmap x direction
+ * @param ny         pixel number in costmap y direction
+ * @param resolution costmap resolution
+ * @param dijkstra   using diksktra implementation
+ * @param gbfs       using gbfs implementation
  */
 AStar::AStar(int nx, int ny, double resolution, bool dijkstra, bool gbfs) : GlobalPlanner(nx, ny, resolution)
 {
@@ -37,17 +40,17 @@ AStar::AStar(int nx, int ny, double resolution, bool dijkstra, bool gbfs) : Glob
     is_dijkstra_ = false;
     is_gbfs_ = false;
   }
-  factor_ = 0.35;
+  factor_ = 0.25;
 };
 
 /**
  * @brief A* implementation
  * @param global_costmap global costmap
- * @param start         start node
- * @param goal          goal node
- * @param path          optimal path consists of Node
- * @param expand        containing the node been search during the process
- * @return  true if path found, else false
+ * @param start          start node
+ * @param goal           goal node
+ * @param path           optimal path consists of Node
+ * @param expand         containing the node been search during the process
+ * @return true if path found, else false
  */
 bool AStar::plan(const unsigned char* global_costmap, const Node& start, const Node& goal, std::vector<Node>& path,
                  std::vector<Node>& expand)
@@ -57,13 +60,13 @@ bool AStar::plan(const unsigned char* global_costmap, const Node& start, const N
   expand.clear();
 
   // open list and closed list
-  std::priority_queue<Node, std::vector<Node>, compare_cost> open_list;
-  std::unordered_set<Node, NodeIdAsHash, compare_coordinates> closed_list;
+  std::priority_queue<Node, std::vector<Node>, Node::compare_cost> open_list;
+  std::unordered_map<int, Node> closed_list;
 
   open_list.push(start);
 
   // get all possible motions
-  const std::vector<Node> motion = getMotion();
+  const std::vector<Node> motions = Node::getMotion();
 
   // main process
   while (!open_list.empty())
@@ -73,10 +76,10 @@ bool AStar::plan(const unsigned char* global_costmap, const Node& start, const N
     open_list.pop();
 
     // current node does not exist in closed list
-    if (closed_list.find(current) != closed_list.end())
+    if (closed_list.find(current.id_) != closed_list.end())
       continue;
 
-    closed_list.insert(current);
+    closed_list.insert(std::make_pair(current.id_, current));
     expand.push_back(current);
 
     // goal found
@@ -87,26 +90,28 @@ bool AStar::plan(const unsigned char* global_costmap, const Node& start, const N
     }
 
     // explore neighbor of current node
-    for (const auto& m : motion)
+    for (const auto& motion : motions)
     {
-      Node node_new = current + m;
+      // explore a new node
+      Node node_new = current + motion;
+      node_new.id_ = grid2Index(node_new.x_, node_new.y_);
 
-      // current node do not exist in closed list
-      if (closed_list.find(node_new) != closed_list.end())
+      // node_new in closed list
+      if (closed_list.find(node_new.id_) != closed_list.end())
         continue;
 
-      // explore a new node
-      node_new.id_ = grid2Index(node_new.x_, node_new.y_);
       node_new.pid_ = current.id_;
 
       // next node hit the boundary or obstacle
-      if ((node_new.id_ < 0) || (node_new.id_ >= ns_)
-          || (global_costmap[node_new.id_] >= lethal_cost_ * factor_ && global_costmap[node_new.id_] >= global_costmap[current.id_]))
+      // prevent planning failed when the current within inflation
+      if ((node_new.id_ < 0) || (node_new.id_ >= ns_) ||
+          (global_costmap[node_new.id_] >= lethal_cost_ * factor_ &&
+           global_costmap[node_new.id_] >= global_costmap[current.id_]))
         continue;
 
       // if using dijkstra implementation, do not consider heuristics cost
       if (!is_dijkstra_)
-        node_new.h_ = dist(node_new, goal);
+        node_new.h_ = helper::dist(node_new, goal);
 
       // if using GBFS implementation, only consider heuristics cost
       if (is_gbfs_)

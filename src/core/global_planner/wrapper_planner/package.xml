@@ -21,6 +21,7 @@
   <depend>tf2_geometry_msgs</depend>
   <depend>tf2_ros</depend>
   <depend>graph_planner</depend>
+  <depend>evolutionary_planner</depend>
   <depend>sample_planner</depend>
   <depend>global_planner</depend>
   <depend>voronoi_layer</depend>

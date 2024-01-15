@@ -1,12 +1,12 @@
 /**
-* @file: wrapper_planner.h
-* @brief: Contains the planner ROS wrapper class
-* @author: Yang Haodong
-* @date: 2023-10-2
-* @version: 1.0
-*
-* Copyright (c) 2023, Yang Haodong.
-* All rights reserved.
+ * @file: wrapper_planner.h
+ * @brief: Contains the planner ROS wrapper class
+ * @author: Yang Haodong
+ * @date: 2023-10-2
+ * @version: 1.0
+ *
+ * Copyright (c) 2023, Yang Haodong.
+ * All rights reserved.
  */
 #ifndef WRAPPER_PLANNER_H
 #define WRAPPER_PLANNER_H
@@ -15,6 +15,8 @@
 #include <nav_core/base_global_planner.h>
 
 #include "wrapper_planner/CallPlan.h"
+
+#include "dynamicvoronoi.h"
 #include "global_planner.h"
 
 namespace wrapper_planner
@@ -88,7 +90,7 @@ protected:
    * @param plan plan transfromed from path, i.e. [start, ..., goal]
    * @return bool true if successful, else false
    */
-  bool _getPlanFromPath(std::vector<global_planner::Node>& path, std::vector<geometry_msgs::PoseStamped>& plan);
+  bool _getPlanFromPath(std::vector<Node>& path, std::vector<geometry_msgs::PoseStamped>& plan);
 
   /**
    * @brief Tranform from costmap(x, y) to world map(x, y)
@@ -118,14 +120,16 @@ protected:
   unsigned int nx_, ny_;                      // costmap size
   double origin_x_, origin_y_;                // costmap origin
   double resolution_;                         // costmap resolution
-
-  ros::ServiceServer call_plan_srv_;  // planning service
+  std::string planner_name_;                  // planner name
+  ros::ServiceServer call_plan_srv_;          // planning service
 
 private:
-  double convert_offset_;  // offset of transform from world(x,y) to grid map(x,y)
-  double tolerance_;       // tolerance
-  double factor_;          // obstacle inflation factor
-  bool is_outline_;        // whether outline the boudary of map
+  double convert_offset_;   // offset of transform from world(x,y) to grid map(x,y)
+  double tolerance_;        // tolerance
+  double factor_;           // obstacle inflation factor
+  bool is_outline_;         // whether outline the boudary of map
+  bool is_voronoi_map_;     // whether to store Voronoi map or not
+  DynamicVoronoi voronoi_;  // dynamic voronoi map
 };
 }  // namespace wrapper_planner
 

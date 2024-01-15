@@ -1,13 +1,16 @@
-/**
-* @file: d_star_lite.cpp
-* @brief: Contains the D* lite planner class
-* @author: Zhanyu Guo
-* @date: 2023-03-19
-* @version: 1.0
-*
-* Copyright (c) 2023, Zhanyu Guo.
-* All rights reserved.
- */
+/***********************************************************
+ *
+ * @file: d_star_lite.cpp
+ * @breif: Contains the D* lite planner class
+ * @author: Zhanyu Guo
+ * @update: 2023-03-19
+ * @version: 1.0
+ *
+ * Copyright (c) 2023, Zhanyu Guo
+ * All rights reserved.
+ * --------------------------------------------------------
+ *
+ **********************************************************/
 #include "d_star_lite.h"
 
 namespace global_planner
@@ -233,14 +236,16 @@ void DStarLite::computeShortestPath()
  *
  * @param start start node
  * @param goal  goal node
+ * @return flag true if extract successfully else do not
  */
-void DStarLite::extractPath(const Node& start, const Node& goal)
+bool DStarLite::extractPath(const Node& start, const Node& goal)
 {
+  std::vector<Node> path_temp;
   LNodePtr node_ptr = map_[start.x_][start.y_];
   int count = 0;
   while (node_ptr->x_ != goal.x_ || node_ptr->y_ != goal.y_)
   {
-    path_.push_back(*node_ptr);
+    path_temp.push_back(*node_ptr);
 
     // argmin_{s\in pred(u)}
     std::vector<LNodePtr> neigbours;
@@ -259,10 +264,12 @@ void DStarLite::extractPath(const Node& start, const Node& goal)
 
     // TODO: it happens to cannnot find a path to start sometimes...
     // use counter to solve it templately
-    // if (count++ > 1000)
-    //   break;
+    if (count++ > 2000)
+      return false;
   }
-  std::reverse(path_.begin(), path_.end());
+  std::reverse(path_temp.begin(), path_temp.end());
+  path_ = path_temp;
+  return true;
 }
 
 /**
@@ -325,7 +332,7 @@ bool DStarLite::plan(const unsigned char* global_costmap, const Node& start, con
 
     computeShortestPath();
 
-    path_.clear();
+    // path_.clear();
     extractPath(start, goal);
 
     expand = expand_;

@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_geometry_msgs
   tf2_ros
   message_generation
+  evolutionary_planner
   global_planner
   graph_planner
   sample_planner
@@ -32,7 +33,7 @@ generate_messages(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS global_planner graph_planner sample_planner voronoi_layer
+  CATKIN_DEPENDS global_planner graph_planner sample_planner voronoi_layer evolutionary_planner
 )
 
 include_directories(

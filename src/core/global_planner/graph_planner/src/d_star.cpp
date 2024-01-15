@@ -1,29 +1,32 @@
-/**
-* @file: d_star.cpp
-* @brief: Contains the D* planner class
-* @author: Zhanyu Guo
-* @date: 2023-03-19
-* @version: 1.0
-*
-* Copyright (c) 2023, Zhanyu Guo.
-* All rights reserved.
- */
+/***********************************************************
+ *
+ * @file: d_star.cpp
+ * @breif: Contains the D* planner class
+ * @author: Zhanyu Guo
+ * @update: 2023-03-19
+ * @version: 1.0
+ *
+ * Copyright (c) 2023, Zhanyu Guo
+ * All rights reserved.
+ * --------------------------------------------------------
+ *
+ **********************************************************/
 #include "d_star.h"
 
 namespace global_planner
 {
 /**
  * @brief Construct a new DStar object
- * @param nx          pixel number in costmap x direction
- * @param ny          pixel number in costmap y direction
- * @param resolution  costmap resolution
+ * @param nx         pixel number in costmap x direction
+ * @param ny         pixel number in costmap y direction
+ * @param resolution costmap resolution
  */
 DStar::DStar(int nx, int ny, double resolution) : GlobalPlanner(nx, ny, resolution)
 {
   curr_global_costmap_ = new unsigned char[ns_];
   last_global_costmap_ = new unsigned char[ns_];
   goal_.x_ = goal_.y_ = INF;
-  factor_ = 0.35;
+  factor_ = 0.25;
   initMap();
 }
 
@@ -33,10 +36,10 @@ DStar::DStar(int nx, int ny, double resolution) : GlobalPlanner(nx, ny, resoluti
 void DStar::initMap()
 {
   map_ = new DNodePtr*[nx_];
-  for (int i = 0; i < nx_; i++)
+  for (int i = 0; i < nx_; ++i)
   {
     map_[i] = new DNodePtr[ny_];
-    for (int j = 0; j < ny_; j++)
+    for (int j = 0; j < ny_; ++j)
     {
       map_[i][j] = new DNode(i, j, INF, INF, grid2Index(i, j), -1, DNode::NEW, INF);
     }
@@ -50,11 +53,11 @@ void DStar::reset()
 {
   open_list_.clear();
 
-  for (int i = 0; i < nx_; i++)
-    for (int j = 0; j < ny_; j++)
+  for (int i = 0; i < nx_; ++i)
+    for (int j = 0; j < ny_; ++j)
       delete map_[i][j];
 
-  for (int i = 0; i < nx_; i++)
+  for (int i = 0; i < nx_; ++i)
     delete[] map_[i];
 
   delete[] map_;
@@ -64,8 +67,8 @@ void DStar::reset()
 
 /**
  * @brief Insert node_ptr into the open_list with h_new
- * @param node_ptr  DNode pointer of the DNode to be inserted
- * @param h_new     new h value
+ * @param node_ptr DNode pointer of the DNode to be inserted
+ * @param h_new    new h value
  */
 void DStar::insert(DNodePtr node_ptr, double h_new)
 {
@@ -83,8 +86,8 @@ void DStar::insert(DNodePtr node_ptr, double h_new)
 
 /**
  * @brief Check if there is collision between n1 and n2
- * @param n1  DNode pointer of one DNode
- * @param n2  DNode pointer of the other DNode
+ * @param n1 DNode pointer of one DNode
+ * @param n2 DNode pointer of the other DNode
  * @return true if collision, else false
  */
 bool DStar::isCollision(DNodePtr n1, DNodePtr n2)
@@ -95,15 +98,15 @@ bool DStar::isCollision(DNodePtr n1, DNodePtr n2)
 
 /**
  * @brief Get neighbour DNodePtrs of node_ptr
- * @param node_ptr     DNode to expand
- * @param neighbours  neigbour DNodePtrs in vector
+ * @param node_ptr   DNode to expand
+ * @param neighbours neigbour DNodePtrs in vector
  */
 void DStar::getNeighbours(DNodePtr node_ptr, std::vector<DNodePtr>& neighbours)
 {
   int x = node_ptr->x_, y = node_ptr->y_;
-  for (int i = -1; i <= 1; i++)
+  for (int i = -1; i <= 1; ++i)
   {
-    for (int j = -1; j <= 1; j++)
+    for (int j = -1; j <= 1; ++j)
     {
       if (i == 0 && j == 0)
         continue;
@@ -111,11 +114,8 @@ void DStar::getNeighbours(DNodePtr node_ptr, std::vector<DNodePtr>& neighbours)
       int x_n = x + i, y_n = y + j;
       if (x_n < 0 || x_n > nx_ - 1 || y_n < 0 || y_n > ny_ - 1)
         continue;
+
       DNodePtr neigbour_ptr = map_[x_n][y_n];
-
-      // if (isCollision(node_ptr, neigbour_ptr))
-      //   continue;
-
       neighbours.push_back(neigbour_ptr);
     }
   }
@@ -137,7 +137,6 @@ double DStar::getCost(DNodePtr n1, DNodePtr n2)
 
 /**
  * @brief Main process of D*
- *
  * @return k_min
  */
 double DStar::processState()
@@ -209,9 +208,9 @@ double DStar::processState()
  */
 void DStar::extractExpand(std::vector<Node>& expand)
 {
-  for (int i = 0; i < nx_; i++)
+  for (int i = 0; i < nx_; ++i)
   {
-    for (int j = 0; j < ny_; j++)
+    for (int j = 0; j < ny_; ++j)
     {
       DNodePtr node_ptr = map_[i][j];
       if (node_ptr->t_ == DNode::CLOSED)
@@ -276,10 +275,10 @@ void DStar::modify(DNodePtr x)
 
 /**
  * @brief D* implementation
- * @param global_costmap   costmap
- * @param start   start node
- * @param goal    goal node
- * @param expand  containing the node been search during the process
+ * @param global_costmap costmap
+ * @param start          start node
+ * @param goal           goal node
+ * @param expand         containing the node been search during the process
  * @return tuple contatining a bool as to whether a path was found, and the path
  */
 bool DStar::plan(const unsigned char* global_costmap, const Node& start, const Node& goal, std::vector<Node>& path,
@@ -323,9 +322,9 @@ bool DStar::plan(const unsigned char* global_costmap, const Node& start, const N
     Node state = getState(start);
 
     // prepare-repair
-    for (int i = -WINDOW_SIZE / 2; i < WINDOW_SIZE / 2; i++)
+    for (int i = -WINDOW_SIZE / 2; i < WINDOW_SIZE / 2; ++i)
     {
-      for (int j = -WINDOW_SIZE / 2; j < WINDOW_SIZE / 2; j++)
+      for (int j = -WINDOW_SIZE / 2; j < WINDOW_SIZE / 2; ++j)
       {
         int x_n = state.x_ + i, y_n = state.y_ + j;
         if (x_n < 0 || x_n > nx_ - 1 || y_n < 0 || y_n > ny_ - 1)

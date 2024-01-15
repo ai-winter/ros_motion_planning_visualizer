@@ -1,15 +1,17 @@
-/**
-* @file: theta_star.cpp
-* @brief: Contains the Theta* planner class
-* @author: Wu Maojia, Yang Haodong
-* @date: 2023-10-1
-* @version: 1.3
-*
-* Copyright (c) 2023, Wu Maojia.
-* All rights reserved.
- */
+/***********************************************************
+ *
+ * @file: theta_star.cpp
+ * @breif: Contains the Theta* planner class
+ * @author: Wu Maojia, Yang Haodong
+ * @update: 2023-10-1
+ * @version: 1.3
+ *
+ * Copyright (c) 2023， Wu Maojia
+ * All rights reserved.
+ * --------------------------------------------------------
+ *
+ **********************************************************/
 #include "theta_star.h"
-#include <iostream>
 
 namespace global_planner
 {
@@ -42,13 +44,13 @@ bool ThetaStar::plan(const unsigned char* global_costmap, const Node& start, con
   expand.clear();
 
   // open list and closed list
-  std::priority_queue<Node, std::vector<Node>, compare_cost> open_list;
-  std::unordered_set<Node, NodeIdAsHash, compare_coordinates> closed_list;
+  std::priority_queue<Node, std::vector<Node>, Node::compare_cost> open_list;
+  std::unordered_map<int, Node> closed_list;
 
   open_list.push(start);
 
   // get all possible motions
-  const std::vector<Node> motion = getMotion();
+  const std::vector<Node> motion = Node::getMotion();
 
   // main process
   while (!open_list.empty())
@@ -58,10 +60,10 @@ bool ThetaStar::plan(const unsigned char* global_costmap, const Node& start, con
     open_list.pop();
 
     // current node does not exist in closed list
-    if (closed_list.find(current) != closed_list.end())
+    if (closed_list.find(current.id_) != closed_list.end())
       continue;
 
-    closed_list.insert(current);
+    closed_list.insert(std::make_pair(current.id_, current));
     expand.push_back(current);
 
     // goal found
@@ -77,17 +79,17 @@ bool ThetaStar::plan(const unsigned char* global_costmap, const Node& start, con
       // explore a new node
       // path 1
       Node node_new = current + m;  // add the x_, y_, g_
-      node_new.h_ = dist(node_new, goal);
+      node_new.h_ = helper::dist(node_new, goal);
       node_new.id_ = grid2Index(node_new.x_, node_new.y_);
       node_new.pid_ = current.id_;
-      
+
       // current node do not exist in closed list
-      if (closed_list.find(node_new) != closed_list.end())
+      if (closed_list.find(node_new.id_) != closed_list.end())
         continue;
 
       // next node hit the boundary or obstacle
-      if ((node_new.id_ < 0) || (node_new.id_ >= ns_)
-          || (costs_[node_new.id_] >= lethal_cost_ * factor_ && costs_[node_new.id_] >= costs_[current.id_]))
+      if ((node_new.id_ < 0) || (node_new.id_ >= ns_) ||
+          (costs_[node_new.id_] >= lethal_cost_ * factor_ && costs_[node_new.id_] >= costs_[current.id_]))
         continue;
 
       // get the coordinate of parent node
@@ -96,10 +98,10 @@ bool ThetaStar::plan(const unsigned char* global_costmap, const Node& start, con
       index2Grid(parent.id_, parent.x_, parent.y_);
 
       // update g value
-      auto find_parent = closed_list.find(parent);
+      auto find_parent = closed_list.find(parent.id_);
       if (find_parent != closed_list.end())
       {
-        parent = *find_parent;
+        parent = find_parent->second;
         _updateVertex(parent, node_new);
       }
 
@@ -120,9 +122,9 @@ void ThetaStar::_updateVertex(const Node& parent, Node& child)
   if (_lineOfSight(parent, child))
   {
     // path 2
-    if (parent.g_ + dist(parent, child) < child.g_)
+    if (parent.g_ + helper::dist(parent, child) < child.g_)
     {
-      child.g_ = parent.g_ + dist(parent, child);
+      child.g_ = parent.g_ + helper::dist(parent, child);
       child.pid_ = parent.id_;
     }
   }

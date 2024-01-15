@@ -1,18 +1,20 @@
-/**
-* @file: rrt.h
-* @brief: Contains the Rapidly-Exploring Random Tree(RRT) planner class
-* @author: Yang Haodong
-* @date: 2022-10-27
-* @version: 1.0
-*
-* Copyright (c) 2023, Yang Haodong.
-* All rights reserved.
- */
+/***********************************************************
+ *
+ * @file: rrt.h
+ * @breif: Contains the Rapidly-Exploring Random Tree(RRT) planner class
+ * @author: Yang Haodong
+ * @update: 2022-10-27
+ * @version: 1.0
+ *
+ * Copyright (c) 2023， Yang Haodong
+ * All rights reserved.
+ * --------------------------------------------------------
+ *
+ **********************************************************/
 #ifndef RRT_H
 #define RRT_H
 
 #include <tuple>
-#include <unordered_map>
 
 #include "global_planner.h"
 
@@ -54,7 +56,7 @@ protected:
    * @param node  sample node
    * @return nearest node
    */
-  Node _findNearestPoint(std::unordered_set<Node, NodeIdAsHash, compare_coordinates> list, const Node& node);
+  Node _findNearestPoint(std::unordered_map<int, Node> list, const Node& node);
   /**
    * @brief Check if there is any obstacle between the 2 nodes.
    * @param n1        Node 1
@@ -78,7 +80,7 @@ protected:
   const unsigned char* costs_;  // costmap copy
   Node start_, goal_;           // start and goal node copy
   // set of sample nodes
-  std::unordered_set<Node, NodeIdAsHash, compare_coordinates> sample_list_;
+  std::unordered_map<int, Node> sample_list_;
   int sample_num_;   // max sample number
   double max_dist_;  // max distance threshold
 };
