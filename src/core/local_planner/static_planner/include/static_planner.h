@@ -1,12 +1,18 @@
 /**
-* @file: static_planner.h
-* @brief: Contains the static planner class used in path debugging.
-* @author: Yang Haodong
-* @date: 2023-8-31
-* @version: 1.0
-*
-* Copyright (c) 2023, Yang Haodong.
-* All rights reserved.
+ * *********************************************************
+ *
+ * @file: static_planner.h
+ * @brief: Contains the static planner class used in path debugging.
+ * @author: Yang Haodong
+ * @date: 2023-8-31
+ * @version: 1.0
+ *
+ * Copyright (c) 2023, Yang Haodong.
+ * All rights reserved.
+ *
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #ifndef STATIC_PLANNER_H
 #define STATIC_PLANNER_H
