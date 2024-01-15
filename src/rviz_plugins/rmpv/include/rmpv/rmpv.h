@@ -1,12 +1,18 @@
 /**
+ * *********************************************************
+ *
  * @file: rmpv.h
  * @brief: Contains ROS Motion Planning Visualizer (RMPV) Rviz plugin class
  * @author: Wu Maojia, Yang Haodong
- * @date: 2024-1-13
+ * @date: 2024-01-13
  * @version: 1.0
  *
- * Copyright (c) 2024, Yang Haodong, Wu Maojia.
+ * Copyright (c) 2024, Yang Haodong, Wu Maojia. 
  * All rights reserved.
+ * 
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #ifndef RMPV_H
 #define RMPV_H

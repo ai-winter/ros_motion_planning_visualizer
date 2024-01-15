@@ -1,12 +1,18 @@
 /**
+ * *********************************************************
+ *
  * @file: wrapper_planner.cpp
  * @brief: Contains the planner ROS wrapper class
  * @author: Yang Haodong
- * @date: 2023-10-2
+ * @date: 2023-10-02
  * @version: 1.0
  *
- * Copyright (c) 2023, Yang Haodong.
+ * Copyright (c) 2024, Yang Haodong. 
  * All rights reserved.
+ * 
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #include <pluginlib/class_list_macros.h>
 

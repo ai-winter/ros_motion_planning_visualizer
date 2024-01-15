@@ -1,12 +1,18 @@
 /**
+ * *********************************************************
+ *
  * @file: color_editor.cpp
  * @brief: Contains color editor class
  * @author: Wu Maojia
- * @date: 2024-1-12
+ * @date: 2024-01-12
  * @version: 1.0
  *
  * Copyright (c) 2024, Yang Haodong, Wu Maojia.
  * All rights reserved.
+ *
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #include "utils/color_editor.h"
 
@@ -26,7 +32,8 @@ ColorEditor::ColorEditor(int index, const QColor& color, QWidget* parent)
 }
 
 /*
- * @brief Slot function to paint just the color box. Paints it in the left end of rect, size rect.height() by rect.height().
+ * @brief Slot function to paint just the color box. Paints it in the left end of rect, size rect.height() by
+ * rect.height().
  * @param painter  the painter
  * @param rect  the QT rectangle
  * @param color  the color
@@ -37,8 +44,7 @@ void ColorEditor::paintColorBox(QPainter* painter, const QRect& rect, const QCol
   int size = rect.height() - padding * 2 - 1;
   painter->save();
   painter->setBrush(color);
-  painter->drawRoundedRect(rect.x() + padding + 3, rect.y() + padding, size, size, 0, 0,
-                           Qt::AbsoluteSize);
+  painter->drawRoundedRect(rect.x() + padding + 3, rect.y() + padding, size, size, 0, 0, Qt::AbsoluteSize);
   painter->restore();
 }
 
@@ -102,4 +108,4 @@ void ColorEditor::onButtonClick()
   QColor new_color = QColorDialog::getColor(color_, this);
   setColor(new_color);
 }
-} // namespace rmpv
+}  // namespace rmpv

@@ -1,12 +1,18 @@
 /**
-* @file: polynomial_curve.h
-* @brief: Polynomial curve generation
-* @author: Yang Haodong
-* @date: 2023-12-26
-* @version: 1.0
-*
-* Copyright (c) 2023, Yang Haodong.
-* All rights reserved.
+ * *********************************************************
+ *
+ * @file: polynomial_curve.h
+ * @brief: Polynomial curve generation
+ * @author: Yang Haodong
+ * @date: 2023-12-26
+ * @version: 1.0
+ *
+ * Copyright (c) 2024, Yang Haodong. 
+ * All rights reserved.
+ * 
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #ifndef POLYNOMIAL_CURVE_H
 #define POLYNOMIAL_CURVE_H

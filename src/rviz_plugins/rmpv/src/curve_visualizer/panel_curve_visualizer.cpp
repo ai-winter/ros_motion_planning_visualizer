@@ -1,12 +1,18 @@
 /**
- * @file: panel_curve_visualizer.cpp
+ * *********************************************************
+ *
+ * @file: panel_curve_visualizer.h
  * @brief: Contains panel of curve visualizer class
  * @author: Wu Maojia
- * @date: 2024-1-13
+ * @date: 2024-01-13
  * @version: 1.0
  *
  * Copyright (c) 2024, Yang Haodong, Wu Maojia.
  * All rights reserved.
+ *
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #include "curve_visualizer/panel_curve_visualizer.h"
 
@@ -63,7 +69,8 @@ void PanelCurveVisualizer::_updateTableViewCurves()
   // initialize curve list table model
   curves_model_->clear();
   curves_model_->setHorizontalHeaderLabels(curves_header_);
-  curves_model_->setHeaderData(0, Qt::Horizontal, "Only the selected curves will be displayed or saved.", Qt::ToolTipRole);
+  curves_model_->setHeaderData(0, Qt::Horizontal, "Only the selected curves will be displayed or saved.",
+                               Qt::ToolTipRole);
   curves_model_->setHeaderData(1, Qt::Horizontal, "Type of the generated curve.", Qt::ToolTipRole);
   curves_model_->setHeaderData(2, Qt::Horizontal, "Total length of the curve", Qt::ToolTipRole);
   curves_model_->setHeaderData(3, Qt::Horizontal, "Total turning angle of the curve, in radians", Qt::ToolTipRole);

@@ -1,12 +1,18 @@
 /**
-* @file: reeds_shepp_curve.cpp
-* @brief: Reeds shepp curve generation
-* @author: Yang Haodong
-* @date: 2023-12-26
-* @version: 1.0
-*
-* Copyright (c) 2023, Yang Haodong.
-* All rights reserved.
+ * *********************************************************
+ *
+ * @file: reeds_shepp_curve.h
+ * @brief: Reeds shepp curve generation
+ * @author: Yang Haodong
+ * @date: 2023-12-26
+ * @version: 1.0
+ *
+ * Copyright (c) 2024, Yang Haodong.
+ * All rights reserved.
+ *
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #include <cassert>
 #include <iostream>

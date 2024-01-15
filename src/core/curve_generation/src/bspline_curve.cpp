@@ -1,12 +1,18 @@
 /**
-* @file: bspline_curve.cpp
-* @brief: B-Spline curve generation
-* @author: Yang Haodong
-* @update: 2023-12-20
-* @version: 1.0
-*
-* Copyright (c) 2023, Yang Haodong.
-* All rights reserved.
+ * *********************************************************
+ *
+ * @file: bspline_curve.cpp
+ * @brief: B-Spline curve generation
+ * @author: Yang Haodong
+ * @date: 2023-12-20
+ * @version: 1.0
+ *
+ * Copyright (c) 2024, Yang Haodong. 
+ * All rights reserved.
+ * 
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #include <Eigen/Dense>
 #include <cassert>

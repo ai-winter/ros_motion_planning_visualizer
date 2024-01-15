@@ -1,13 +1,19 @@
 /**
-* @file: core_path_visualizer.h
-* @brief: Contains core of path visualizer class
-* @author: Wu Maojia, Yang Haodong
-* @date: 2024-1-12
-* @version: 1.0
-*
-* Copyright (c) 2024, Yang Haodong, Wu Maojia.
-* All rights reserved.
-*/
+ * *********************************************************
+ *
+ * @file: core_path_visualizer.h
+ * @brief: Contains core of path visualizer class
+ * @author: Wu Maojia, Yang Haodong
+ * @date: 2024-01-13
+ * @version: 1.0
+ *
+ * Copyright (c) 2024, Yang Haodong, Wu Maojia. 
+ * All rights reserved.
+ * 
+ * --------------------------------------------------------
+ *
+ * ********************************************************
+ */
 #ifndef CORE_PATH_VISUALIZER_H
 #define CORE_PATH_VISUALIZER_H
 

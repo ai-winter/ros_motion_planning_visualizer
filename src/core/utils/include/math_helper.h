@@ -1,12 +1,18 @@
 /**
-* @file: math_helper.h
-* @brief: Contains common/commonly used math function
-* @author: Yang Haodong
-* @date: 2024-1-3
-* @version: 1.0
-*
-* Copyright (c) 2024, Yang Haodong.
-* All rights reserved.
+ * *********************************************************
+ *
+ * @file: math_helper.h
+ * @brief: Contains common/commonly used math function
+ * @author: Yang Haodong
+ * @date: 2024-01-03
+ * @version: 1.2
+ *
+ * Copyright (c) 2024, Yang Haodong.
+ * All rights reserved.
+ *
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #ifndef MATH_HELPER_H
 #define MATH_HELPER_H

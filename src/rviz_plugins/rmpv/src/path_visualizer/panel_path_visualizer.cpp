@@ -1,12 +1,18 @@
 /**
- * @file: panel_path_visualizer.cpp
+ * *********************************************************
+ *
+ * @file: panel_path_visualizer.h
  * @brief: Contains panel of path visualizer class
  * @author: Wu Maojia, Yang Haodong
- * @date: 2024-1-12
+ * @date: 2024-01-12
  * @version: 1.0
  *
  * Copyright (c) 2024, Yang Haodong, Wu Maojia.
  * All rights reserved.
+ *
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #include "path_visualizer/panel_path_visualizer.h"
 
@@ -63,11 +69,12 @@ void PanelPathVisualizer::setupUi()
   connect(ui_->lineEdit_path_add_goal_x, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
   connect(ui_->lineEdit_path_add_goal_y, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
   connect(ui_->lineEdit_path_add_goal_yaw, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
-  connect(&selectDelegate_, SIGNAL(selectChanged(const int&, const bool&)), this, SLOT(_onSelectChanged(const int&, const bool&)));
+  connect(&selectDelegate_, SIGNAL(selectChanged(const int&, const bool&)), this,
+          SLOT(_onSelectChanged(const int&, const bool&)));
 }
 
 /**
-*  @brief if clicked signal from pushButton is received, call this slot function
+ *  @brief if clicked signal from pushButton is received, call this slot function
  */
 void PanelPathVisualizer::_onClicked()
 {
@@ -90,8 +97,9 @@ void PanelPathVisualizer::_onClicked()
     else if (senderName == QString::fromUtf8("pushButton_path_files_load"))
     {
       QString open_dir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-      QStringList open_files = QFileDialog::getOpenFileNames(parent_, QStringLiteral("Select Path Files"), open_dir,
-                                                             "JSON Files(*.json)", nullptr, QFileDialog::DontResolveSymlinks);
+      QStringList open_files =
+          QFileDialog::getOpenFileNames(parent_, QStringLiteral("Select Path Files"), open_dir, "JSON Files(*.json)",
+                                        nullptr, QFileDialog::DontResolveSymlinks);
       for (const auto& open_file : open_files)
         core_->loadPaths(open_file);
       _updateTableView();
@@ -131,7 +139,7 @@ void PanelPathVisualizer::_onClicked()
 }
 
 /**
-*  @brief if editing finished signal from lineEdit is received, call this slot function
+ *  @brief if editing finished signal from lineEdit is received, call this slot function
  */
 void PanelPathVisualizer::_onEditingFinished()
 {
@@ -180,7 +188,7 @@ void PanelPathVisualizer::_onEditingFinished()
  *  @param index  row index of path
  *  @param color  color of path
  */
-void PanelPathVisualizer::_onColorChanged(const int &index, const QColor &color)
+void PanelPathVisualizer::_onColorChanged(const int& index, const QColor& color)
 {
   core_->setPathColor(index, color);
 }
@@ -190,13 +198,13 @@ void PanelPathVisualizer::_onColorChanged(const int &index, const QColor &color)
  *  @param index  row index of path
  *  @param checked  if path is selected
  */
-void PanelPathVisualizer::_onSelectChanged(const int &index, const bool &checked)
+void PanelPathVisualizer::_onSelectChanged(const int& index, const bool& checked)
 {
   core_->setPathSelectStatus(index, checked);
 }
 
 /**
-*  @brief if value changed signal from core is received, call this slot function
+ *  @brief if value changed signal from core is received, call this slot function
  */
 void PanelPathVisualizer::_onValueChanged()
 {
@@ -216,7 +224,8 @@ void PanelPathVisualizer::_updateTableView()
   // initialize table model
   table_model_->clear();
   table_model_->setHorizontalHeaderLabels(table_header_);
-  table_model_->setHeaderData(0, Qt::Horizontal, "Only the selected paths will be displayed or saved.", Qt::ToolTipRole);
+  table_model_->setHeaderData(0, Qt::Horizontal, "Only the selected paths will be displayed or saved.",
+                              Qt::ToolTipRole);
   table_model_->setHeaderData(1, Qt::Horizontal, "Planner used to plan the path", Qt::ToolTipRole);
   table_model_->setHeaderData(2, Qt::Horizontal, "Start pose of the path", Qt::ToolTipRole);
   table_model_->setHeaderData(3, Qt::Horizontal, "Goal pose of the path", Qt::ToolTipRole);
@@ -236,35 +245,40 @@ void PanelPathVisualizer::_updateTableView()
     table_model_->setItem(row, 1, new QStandardItem(info.getData(PathInfo::plannerName).toString()));
 
     // 2nd column: start pose
-    table_model_->setItem(row, 2, new QStandardItem(QString("(%1,%2)")
-                                                        .arg(QString::number(info.getData(PathInfo::startPoseX).toDouble(), 'f', 3))
-                                                        .arg(QString::number(info.getData(PathInfo::startPoseY).toDouble(), 'f', 3))
-                                                        .arg(QString::number(info.getData(PathInfo::startPoseYaw).toDouble(), 'f', 3))
-                                                        ));
+    table_model_->setItem(
+        row, 2,
+        new QStandardItem(QString("(%1,%2)")
+                              .arg(QString::number(info.getData(PathInfo::startPoseX).toDouble(), 'f', 3))
+                              .arg(QString::number(info.getData(PathInfo::startPoseY).toDouble(), 'f', 3))
+                              .arg(QString::number(info.getData(PathInfo::startPoseYaw).toDouble(), 'f', 3))));
 
     // 3rd column: goal pose
-    table_model_->setItem(row, 3, new QStandardItem(QString("(%1,%2)")
-                                                        .arg(QString::number(info.getData(PathInfo::goalPoseX).toDouble(), 'f', 3))
-                                                        .arg(QString::number(info.getData(PathInfo::goalPoseY).toDouble(), 'f', 3))
-                                                        .arg(QString::number(info.getData(PathInfo::goalPoseYaw).toDouble(), 'f', 3))
-                                                        ));
+    table_model_->setItem(
+        row, 3,
+        new QStandardItem(QString("(%1,%2)")
+                              .arg(QString::number(info.getData(PathInfo::goalPoseX).toDouble(), 'f', 3))
+                              .arg(QString::number(info.getData(PathInfo::goalPoseY).toDouble(), 'f', 3))
+                              .arg(QString::number(info.getData(PathInfo::goalPoseYaw).toDouble(), 'f', 3))));
 
     // 4th column: path length
-    table_model_->setItem(row, 4, new QStandardItem(QString::number(info.getData(PathInfo::pathLength).toDouble(), 'f', 3)));
+    table_model_->setItem(row, 4,
+                          new QStandardItem(QString::number(info.getData(PathInfo::pathLength).toDouble(), 'f', 3)));
 
     // 5th column: path turning angle
     double turning_angle = info.getData(PathInfo::turningAngle).toDouble();
     table_model_->setItem(row, 5, new QStandardItem(QString::number(turning_angle, 'f', 3)));
 
     // 6th column: color
-    ColorEditor* colorEditor_list_color = new ColorEditor(row, info.getData(PathInfo::pathColor).value<QColor>(), parent_);
+    ColorEditor* colorEditor_list_color =
+        new ColorEditor(row, info.getData(PathInfo::pathColor).value<QColor>(), parent_);
     ui_->tableView_path_list->setIndexWidget(table_model_->index(row, 6), colorEditor_list_color);
     connect(colorEditor_list_color, SIGNAL(colorChanged(const int&, const QColor&)), this,
             SLOT(_onColorChanged(const int&, const QColor&)));
 
     // 7th column: remove button
     QPushButton* pushButton_list_remove = new QPushButton(parent_);
-    pushButton_list_remove->setObjectName(QString::fromUtf8("pushButton_path_list_remove_%1").arg(QString::number(row)));
+    pushButton_list_remove->setObjectName(
+        QString::fromUtf8("pushButton_path_list_remove_%1").arg(QString::number(row)));
     pushButton_list_remove->setIcon(QIcon(":/icons/cross.png"));
     pushButton_list_remove->setIconSize(QSize(20, 20));
     ui_->tableView_path_list->setIndexWidget(table_model_->index(row, 7), pushButton_list_remove);

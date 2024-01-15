@@ -1,12 +1,18 @@
 /**
-* @file: polynomial_curve.cpp
-* @brief: Polynomial curve generation
-* @author: Yang Haodong
-* @date: 2023-12-26
-* @version: 1.0
-*
-* Copyright (c) 2023, Yang Haodong.
-* All rights reserved.
+ * *********************************************************
+ *
+ * @file: polynomial_curve.cpp
+ * @brief: Polynomial curve generation
+ * @author: Yang Haodong
+ * @date: 2023-12-26
+ * @version: 1.0
+ *
+ * Copyright (c) 2024, Yang Haodong. 
+ * All rights reserved.
+ * 
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #include <Eigen/Dense>
 #include <algorithm>

@@ -1,13 +1,19 @@
 /**
-* @file: panel_path_visualizer.h
-* @brief: Contains panel of path visualizer class
-* @author: Wu Maojia, Yang Haodong
-* @date: 2024-1-12
-* @version: 1.0
-*
-* Copyright (c) 2024, Yang Haodong, Wu Maojia.
-* All rights reserved.
-*/
+ * *********************************************************
+ *
+ * @file: panel_path_visualizer.h
+ * @brief: Contains panel of path visualizer class
+ * @author: Wu Maojia, Yang Haodong
+ * @date: 2024-01-12
+ * @version: 1.0
+ *
+ * Copyright (c) 2024, Yang Haodong, Wu Maojia. 
+ * All rights reserved.
+ * 
+ * --------------------------------------------------------
+ *
+ * ********************************************************
+ */
 #ifndef PANEL_PATH_VISUALIZER_H
 #define PANEL_PATH_VISUALIZER_H
 

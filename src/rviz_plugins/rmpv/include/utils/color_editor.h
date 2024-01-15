@@ -1,12 +1,18 @@
 /**
+ * *********************************************************
+ *
  * @file: color_editor.h
  * @brief: Contains color editor class
  * @author: Wu Maojia
- * @date: 2024-1-12
+ * @date: 2024-01-12
  * @version: 1.0
  *
- * Copyright (c) 2024, Yang Haodong, Wu Maojia.
+ * Copyright (c) 2024, Yang Haodong, Wu Maojia. 
  * All rights reserved.
+ * 
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #ifndef COLOR_EDITOR_H
 #define COLOR_EDITOR_H

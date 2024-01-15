@@ -1,13 +1,19 @@
 /**
-* @file: core_curve_visualizer.h
-* @brief: Contains core of curve visualizer class
-* @author: Wu Maojia, Yang Haodong
-* @date: 2024-1-13
-* @version: 1.0
-*
-* Copyright (c) 2024, Yang Haodong, Wu Maojia.
-* All rights reserved.
-*/
+ * *********************************************************
+ *
+ * @file: core_curve_visualizer.h
+ * @brief: Contains core of curve visualizer class
+ * @author: Wu Maojia, Yang Haodong
+ * @date: 2024-01-13
+ * @version: 1.0
+ *
+ * Copyright (c) 2024, Yang Haodong. 
+ * All rights reserved.
+ * 
+ * --------------------------------------------------------
+ *
+ * ********************************************************
+ */
 #ifndef CORE_CURVE_VISUALIZER_H
 #define CORE_CURVE_VISUALIZER_H
 
@@ -85,9 +91,9 @@ public:
   void removeCurve(const int& index);
 
 public:
-  ros::Publisher marker_pub_;   // map marker publisher
-  ros::Publisher curves_pub_;   // curves publisher
-  ros::Publisher poses_pub_;    // poses publisher
+  ros::Publisher marker_pub_;  // map marker publisher
+  ros::Publisher curves_pub_;  // curves publisher
+  ros::Publisher poses_pub_;   // poses publisher
 
   // curve info list
   CurveList* curve_list_;

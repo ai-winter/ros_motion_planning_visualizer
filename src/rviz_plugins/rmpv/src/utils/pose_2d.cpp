@@ -1,12 +1,18 @@
 /**
+ * *********************************************************
+ *
  * @file: pose_2d.cpp
  * @brief: Contains Pose2D struct
  * @author: Wu Maojia
- * @date: 2024-1-12
+ * @date: 2024-01-12
  * @version: 1.0
  *
  * Copyright (c) 2024, Yang Haodong, Wu Maojia.
  * All rights reserved.
+ *
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #include "utils/pose_2d.h"
 
@@ -18,22 +24,26 @@ namespace rmpv
  * @param y  the y coordinate of pose
  * @param yaw the yaw of pose
  */
-Pose2D::Pose2D(double x, double y, double yaw): x(x), y(y), yaw(yaw){
+Pose2D::Pose2D(double x, double y, double yaw) : x(x), y(y), yaw(yaw)
+{
   normalizeYaw();
 }
 
 /**
  * @brief Destroy the Pose2D object
  */
-Pose2D::~Pose2D(){}
+Pose2D::~Pose2D()
+{
+}
 
 /**
  * @brief normalize yaw to be within the range [-π, π]
  */
-void Pose2D::normalizeYaw() {
+void Pose2D::normalizeYaw()
+{
   double pi = std::acos(-1);
 
-  yaw = std::fmod(yaw, 2.0 * pi); // get the remainder of yaw / (2*pi)
+  yaw = std::fmod(yaw, 2.0 * pi);  // get the remainder of yaw / (2*pi)
   if (yaw > pi)
     yaw -= 2.0 * pi;
   else if (yaw < -pi)

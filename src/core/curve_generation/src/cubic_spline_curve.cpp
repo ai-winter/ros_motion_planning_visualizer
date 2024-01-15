@@ -1,12 +1,18 @@
 /**
-* @file: cubic_spline_curve.cpp
-* @brief: Cubic spline generation
-* @author: Yang Haodong
-* @date: 2023-12-22
-* @version: 1.0
-*
-* Copyright (c) 2023, Yang Haodong.
-* All rights reserved.
+ * *********************************************************
+ *
+ * @file: cubic_spline_curve.cpp
+ * @brief: Cubic spline generation
+ * @author: Yang Haodong
+ * @date: 2023-12-22
+ * @version: 1.0
+ *
+ * Copyright (c) 2024, Yang Haodong. 
+ * All rights reserved.
+ * 
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #include <Eigen/Dense>
 

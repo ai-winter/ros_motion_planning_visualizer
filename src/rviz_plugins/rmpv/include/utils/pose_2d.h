@@ -1,12 +1,18 @@
 /**
+ * *********************************************************
+ *
  * @file: pose_2d.h
  * @brief: Contains Pose2D struct
  * @author: Wu Maojia
- * @date: 2024-1-12
+ * @date: 2024-01-12
  * @version: 1.0
  *
- * Copyright (c) 2024, Yang Haodong, Wu Maojia.
+ * Copyright (c) 2024, Yang Haodong, Wu Maojia. 
  * All rights reserved.
+ * 
+ * --------------------------------------------------------
+ *
+ * ********************************************************
  */
 #ifndef POSE_2D_H
 #define POSE_2D_H

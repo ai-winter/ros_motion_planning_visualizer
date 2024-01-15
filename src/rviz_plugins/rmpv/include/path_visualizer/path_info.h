@@ -1,13 +1,19 @@
 /**
-* @file: path_info.h
-* @brief: Contains PathInfo class
-* @author: Wu Maojia, Yang Haodong
-* @date: 2024-1-12
-* @version: 1.0
-*
-* Copyright (c) 2024, Yang Haodong, Wu Maojia.
-* All rights reserved.
-*/
+ * *********************************************************
+ *
+ * @file: path_info.h
+ * @brief: Contains PathInfo class
+ * @author: Wu Maojia, Yang Haodong
+ * @date: 2024-01-12
+ * @version: 1.0
+ *
+ * Copyright (c) 2024, Yang Haodong, Wu Maojia. 
+ * All rights reserved.
+ * 
+ * --------------------------------------------------------
+ *
+ * ********************************************************
+ */
 #ifndef PATH_INFO_H
 #define PATH_INFO_H
 
