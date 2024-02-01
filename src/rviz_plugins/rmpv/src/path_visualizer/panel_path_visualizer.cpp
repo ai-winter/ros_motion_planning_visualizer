@@ -48,6 +48,9 @@ PanelPathVisualizer::~PanelPathVisualizer()
  */
 void PanelPathVisualizer::setupUi()
 {
+  ui_->horizontalLayout_path_add_start->addWidget(new StartPoseButton(parent_));
+  ui_->horizontalLayout_path_add_goal->addWidget(new GoalPoseButton(parent_));
+
   table_model_ = new QStandardItemModel(parent_);
   table_header_ = QStringList({ "Select", "Planner", "Start", "Goal", "Length", "Turning Angle", "Color", "Remove" });
   ui_->tableView_path_list->setModel(table_model_);

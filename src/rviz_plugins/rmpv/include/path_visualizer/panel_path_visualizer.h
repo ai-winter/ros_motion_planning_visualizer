@@ -37,6 +37,8 @@
 #include "wrapper_planner/CallPlan.h"
 #include "utils/select_delegate.h"
 #include "utils/color_editor.h"
+#include "utils/start_pose_button.h"
+#include "utils/goal_pose_button.h"
 #include "path_visualizer/core_path_visualizer.h"
 #include "rmpv/ui_rmpv.h"
 

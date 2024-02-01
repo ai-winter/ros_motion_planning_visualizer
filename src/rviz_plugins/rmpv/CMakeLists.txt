@@ -63,6 +63,9 @@ set(SOURCE_FILES
         src/utils/pose_2d.cpp
         src/utils/select_delegate.cpp
         src/utils/color_editor.cpp
+        src/utils/pose_button.cpp
+        src/utils/start_pose_button.cpp
+        src/utils/goal_pose_button.cpp
         ${MOC_FILES}
         )
 
@@ -81,6 +84,9 @@ set(HEADER_FILES
         include/utils/pose_2d.h
         include/utils/select_delegate.h
         include/utils/color_editor.h
+        include/utils/pose_button.h
+        include/utils/start_pose_button.h
+        include/utils/goal_pose_button.h
         )
 
 set(RESOURCE_FILES
