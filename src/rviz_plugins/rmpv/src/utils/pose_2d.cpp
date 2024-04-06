@@ -22,11 +22,11 @@ namespace rmpv
  * @brief Construct a new Pose2D object
  * @param x  the x coordinate of pose
  * @param y  the y coordinate of pose
- * @param yaw the yaw of pose
+ * @param theta the theta of pose
  */
-Pose2D::Pose2D(double x, double y, double yaw) : x(x), y(y), yaw(yaw)
+Pose2D::Pose2D(double x, double y, double theta) : x(x), y(y), theta(theta)
 {
-  normalizeYaw();
+  normalizeTheta();
 }
 
 /**
@@ -37,16 +37,16 @@ Pose2D::~Pose2D()
 }
 
 /**
- * @brief normalize yaw to be within the range [-π, π]
+ * @brief normalize theta to be within the range [-π, π]
  */
-void Pose2D::normalizeYaw()
+void Pose2D::normalizeTheta()
 {
   double pi = std::acos(-1);
 
-  yaw = std::fmod(yaw, 2.0 * pi);  // get the remainder of yaw / (2*pi)
-  if (yaw > pi)
-    yaw -= 2.0 * pi;
-  else if (yaw < -pi)
-    yaw += 2.0 * pi;
+  theta = std::fmod(theta, 2.0 * pi);  // get the remainder of theta / (2*pi)
+  if (theta > pi)
+    theta -= 2.0 * pi;
+  else if (theta < -pi)
+    theta += 2.0 * pi;
 }
 }  // namespace rmpv

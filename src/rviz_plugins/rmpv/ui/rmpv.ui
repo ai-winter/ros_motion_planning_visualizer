@@ -87,14 +87,14 @@
               <widget class="QLineEdit" name="lineEdit_path_add_start_y"/>
              </item>
              <item>
-              <widget class="QLabel" name="label_path_add_start_yaw">
+              <widget class="QLabel" name="label_path_add_start_theta">
                <property name="text">
-                <string>yaw</string>
+                <string>θ</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_path_add_start_yaw"/>
+              <widget class="QLineEdit" name="lineEdit_path_add_start_theta"/>
              </item>
             </layout>
            </widget>
@@ -129,14 +129,14 @@
               <widget class="QLineEdit" name="lineEdit_path_add_goal_y"/>
              </item>
              <item>
-              <widget class="QLabel" name="label_path_add_goal_yaw">
+              <widget class="QLabel" name="label_path_add_goal_theta">
                <property name="text">
-                <string>yaw</string>
+                <string>θ</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_path_add_goal_yaw"/>
+              <widget class="QLineEdit" name="lineEdit_path_add_goal_theta"/>
              </item>
             </layout>
            </widget>
@@ -516,15 +516,15 @@
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="QLineEdit" name="lineEdit_curve_addPose_yaw"/>
+             <widget class="QLineEdit" name="lineEdit_curve_addPose_theta"/>
             </item>
             <item row="0" column="1">
              <widget class="QLineEdit" name="lineEdit_curve_addPose_x"/>
             </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="label_curve_addPose_yaw">
+             <widget class="QLabel" name="label_curve_addPose_theta">
               <property name="text">
-               <string>yaw</string>
+               <string>θ</string>
               </property>
              </widget>
             </item>
@@ -667,10 +667,10 @@
   <tabstop>tableView_path_list</tabstop>
   <tabstop>lineEdit_path_add_start_x</tabstop>
   <tabstop>lineEdit_path_add_start_y</tabstop>
-  <tabstop>lineEdit_path_add_start_yaw</tabstop>
+  <tabstop>lineEdit_path_add_start_theta</tabstop>
   <tabstop>lineEdit_path_add_goal_x</tabstop>
   <tabstop>lineEdit_path_add_goal_y</tabstop>
-  <tabstop>lineEdit_path_add_goal_yaw</tabstop>
+  <tabstop>lineEdit_path_add_goal_theta</tabstop>
   <tabstop>comboBox_path_add_planner_global</tabstop>
   <tabstop>pushButton_path_add_add</tabstop>
   <tabstop>pushButton_path_files_load</tabstop>
@@ -681,7 +681,7 @@
   <tabstop>pushButton_curve_addCurve_add</tabstop>
   <tabstop>lineEdit_curve_addPose_x</tabstop>
   <tabstop>lineEdit_curve_addPose_y</tabstop>
-  <tabstop>lineEdit_curve_addPose_yaw</tabstop>
+  <tabstop>lineEdit_curve_addPose_theta</tabstop>
   <tabstop>pushButton_curve_addPose_add</tabstop>
   <tabstop>pushButton_curve_files_load</tabstop>
   <tabstop>pushButton_curve_files_save</tabstop>

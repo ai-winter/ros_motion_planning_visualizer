@@ -122,7 +122,7 @@ bool CurveList::save(QString file_name) const
       QJsonObject pose;
       pose["x"] = p.x;
       pose["y"] = p.y;
-      pose["yaw"] = p.yaw;
+      pose["theta"] = p.theta;
       poses_array.append(pose);
     }
     curve_json["poses"] = poses_array;
@@ -201,7 +201,7 @@ bool CurveList::load(QString file_name)
     QList<Pose2D> curve_poses;
     curve_poses.clear();
     for (const auto& pose : poses_array)
-      curve_poses.push_back(Pose2D(pose.toObject()["x"].toDouble(), pose.toObject()["y"].toDouble(), pose.toObject()["yaw"].toDouble()));
+      curve_poses.push_back(Pose2D(pose.toObject()["x"].toDouble(), pose.toObject()["y"].toDouble(), pose.toObject()["theta"].toDouble()));
 
     QList<Point2D> curve_points;
     curve_points.clear();

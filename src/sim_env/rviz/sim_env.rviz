@@ -12,6 +12,8 @@ Panels:
         - /Marker1
         - /Map2
         - /MarkerArray1
+        - /InteractiveMarkers1
+        - /InteractiveMarkers2
       Splitter Ratio: 0.5
     Tree Height: 300
   - Class: rviz/Selection
@@ -193,6 +195,15 @@ Visualization Manager:
       Namespaces:
         path_marker: true
       Queue Size: 100
+      Value: true
+    - Class: rviz/InteractiveMarkers
+      Enable Transparency: true
+      Enabled: true
+      Name: InteractiveMarkers
+      Show Axes: false
+      Show Descriptions: true
+      Show Visual Aids: false
+      Update Topic: /rmpv_interactive_markers/update
       Value: true
   Enabled: true
   Global Options:

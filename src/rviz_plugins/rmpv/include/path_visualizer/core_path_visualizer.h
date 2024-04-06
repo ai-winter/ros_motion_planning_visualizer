@@ -4,7 +4,7 @@
  * @file: core_path_visualizer.h
  * @brief: Contains core of path visualizer class
  * @author: Wu Maojia, Yang Haodong
- * @date: 2024-01-13
+ * @date: 2024-4-6
  * @version: 1.0
  *
  * Copyright (c) 2024, Yang Haodong, Wu Maojia. 
@@ -19,14 +19,16 @@
 
 #include <rviz/panel.h>
 #include <ros/ros.h>
-#include <geometry_msgs/PoseStamped.h>
-#include <geometry_msgs/PoseWithCovarianceStamped.h>
+#include <geometry_msgs/Pose.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf/tf.h>
 
+#include <interactive_markers/interactive_marker_server.h>
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
+#include <visualization_msgs/InteractiveMarker.h>
+#include <visualization_msgs/InteractiveMarkerFeedback.h>
 #include <nav_msgs/Path.h>
 
 #include "wrapper_planner/CallPlan.h"
@@ -110,16 +112,24 @@ Q_SIGNALS:
 
 protected:
   /**
-   *  @brief update the start point, it is a callback funciton
-   *  @param  pose    the start setting in Rviz
+   *  @brief update the start pose marker, it is a callback funciton
+   *  @param int_marker  interactive marker message
    */
-  void _onStartUpdate(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose);
+  void _onStartUpdate(const visualization_msgs::InteractiveMarkerFeedback::ConstPtr& int_marker);
 
   /**
-   *  @brief update the goal point, it is a callback funciton
-   *  @param  pose    the goal setting in Rviz
+   *  @brief update the goal pose marker, it is a callback funciton
+   *  @param int_marker  interactive marker message
    */
-  void _onGoalUpdate(const geometry_msgs::PoseStamped::ConstPtr& pose);
+  void _onGoalUpdate(const visualization_msgs::InteractiveMarkerFeedback::ConstPtr& int_marker);
+
+  /**
+   * @brief make an interactive marker for pose
+   * @param name  name of the marker
+   * @param pose  pose of the marker
+   * @return an interactive marker message
+   */
+  visualization_msgs::InteractiveMarker makeInteractiveMarker(const std::string& name, const Pose2D& pose);
 
   /**
    *  @brief if clicked signal is received, call this slot function
@@ -139,6 +149,9 @@ public:
 
   // start and goal point subscriber
   ros::Subscriber start_sub_, goal_sub_;
+
+  // interactive marker server
+  interactive_markers::InteractiveMarkerServer* im_server_;
 
   // call plan client
   ros::ServiceClient call_plan_client_;

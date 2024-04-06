@@ -22,10 +22,9 @@ namespace rmpv
   * @brief Construct a new GoalPoseButton object
   * @param parent  the parent widget
  */
-GoalPoseButton::GoalPoseButton(QWidget* parent)
- : PoseButton(parent)
-{
-  setIcon(QIcon(":/icons/goal_pose.png"));
-  setToolTip("Set goal pose using mouse");
-}
+//GoalPoseButton::GoalPoseButton()
+//{
+//  setIcon(QIcon(":/icons/goal_pose.png"));
+//  setToolTip("Set goal pose using mouse");
+//}
 }  // namespace rmpv

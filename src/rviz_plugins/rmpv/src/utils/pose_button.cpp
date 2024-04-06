@@ -19,14 +19,26 @@
 namespace rmpv
 {
 /*
-  * @brief Construct a new PoseButton object
+  * @brief Construct a new ToolButton object
   * @param parent  the parent widget
  */
 PoseButton::PoseButton(QWidget* parent)
- : QPushButton(parent)
+    : QToolButton(parent)
 {
-  setFixedSize(25, 25);
-  setIcon(QIcon(":/icons/pose.png"));
-  setToolTip("Set pose using mouse");
+//  setFixedSize(25, 25);
+//  setIcon(QIcon(":/icons/pose.png"));
+//  setToolTip("Set pose using mouse");
+//  connect(this, SIGNAL(clicked()), this, SLOT(onClicked()));
+}
+
+PoseButton::~PoseButton()
+{
+}
+
+void PoseButton::onClicked()
+{
+//  QPushButton::onClicked();
+//  rviz::ToolManager* tool_manager = rviz::ToolManager();
+//  tool_manager->addTool("rviz/SetGoal");
 }
 }  // namespace rmpv

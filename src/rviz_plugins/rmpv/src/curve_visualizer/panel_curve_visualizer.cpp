@@ -56,7 +56,7 @@ void PanelCurveVisualizer::setupUi()
   _updateTableViewCurves();
 
   poses_model_ = new QStandardItemModel(parent_);
-  poses_header_ = QStringList({ "x", "y", "yaw", "Remove" });
+  poses_header_ = QStringList({ "x", "y", "\316\270", "Remove" });
   ui_->tableView_curve_poses->setModel(poses_model_);
   _updateTableViewPoses();
 }
@@ -89,7 +89,7 @@ void PanelCurveVisualizer::_updateTableViewPoses()
   poses_model_->setHorizontalHeaderLabels(poses_header_);
   poses_model_->setHeaderData(0, Qt::Horizontal, "X-coordinate of the pose", Qt::ToolTipRole);
   poses_model_->setHeaderData(1, Qt::Horizontal, "Y-coordinate of the pose", Qt::ToolTipRole);
-  poses_model_->setHeaderData(2, Qt::Horizontal, "Yaw angle of the pose, in radians", Qt::ToolTipRole);
+  poses_model_->setHeaderData(2, Qt::Horizontal, "\316\270 angle of the pose, in radians", Qt::ToolTipRole);
   poses_model_->setHeaderData(3, Qt::Horizontal, "Remove the path from path list", Qt::ToolTipRole);
   //  poses_model_->setRowCount(core_->pose_list_->size());
 }
