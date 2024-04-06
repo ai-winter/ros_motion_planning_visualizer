@@ -227,8 +227,7 @@ void PanelPathVisualizer::_updateTableView()
   // initialize table model
   table_model_->clear();
   table_model_->setHorizontalHeaderLabels(table_header_);
-  table_model_->setHeaderData(0, Qt::Horizontal, "Only the selected paths will be displayed or saved.",
-                              Qt::ToolTipRole);
+  table_model_->setHeaderData(0, Qt::Horizontal, "Only the selected paths will be displayed or saved.", Qt::ToolTipRole);
   table_model_->setHeaderData(1, Qt::Horizontal, "Planner used to plan the path", Qt::ToolTipRole);
   table_model_->setHeaderData(2, Qt::Horizontal, "Start pose of the path", Qt::ToolTipRole);
   table_model_->setHeaderData(3, Qt::Horizontal, "Goal pose of the path", Qt::ToolTipRole);

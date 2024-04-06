@@ -54,8 +54,7 @@ void CorePathVisualizer::setupROS()
   call_plan_client_ = private_nh.serviceClient<wrapper_planner::CallPlan>("/move_base/WrapperPlanner/call_plan");
 
   // publishers
-  marker_pub_ = private_nh.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-  paths_pub_ = private_nh.advertise<visualization_msgs::MarkerArray>("/paths", 10);
+  paths_pub_ = private_nh.advertise<visualization_msgs::MarkerArray>("/rmpv_paths", 10);
 
   // parameters
   private_nh.getParam("/move_base/planner", planner_list_);
@@ -185,6 +184,7 @@ void CorePathVisualizer::removePath(const int& index)
   if (path_list_->remove(index))
   {
     ROS_WARN("Path with index %d is successfully removed!", index);
+    refresh_paths();
   }
   else
     ROS_ERROR("Failed to remove path with index %d.", index);
@@ -195,17 +195,25 @@ void CorePathVisualizer::removePath(const int& index)
  */
 void CorePathVisualizer::refresh_paths()
 {
-  visualization_msgs::Marker path_marker;
   visualization_msgs::MarkerArray path_marker_array;
+  visualization_msgs::Marker path_marker;
+
+  path_marker.action = path_marker.DELETEALL;
+  path_marker_array.markers.push_back(path_marker);
+  path_marker.points.clear();
+
   int marker_id = 0;
 
   for (const auto& info : *(path_list_->getListPtr()))
   {
+    if (!info.getData(PathInfo::selectStatus).value<bool>())
+      continue;
+
     QList<Point2D> path_points = info.getPathPoints();
     for (unsigned int i = 0; i < path_points.size() - 1; i++)
     {
       path_marker.ns = "path_marker";
-      path_marker.type = visualization_msgs::Marker::LINE_LIST;
+      path_marker.type = visualization_msgs::Marker::LINE_STRIP;
       path_marker.action = path_marker.ADD;
       geometry_msgs::Point p;
       p.x = path_points[i].x;

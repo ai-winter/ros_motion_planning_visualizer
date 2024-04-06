@@ -142,7 +142,6 @@ protected:
   void _onEditingFinished();
 
 public:
-  ros::Publisher marker_pub_;  // map marker publisher
   ros::Publisher paths_pub_;   // paths publisher
   ros::Publisher start_pub_;   // start pose publisher
   ros::Publisher goal_pub_;    // goal pose publisher
