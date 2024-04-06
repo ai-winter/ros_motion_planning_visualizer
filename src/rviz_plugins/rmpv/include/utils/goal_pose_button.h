@@ -26,11 +26,16 @@ class GoalPoseButton : public PoseButton
  Q_OBJECT
 
 public:
- /*
-  * @brief Construct a new GoalPoseButton object
-  * @param parent  the parent widget
-  */
- GoalPoseButton(QWidget* parent = nullptr);
+  /*
+   * @brief Construct a new GoalPoseButton object
+   * @param parent  the parent widget
+   */
+  GoalPoseButton(QWidget* parent = nullptr);
+
+  ~GoalPoseButton();
+
+protected:
+  void onPoseSet(double x, double y, double theta) override;
 };
 } // namespace rmpv
 #endif  // GOAL_POSE_BUTTON_H

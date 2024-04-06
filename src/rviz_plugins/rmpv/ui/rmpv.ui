@@ -87,14 +87,14 @@
               <widget class="QLineEdit" name="lineEdit_path_add_start_y"/>
              </item>
              <item>
-              <widget class="QLabel" name="label_path_add_start_yaw">
+              <widget class="QLabel" name="label_path_add_start_theta">
                <property name="text">
-                <string>yaw</string>
+                <string>θ</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_path_add_start_yaw"/>
+              <widget class="QLineEdit" name="lineEdit_path_add_start_theta"/>
              </item>
             </layout>
            </widget>
@@ -129,14 +129,14 @@
               <widget class="QLineEdit" name="lineEdit_path_add_goal_y"/>
              </item>
              <item>
-              <widget class="QLabel" name="label_path_add_goal_yaw">
+              <widget class="QLabel" name="label_path_add_goal_theta">
                <property name="text">
-                <string>yaw</string>
+                <string>θ</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_path_add_goal_yaw"/>
+              <widget class="QLineEdit" name="lineEdit_path_add_goal_theta"/>
              </item>
             </layout>
            </widget>
@@ -325,339 +325,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_curve">
-      <attribute name="title">
-       <string>Curve Visualizer</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_curve">
-       <item row="0" column="0" rowspan="3">
-        <widget class="QGroupBox" name="groupBox_curve_curves">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="toolTip">
-          <string/>
-         </property>
-         <property name="title">
-          <string>Curve List</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_curve_curves">
-          <item>
-           <widget class="QTableView" name="tableView_curve_curves">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAsNeeded</enum>
-            </property>
-            <property name="sizeAdjustPolicy">
-             <enum>QAbstractScrollArea::AdjustIgnored</enum>
-            </property>
-            <property name="editTriggers">
-             <set>QAbstractItemView::NoEditTriggers</set>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QGroupBox" name="groupBox_curve_files">
-         <property name="maximumSize">
-          <size>
-           <width>200</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string/>
-         </property>
-         <property name="title">
-          <string>For Curve Files</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_curve_files">
-          <item>
-           <spacer name="verticalSpacer_curve_files_1">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_curve_files_load">
-            <property name="toolTip">
-             <string>Load some .json path data files and append them to the path list</string>
-            </property>
-            <property name="text">
-             <string>Load Curves</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_curve_files_2">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_curve_files_save">
-            <property name="toolTip">
-             <string>Save selected paths data into a .json file</string>
-            </property>
-            <property name="text">
-             <string>Save Curves</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_curve_files_3">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="0" column="1" rowspan="3">
-        <widget class="QGroupBox" name="groupBox_curve_poses">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="toolTip">
-          <string/>
-         </property>
-         <property name="title">
-          <string>Poses List</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_curve_poses">
-          <item>
-           <widget class="QTableView" name="tableView_curve_poses">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarAsNeeded</enum>
-            </property>
-            <property name="sizeAdjustPolicy">
-             <enum>QAbstractScrollArea::AdjustIgnored</enum>
-            </property>
-            <property name="editTriggers">
-             <set>QAbstractItemView::NoEditTriggers</set>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QGroupBox" name="groupBox_curve_addPose">
-         <property name="maximumSize">
-          <size>
-           <width>200</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>The start point of the new path</string>
-         </property>
-         <property name="title">
-          <string>Add a New Pose</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_curve_addPose">
-          <item>
-           <layout class="QGridLayout" name="gridLayout_curve_addPose_inputs">
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_curve_addPose_x">
-              <property name="text">
-               <string>x</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_curve_addPose_y">
-              <property name="text">
-               <string>y</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QLineEdit" name="lineEdit_curve_addPose_yaw"/>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="lineEdit_curve_addPose_x"/>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_curve_addPose_yaw">
-              <property name="text">
-               <string>yaw</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="lineEdit_curve_addPose_y"/>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_curve_addPose_1">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_curve_addPose_add">
-            <property name="text">
-             <string>Add</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_curve_addPose_2">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QGroupBox" name="groupBox_curve_addCurve">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>200</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string/>
-         </property>
-         <property name="title">
-          <string>Add a New Curve</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_curve_addCurve">
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_curve_addCurve_type">
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_curve_addCurve_type">
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="text">
-               <string>Curve Type</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="comboBox_curve_addCurve_type">
-              <property name="toolTip">
-               <string/>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_curve_addCurve_1">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_curve_addCurve_add">
-            <property name="toolTip">
-             <string>Plan and add the configured path to the path list</string>
-            </property>
-            <property name="text">
-             <string>Add</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_curve_addCurve_2">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
     </widget>
    </item>
   </layout>
@@ -667,24 +334,14 @@
   <tabstop>tableView_path_list</tabstop>
   <tabstop>lineEdit_path_add_start_x</tabstop>
   <tabstop>lineEdit_path_add_start_y</tabstop>
-  <tabstop>lineEdit_path_add_start_yaw</tabstop>
+  <tabstop>lineEdit_path_add_start_theta</tabstop>
   <tabstop>lineEdit_path_add_goal_x</tabstop>
   <tabstop>lineEdit_path_add_goal_y</tabstop>
-  <tabstop>lineEdit_path_add_goal_yaw</tabstop>
+  <tabstop>lineEdit_path_add_goal_theta</tabstop>
   <tabstop>comboBox_path_add_planner_global</tabstop>
   <tabstop>pushButton_path_add_add</tabstop>
   <tabstop>pushButton_path_files_load</tabstop>
   <tabstop>pushButton_path_files_save</tabstop>
-  <tabstop>tableView_curve_curves</tabstop>
-  <tabstop>tableView_curve_poses</tabstop>
-  <tabstop>comboBox_curve_addCurve_type</tabstop>
-  <tabstop>pushButton_curve_addCurve_add</tabstop>
-  <tabstop>lineEdit_curve_addPose_x</tabstop>
-  <tabstop>lineEdit_curve_addPose_y</tabstop>
-  <tabstop>lineEdit_curve_addPose_yaw</tabstop>
-  <tabstop>pushButton_curve_addPose_add</tabstop>
-  <tabstop>pushButton_curve_files_load</tabstop>
-  <tabstop>pushButton_curve_files_save</tabstop>
  </tabstops>
  <resources/>
  <connections/>

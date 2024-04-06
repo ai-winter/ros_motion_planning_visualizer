@@ -29,9 +29,9 @@ public:
    * @brief Construct a new Pose2D object
    * @param x  the x coordinate of pose
    * @param y  the y coordinate of pose
-   * @param yaw the yaw of pose
+   * @param theta the theta of pose
    */
-  Pose2D(double x = 0.0, double y = 0.0, double yaw = 0.0);
+  Pose2D(double x = 0.0, double y = 0.0, double theta = 0.0);
 
   /**
    * @brief Destroy the Pose2D object
@@ -39,12 +39,12 @@ public:
   ~Pose2D();
 
   /**
-   * @brief normalize yaw to be within the range [-π, π]
+   * @brief normalize theta to be within the range [-π, π]
    */
-  void normalizeYaw();
+  void normalizeTheta();
 
 public:
-  double x, y, yaw;  // the x and y coordinate and yaw of pose
+  double x, y, theta;  // the x and y coordinate and theta of pose
 };
 }  // namespace rmpv
 Q_DECLARE_METATYPE(rmpv::Pose2D)

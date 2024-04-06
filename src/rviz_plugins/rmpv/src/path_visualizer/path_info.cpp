@@ -64,16 +64,16 @@ QVariant PathInfo::getData(const int& variant) const
       return start_.x;
     case startPoseY:
       return start_.y;
-    case startPoseYaw:
-      return start_.yaw;
+    case startPoseTheta:
+      return start_.theta;
     case goalPose:
       return QVariant::fromValue(goal_);
     case goalPoseX:
       return goal_.x;
     case goalPoseY:
       return goal_.y;
-    case goalPoseYaw:
-      return goal_.yaw;
+    case goalPoseTheta:
+      return goal_.theta;
     case pathLength:
       return length_;
     case pathColor:
@@ -146,8 +146,8 @@ double PathInfo::_calcTurningAngle()
     angle += std::acos(std::max(
         -1.0, std::min(1.0, (x1 * x2 + y1 * y2) / (std::sqrt(x1 * x1 + y1 * y1) * std::sqrt(x2 * x2 + y2 * y2)))));
   }
-  // take yaw angle into account
-  angle += std::abs(start_.yaw - goal_.yaw);
+  // take theta angle into account
+  angle += std::abs(start_.theta - goal_.theta);
   return angle;
 }
 }  // namespace rmpv

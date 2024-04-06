@@ -32,8 +32,8 @@ namespace rmpv
 class PathInfo
 {
 public:
-  enum { plannerName, startPose, startPoseX, startPoseY, startPoseYaw, goalPose, goalPoseX, goalPoseY,
-    goalPoseYaw, pathLength, pathColor, turningAngle, selectStatus };
+  enum { plannerName, startPose, startPoseX, startPoseY, startPoseTheta, goalPose, goalPoseX, goalPoseY,
+    goalPoseTheta, pathLength, pathColor, turningAngle, selectStatus };
 
 public:
   /**

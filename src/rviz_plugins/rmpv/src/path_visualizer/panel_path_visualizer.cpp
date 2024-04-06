@@ -4,7 +4,7 @@
  * @file: panel_path_visualizer.h
  * @brief: Contains panel of path visualizer class
  * @author: Wu Maojia, Yang Haodong
- * @date: 2024-01-12
+ * @date: 2024-4-6
  * @version: 1.0
  *
  * Copyright (c) 2024, Yang Haodong, Wu Maojia.
@@ -48,9 +48,6 @@ PanelPathVisualizer::~PanelPathVisualizer()
  */
 void PanelPathVisualizer::setupUi()
 {
-  ui_->horizontalLayout_path_add_start->addWidget(new StartPoseButton(parent_));
-  ui_->horizontalLayout_path_add_goal->addWidget(new GoalPoseButton(parent_));
-
   table_model_ = new QStandardItemModel(parent_);
   table_header_ = QStringList({ "Select", "Planner", "Start", "Goal", "Length", "Turning Angle", "Color", "Remove" });
   ui_->tableView_path_list->setModel(table_model_);
@@ -68,10 +65,10 @@ void PanelPathVisualizer::setupUi()
   connect(ui_->pushButton_path_files_save, SIGNAL(clicked()), this, SLOT(_onClicked()));
   connect(ui_->lineEdit_path_add_start_x, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
   connect(ui_->lineEdit_path_add_start_y, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
-  connect(ui_->lineEdit_path_add_start_yaw, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
+  connect(ui_->lineEdit_path_add_start_theta, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
   connect(ui_->lineEdit_path_add_goal_x, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
   connect(ui_->lineEdit_path_add_goal_y, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
-  connect(ui_->lineEdit_path_add_goal_yaw, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
+  connect(ui_->lineEdit_path_add_goal_theta, SIGNAL(editingFinished()), this, SLOT(_onEditingFinished()));
   connect(&selectDelegate_, SIGNAL(selectChanged(const int&, const bool&)), this,
           SLOT(_onSelectChanged(const int&, const bool&)));
 }
@@ -83,62 +80,63 @@ void PanelPathVisualizer::_onClicked()
 {
   QPushButton* senderPushButton = qobject_cast<QPushButton*>(sender());
 
-  if (senderPushButton)
+  if (!senderPushButton)
   {
-    // get the button name
-    QString senderName = senderPushButton->objectName();
+    ROS_ERROR("Failed to get signal sender QPushButton.");
+    return;
+  }
 
-    // regular expression to match button names
-    QRegularExpression re_remove("pushButton_path_list_remove_(\\d+)");
-    QRegularExpressionMatch match_remove = re_remove.match(senderName);
+  // get the button name
+  QString senderName = senderPushButton->objectName();
 
-    if (senderName == QString::fromUtf8("pushButton_path_add_add"))
+  // regular expression to match button names
+  QRegularExpression re_remove("pushButton_path_list_remove_(\\d+)");
+  QRegularExpressionMatch match_remove = re_remove.match(senderName);
+
+  if (senderName == QString::fromUtf8("pushButton_path_add_add"))
+  {
+    core_->addPath(ui_->comboBox_path_add_planner_global->currentText());
+    _updateTableView();
+  }
+  else if (senderName == QString::fromUtf8("pushButton_path_files_load"))
+  {
+    QString open_dir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    QStringList open_files =
+        QFileDialog::getOpenFileNames(parent_, QStringLiteral("Select Path Files"), open_dir, "JSON Files(*.json)",
+                                      nullptr, QFileDialog::DontResolveSymlinks);
+    for (const auto& open_file : open_files)
+      core_->loadPaths(open_file);
+    _updateTableView();
+  }
+  else if (senderName == QString::fromUtf8("pushButton_path_files_save"))
+  {
+    QString save_dir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QString("/path.json");
+    QString save_file = QFileDialog::getSaveFileName(parent_, QStringLiteral("Save Path File"), save_dir,
+                                                     "JSON Files(*.json)", nullptr, QFileDialog::DontResolveSymlinks);
+    if (!save_file.isEmpty())
+      core_->savePaths(save_file);
+  }
+  else if (match_remove.hasMatch())
+  {
+    QString capturedText = match_remove.captured(1);
+    bool ok = false;
+    int index = capturedText.toInt(&ok);
+    if (ok)
     {
-      core_->addPath(ui_->comboBox_path_add_planner_global->currentText());
+      core_->removePath(index);
       _updateTableView();
-    }
-    else if (senderName == QString::fromUtf8("pushButton_path_files_load"))
-    {
-      QString open_dir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-      QStringList open_files =
-          QFileDialog::getOpenFileNames(parent_, QStringLiteral("Select Path Files"), open_dir, "JSON Files(*.json)",
-                                        nullptr, QFileDialog::DontResolveSymlinks);
-      for (const auto& open_file : open_files)
-        core_->loadPaths(open_file);
-      _updateTableView();
-    }
-    else if (senderName == QString::fromUtf8("pushButton_path_files_save"))
-    {
-      QString save_dir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + QString("/path.json");
-      QString save_file = QFileDialog::getSaveFileName(parent_, QStringLiteral("Save Path File"), save_dir,
-                                                       "JSON Files(*.json)", nullptr, QFileDialog::DontResolveSymlinks);
-      if (!save_file.isEmpty())
-        core_->savePaths(save_file);
-    }
-    else if (match_remove.hasMatch())
-    {
-      QString capturedText = match_remove.captured(1);
-      bool ok = false;
-      int index = capturedText.toInt(&ok);
-      if (ok)
-      {
-        core_->removePath(index);
-        _updateTableView();
-      }
-      else
-      {
-        ROS_ERROR("Failed to get the path index to remove!");
-        return;
-      };
     }
     else
     {
-      ROS_ERROR("Unknown signal sender QPushButton.");
+      ROS_ERROR("Failed to get the path index to remove!");
       return;
-    }
+    };
   }
   else
-    ROS_ERROR("Failed to get signal sender QPushButton.");
+  {
+    ROS_ERROR("Unknown signal sender QPushButton.");
+    return;
+  }
 }
 
 /**
@@ -149,41 +147,43 @@ void PanelPathVisualizer::_onEditingFinished()
   // get the signal sender
   QLineEdit* senderLineEdit = qobject_cast<QLineEdit*>(sender());
 
-  if (senderLineEdit)
+  if (!senderLineEdit)
   {
-    QString senderName = senderLineEdit->objectName();
-    QString text = senderLineEdit->text();
-    bool ok;
-    double value = text.toDouble(&ok);
-    double* valueToChange;
-
-    if (senderName == QString::fromUtf8("lineEdit_path_add_start_x"))
-      valueToChange = &(core_->start_.x);
-    else if (senderName == QString::fromUtf8("lineEdit_path_add_start_y"))
-      valueToChange = &(core_->start_.y);
-    else if (senderName == QString::fromUtf8("lineEdit_path_add_start_yaw"))
-      valueToChange = &(core_->start_.yaw);
-    else if (senderName == QString::fromUtf8("lineEdit_path_add_goal_x"))
-      valueToChange = &(core_->goal_.x);
-    else if (senderName == QString::fromUtf8("lineEdit_path_add_goal_y"))
-      valueToChange = &(core_->goal_.y);
-    else if (senderName == QString::fromUtf8("lineEdit_path_add_goal_yaw"))
-      valueToChange = &(core_->goal_.yaw);
-    else
-    {
-      ROS_ERROR("Unknown signal sender QLineEdit.");
-      return;
-    }
-
-    if (ok)
-    {
-      *valueToChange = value;
-      core_->refresh_poses();
-    }
-    senderLineEdit->setText(QString::number(*valueToChange, 'f', 3));
-  }
-  else
     ROS_ERROR("Failed to get signal sender QLineEdit.");
+    return;
+  }
+
+  QString senderName = senderLineEdit->objectName();
+  QString text = senderLineEdit->text();
+  bool ok;
+  double value = text.toDouble(&ok);
+  double* valueToChange;
+
+  if (senderName == QString::fromUtf8("lineEdit_path_add_start_x"))
+    valueToChange = &(core_->start_.x);
+  else if (senderName == QString::fromUtf8("lineEdit_path_add_start_y"))
+    valueToChange = &(core_->start_.y);
+  else if (senderName == QString::fromUtf8("lineEdit_path_add_start_theta"))
+    valueToChange = &(core_->start_.theta);
+  else if (senderName == QString::fromUtf8("lineEdit_path_add_goal_x"))
+    valueToChange = &(core_->goal_.x);
+  else if (senderName == QString::fromUtf8("lineEdit_path_add_goal_y"))
+    valueToChange = &(core_->goal_.y);
+  else if (senderName == QString::fromUtf8("lineEdit_path_add_goal_theta"))
+    valueToChange = &(core_->goal_.theta);
+  else
+  {
+    ROS_ERROR("Unknown signal sender QLineEdit.");
+    return;
+  }
+
+  if (ok)
+  {
+    *valueToChange = value;
+    core_->refresh_poses();
+  }
+
+  senderLineEdit->setText(QString::number(*valueToChange, 'f', 3));
 }
 
 /**
@@ -213,10 +213,10 @@ void PanelPathVisualizer::_onValueChanged()
 {
   ui_->lineEdit_path_add_start_x->setText(QString::number(core_->start_.x, 'f', 3));
   ui_->lineEdit_path_add_start_y->setText(QString::number(core_->start_.y, 'f', 3));
-  ui_->lineEdit_path_add_start_yaw->setText(QString::number(core_->start_.yaw, 'f', 3));
+  ui_->lineEdit_path_add_start_theta->setText(QString::number(core_->start_.theta, 'f', 3));
   ui_->lineEdit_path_add_goal_x->setText(QString::number(core_->goal_.x, 'f', 3));
   ui_->lineEdit_path_add_goal_y->setText(QString::number(core_->goal_.y, 'f', 3));
-  ui_->lineEdit_path_add_goal_yaw->setText(QString::number(core_->goal_.yaw, 'f', 3));
+  ui_->lineEdit_path_add_goal_theta->setText(QString::number(core_->goal_.theta, 'f', 3));
 }
 
 /**
@@ -227,8 +227,7 @@ void PanelPathVisualizer::_updateTableView()
   // initialize table model
   table_model_->clear();
   table_model_->setHorizontalHeaderLabels(table_header_);
-  table_model_->setHeaderData(0, Qt::Horizontal, "Only the selected paths will be displayed or saved.",
-                              Qt::ToolTipRole);
+  table_model_->setHeaderData(0, Qt::Horizontal, "Only the selected paths will be displayed or saved.", Qt::ToolTipRole);
   table_model_->setHeaderData(1, Qt::Horizontal, "Planner used to plan the path", Qt::ToolTipRole);
   table_model_->setHeaderData(2, Qt::Horizontal, "Start pose of the path", Qt::ToolTipRole);
   table_model_->setHeaderData(3, Qt::Horizontal, "Goal pose of the path", Qt::ToolTipRole);
@@ -250,18 +249,18 @@ void PanelPathVisualizer::_updateTableView()
     // 2nd column: start pose
     table_model_->setItem(
         row, 2,
-        new QStandardItem(QString("(%1,%2)")
+        new QStandardItem(QString("(%1,%2,%3)")
                               .arg(QString::number(info.getData(PathInfo::startPoseX).toDouble(), 'f', 3))
                               .arg(QString::number(info.getData(PathInfo::startPoseY).toDouble(), 'f', 3))
-                              .arg(QString::number(info.getData(PathInfo::startPoseYaw).toDouble(), 'f', 3))));
+                              .arg(QString::number(info.getData(PathInfo::startPoseTheta).toDouble(), 'f', 3))));
 
     // 3rd column: goal pose
     table_model_->setItem(
         row, 3,
-        new QStandardItem(QString("(%1,%2)")
+        new QStandardItem(QString("(%1,%2,%3)")
                               .arg(QString::number(info.getData(PathInfo::goalPoseX).toDouble(), 'f', 3))
                               .arg(QString::number(info.getData(PathInfo::goalPoseY).toDouble(), 'f', 3))
-                              .arg(QString::number(info.getData(PathInfo::goalPoseYaw).toDouble(), 'f', 3))));
+                              .arg(QString::number(info.getData(PathInfo::goalPoseTheta).toDouble(), 'f', 3))));
 
     // 4th column: path length
     table_model_->setItem(row, 4,

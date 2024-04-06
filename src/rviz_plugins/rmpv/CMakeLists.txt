@@ -56,16 +56,9 @@ set(SOURCE_FILES
         src/path_visualizer/core_path_visualizer.cpp
         src/path_visualizer/path_list.cpp
         src/path_visualizer/path_info.cpp
-        src/curve_visualizer/panel_curve_visualizer.cpp
-        src/curve_visualizer/core_curve_visualizer.cpp
-        src/curve_visualizer/curve_list.cpp
-        src/curve_visualizer/curve_info.cpp
         src/utils/pose_2d.cpp
         src/utils/select_delegate.cpp
         src/utils/color_editor.cpp
-        src/utils/pose_button.cpp
-        src/utils/start_pose_button.cpp
-        src/utils/goal_pose_button.cpp
         ${MOC_FILES}
         )
 
@@ -76,17 +69,10 @@ set(HEADER_FILES
         include/path_visualizer/core_path_visualizer.h
         include/path_visualizer/path_list.h
         include/path_visualizer/path_info.h
-        include/curve_visualizer/panel_curve_visualizer.h
-        include/curve_visualizer/core_curve_visualizer.h
-        include/curve_visualizer/curve_list.h
-        include/curve_visualizer/curve_info.h
         include/utils/point_2d.h
         include/utils/pose_2d.h
         include/utils/select_delegate.h
         include/utils/color_editor.h
-        include/utils/pose_button.h
-        include/utils/start_pose_button.h
-        include/utils/goal_pose_button.h
         )
 
 set(RESOURCE_FILES
