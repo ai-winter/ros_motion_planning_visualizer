@@ -58,5 +58,8 @@ RMPV::~RMPV()
     delete panel_path_;
   if (panel_curve_)
     delete panel_curve_;
+  if (manager_)
+    delete manager_;
+}
 }
 }  // namespace rmpv
