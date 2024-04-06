@@ -26,11 +26,16 @@ class StartPoseButton : public PoseButton
  Q_OBJECT
 
 public:
- /*
-  * @brief Construct a new StartPoseButton object
-  * @param parent  the parent widget
-  */
- StartPoseButton(QWidget* parent = nullptr);
+  /*
+   * @brief Construct a new StartPoseButton object
+   * @param parent  the parent widget
+   */
+  StartPoseButton(QWidget* parent = nullptr);
+
+  ~StartPoseButton();
+
+protected:
+  void onPoseSet(double x, double y, double theta) override;
 };
 } // namespace rmpv
 #endif  // START_POSE_BUTTON_H

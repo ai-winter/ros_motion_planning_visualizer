@@ -4,7 +4,7 @@
  * @file: core_path_visualizer.cpp
  * @brief: Contains core of path visualizer class
  * @author: Wu Maojia, Yang Haodong
- * @date: 2024-01-13
+ * @date: 2024-4-6
  * @version: 1.0
  *
  * Copyright (c) 2024, Yang Haodong, Wu Maojia. 
@@ -43,20 +43,18 @@ void CorePathVisualizer::setupROS()
   // initialize ROS node
   ros::NodeHandle private_nh("");
 
-  // publishers
-  marker_pub_ = private_nh.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-  paths_pub_ = private_nh.advertise<visualization_msgs::MarkerArray>("/paths", 10);
-  start_pub_ = private_nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("/initialpose", 1);
-  goal_pub_ = private_nh.advertise<geometry_msgs::PoseStamped>("move_base_simple/goal", 1);
-
-  // subscribers
-  start_sub_ = private_nh.subscribe<geometry_msgs::PoseWithCovarianceStamped>(
-      "/initialpose", 1, boost::bind(&CorePathVisualizer::_onStartUpdate, this, _1));
-  goal_sub_ = private_nh.subscribe<geometry_msgs::PoseStamped>(
-      "move_base_simple/goal", 1, boost::bind(&CorePathVisualizer::_onGoalUpdate, this, _1));
+  // server
+  im_server_ = new interactive_markers::InteractiveMarkerServer("rmpv_interactive_markers");
+  im_server_->clear();
+  im_server_->insert(makeInteractiveMarker("start", start_), boost::bind(&CorePathVisualizer::_onStartUpdate, this, _1));
+  im_server_->insert(makeInteractiveMarker("goal", goal_), boost::bind(&CorePathVisualizer::_onGoalUpdate, this, _1));
+  im_server_->applyChanges();
 
   // client
   call_plan_client_ = private_nh.serviceClient<wrapper_planner::CallPlan>("/move_base/WrapperPlanner/call_plan");
+
+  // publishers
+  paths_pub_ = private_nh.advertise<visualization_msgs::MarkerArray>("/rmpv_paths", 10);
 
   // parameters
   private_nh.getParam("/move_base/planner", planner_list_);
@@ -77,12 +75,12 @@ void CorePathVisualizer::addPath(const QString& planner_name)
   start.header.stamp = ros::Time::now();
   start.pose.position.x = start_.x;
   start.pose.position.y = start_.y;
-  start.pose.orientation = tf::createQuaternionMsgFromYaw(start_.yaw);
+  start.pose.orientation = tf::createQuaternionMsgFromYaw(start_.theta);
   goal.header.frame_id = "map";
   goal.header.stamp = ros::Time::now();
   goal.pose.position.x = goal_.x;
   goal.pose.position.y = goal_.y;
-  goal.pose.orientation = tf::createQuaternionMsgFromYaw(goal_.yaw);
+  goal.pose.orientation = tf::createQuaternionMsgFromYaw(goal_.theta);
 
   wrapper_planner::CallPlan call_plan_srv;
   call_plan_srv.request.start = start;
@@ -90,8 +88,8 @@ void CorePathVisualizer::addPath(const QString& planner_name)
   call_plan_srv.request.planner_name = planner_name.toStdString();
 
   ROS_WARN("call planner %s", planner_name.toStdString().c_str());
-  ROS_WARN("start: %f, %f, %f", start.pose.position.x, start.pose.position.y, start_.yaw);
-  ROS_WARN("goal: %f, %f, %f", goal.pose.position.x, goal.pose.position.y, goal_.yaw);
+  ROS_WARN("start: %f, %f, %f", start.pose.position.x, start.pose.position.y, start_.theta);
+  ROS_WARN("goal: %f, %f, %f", goal.pose.position.x, goal.pose.position.y, goal_.theta);
 
   if (call_plan_client_.call(call_plan_srv))
   {
@@ -186,6 +184,7 @@ void CorePathVisualizer::removePath(const int& index)
   if (path_list_->remove(index))
   {
     ROS_WARN("Path with index %d is successfully removed!", index);
+    refresh_paths();
   }
   else
     ROS_ERROR("Failed to remove path with index %d.", index);
@@ -196,17 +195,25 @@ void CorePathVisualizer::removePath(const int& index)
  */
 void CorePathVisualizer::refresh_paths()
 {
-  visualization_msgs::Marker path_marker;
   visualization_msgs::MarkerArray path_marker_array;
+  visualization_msgs::Marker path_marker;
+
+  path_marker.action = path_marker.DELETEALL;
+  path_marker_array.markers.push_back(path_marker);
+  path_marker.points.clear();
+
   int marker_id = 0;
 
   for (const auto& info : *(path_list_->getListPtr()))
   {
+    if (!info.getData(PathInfo::selectStatus).value<bool>())
+      continue;
+
     QList<Point2D> path_points = info.getPathPoints();
     for (unsigned int i = 0; i < path_points.size() - 1; i++)
     {
       path_marker.ns = "path_marker";
-      path_marker.type = visualization_msgs::Marker::LINE_LIST;
+      path_marker.type = visualization_msgs::Marker::LINE_STRIP;
       path_marker.action = path_marker.ADD;
       geometry_msgs::Point p;
       p.x = path_points[i].x;
@@ -249,101 +256,108 @@ void CorePathVisualizer::refresh_paths()
  *  @brief refresh start and goal poses displayed in rviz
  */
 void CorePathVisualizer::refresh_poses() {
-  // start pose topic "/initialpose"
-  // goal pose topic "move_base_simple/goal"
-  geometry_msgs::PoseWithCovarianceStamped start_pose;
-  geometry_msgs::PoseStamped goal_pose;
-  start_.normalizeYaw();
-  goal_.normalizeYaw();
-  Q_EMIT valueChanged();  // normalization may change the yaw value
-
-  start_pose.header.frame_id = "map";
-  start_pose.header.stamp = ros::Time::now();
-  start_pose.pose.pose.position.x = start_.x;
-  start_pose.pose.pose.position.y = start_.y;
-  start_pose.pose.pose.position.z = 0.0;
-  start_pose.pose.pose.orientation = tf::createQuaternionMsgFromYaw(start_.yaw);
-
-  goal_pose.header.frame_id = "map";
-  goal_pose.header.stamp = ros::Time::now();
-  goal_pose.pose.position.x = goal_.x;
-  goal_pose.pose.position.y = goal_.y;
-  goal_pose.pose.position.z = 0.0;
-  goal_pose.pose.orientation = tf::createQuaternionMsgFromYaw(goal_.yaw);
-
-  start_pub_.publish(start_pose);
-  goal_pub_.publish(goal_pose);
+  start_.normalizeTheta();
+  goal_.normalizeTheta();
+  Q_EMIT valueChanged();
+  im_server_->insert(makeInteractiveMarker("start", start_), boost::bind(&CorePathVisualizer::_onStartUpdate, this, _1));
+  im_server_->insert(makeInteractiveMarker("goal", goal_), boost::bind(&CorePathVisualizer::_onGoalUpdate, this, _1));
+  im_server_->applyChanges();
 }
 
 /**
- *  @brief update the start pose, it is a callback funciton
- *  @param  pose    the start setting in Rviz
+ *  @brief update the start pose marker, it is a callback funciton
+ *  @param int_marker  interactive marker message
  */
-void CorePathVisualizer::_onStartUpdate(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose)
+void CorePathVisualizer::_onStartUpdate(const visualization_msgs::InteractiveMarkerFeedback::ConstPtr& int_marker)
 {
-  start_ = Pose2D(pose->pose.pose.position.x, pose->pose.pose.position.y, tf::getYaw(pose->pose.pose.orientation));
-  Q_EMIT valueChanged();  // normalization may change the yaw value
-
-  // mark pose on the map
-  if (ros::ok())
-  {
-    visualization_msgs::Marker arrow, info;
-    arrow.header.frame_id = info.header.frame_id = pose->header.frame_id;
-    arrow.ns = "navigation_start_arrow";
-    info.ns = "navigation_start_info";
-    arrow.action = info.action = visualization_msgs::Marker::ADD;
-    arrow.type = visualization_msgs::Marker::ARROW;
-    info.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
-    arrow.pose = info.pose = pose->pose.pose;
-    info.pose.position.z += 1.0;
-    arrow.scale.x = 1.0;
-    arrow.scale.y = 0.2;
-    info.scale.z = 0.6;
-    arrow.color.r = info.color.r = 0.0f;
-    arrow.color.g = info.color.g = 0.0f;
-    arrow.color.b = info.color.b = 1.0f;
-    arrow.color.a = info.color.a = 0.7f;
-    info.text = std::string("Start");
-    marker_pub_.publish(arrow);
-    marker_pub_.publish(info);
-  }
-  else
-    ROS_ERROR("ROS node has been closed.");
+  const geometry_msgs::Pose& pose = int_marker->pose;
+  start_ = Pose2D(pose.position.x, pose.position.y, tf::getYaw(pose.orientation));
+  Q_EMIT valueChanged();  // normalization may change the theta value
 }
 
 /**
- *  @brief update the goal pose, it is a callback funciton
- *  @param  pose    the goal user set in Rviz
+ *  @brief update the goal pose marker, it is a callback funciton
+ *  @param int_marker  interactive marker message
  */
-void CorePathVisualizer::_onGoalUpdate(const geometry_msgs::PoseStamped::ConstPtr& pose)
+void CorePathVisualizer::_onGoalUpdate(const visualization_msgs::InteractiveMarkerFeedback::ConstPtr& int_marker)
 {
-  goal_ = Pose2D(pose->pose.position.x, pose->pose.position.y, tf::getYaw(pose->pose.orientation));
-  Q_EMIT valueChanged();  // normalization may change the yaw value
+  const geometry_msgs::Pose& pose = int_marker->pose;
+  goal_ = Pose2D(pose.position.x, pose.position.y, tf::getYaw(pose.orientation));
+  Q_EMIT valueChanged();  // normalization may change the theta value
+}
 
-  // mark pose on the map
-  if (ros::ok())
+/**
+ * @brief make an interactive marker for pose
+ * @param name  name of the marker
+ * @param pose  pose of the marker
+ * @return an interactive marker message
+ */
+visualization_msgs::InteractiveMarker CorePathVisualizer::makeInteractiveMarker(const std::string& name, const Pose2D& pose)
+{
+  visualization_msgs::InteractiveMarker int_marker;
+  int_marker.header.frame_id = "map";
+  int_marker.name = name;
+//  int_marker.description = name;
+  int_marker.pose.position.x = pose.x;
+  int_marker.pose.position.y = pose.y;
+  int_marker.pose.position.z = 0.01;
+  int_marker.pose.orientation = tf::createQuaternionMsgFromYaw(pose.theta);
+
+  visualization_msgs::Marker arrow_marker;
+  arrow_marker.type = visualization_msgs::Marker::ARROW;
+  arrow_marker.scale.x = 1.0;
+  arrow_marker.scale.y = 0.1;
+  arrow_marker.scale.z = 0.1;
+  if (name == "start")
   {
-    visualization_msgs::Marker arrow, info;
-    arrow.header.frame_id = info.header.frame_id = pose->header.frame_id;
-    arrow.ns = "navigation_goal_arrow";
-    info.ns = "navigation_goal_info";
-    arrow.action = info.action = visualization_msgs::Marker::ADD;
-    arrow.type = visualization_msgs::Marker::ARROW;
-    info.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
-    arrow.pose = info.pose = pose->pose;
-    info.pose.position.z += 1.0;
-    arrow.scale.x = 1.0;
-    arrow.scale.y = 0.2;
-    info.scale.z = 0.6;
-    arrow.color.r = info.color.r = 0.0f;
-    arrow.color.g = info.color.g = 0.0f;
-    arrow.color.b = info.color.b = 1.0f;
-    arrow.color.a = info.color.a = 0.7f;
-    info.text = std::string("Goal");
-    marker_pub_.publish(arrow);
-    marker_pub_.publish(info);
+    arrow_marker.color.r = 0.0;
+    arrow_marker.color.g = 1.0;
+    arrow_marker.color.b = 0.0;
+  }
+  else if (name == "goal")
+  {
+    arrow_marker.color.r = 1.0;
+    arrow_marker.color.g = 0.0;
+    arrow_marker.color.b = 0.0;
   }
   else
-    ROS_ERROR("ROS node has been closed.");
+  {
+    arrow_marker.color.r = 0.0;
+    arrow_marker.color.g = 0.0;
+    arrow_marker.color.b = 1.0;
+  }
+  arrow_marker.color.a = 1.0;
+
+  visualization_msgs::Marker name_marker;
+  name_marker.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
+  name_marker.text = name;
+  name_marker.scale.z = 0.4;
+  name_marker.color.r = arrow_marker.color.r;
+  name_marker.color.g = arrow_marker.color.g;
+  name_marker.color.b = arrow_marker.color.b;
+  name_marker.color.a = arrow_marker.color.a;
+  name_marker.pose.position.z = 0.2;
+
+  visualization_msgs::InteractiveMarkerControl control;
+  control.always_visible = true;
+  control.orientation.w = 1;
+  control.orientation.x = 0;
+  control.orientation.y = 1;
+  control.orientation.z = 0;
+  control.interaction_mode = visualization_msgs::InteractiveMarkerControl::MOVE_ROTATE;
+  int_marker.controls.push_back(control);
+
+  visualization_msgs::InteractiveMarkerControl control_arrow;
+  control_arrow.always_visible = true;
+  control_arrow.markers.push_back(arrow_marker);
+  int_marker.controls.push_back(control_arrow);
+
+  visualization_msgs::InteractiveMarkerControl control_name;
+  control_name.always_visible = true;
+  control_name.markers.push_back(name_marker);
+  int_marker.controls.push_back(control_name);
+
+  return int_marker;
 }
+
 }  // namespace rmpv

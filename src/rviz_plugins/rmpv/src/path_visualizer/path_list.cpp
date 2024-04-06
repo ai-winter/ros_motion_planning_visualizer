@@ -119,13 +119,13 @@ bool PathList::save(QString file_name) const
     QJsonObject start_json;
     start_json["x"] = info.getData(PathInfo::startPoseX).toDouble();
     start_json["y"] = info.getData(PathInfo::startPoseY).toDouble();
-    start_json["yaw"] = info.getData(PathInfo::startPoseYaw).toDouble();
+    start_json["theta"] = info.getData(PathInfo::startPoseTheta).toDouble();
     path_json["start"] = start_json;
 
     QJsonObject goal_json;
     goal_json["x"] = info.getData(PathInfo::goalPoseX).toDouble();
     goal_json["y"] = info.getData(PathInfo::goalPoseY).toDouble();
-    goal_json["yaw"] = info.getData(PathInfo::goalPoseYaw).toDouble();
+    goal_json["theta"] = info.getData(PathInfo::goalPoseTheta).toDouble();
     path_json["goal"] = goal_json;
 
     QJsonArray points_array;
@@ -206,8 +206,8 @@ bool PathList::load(QString file_name)
     // construct a new PathInfo object with the parsed info
     PathInfo path(
         path_json["planner"].toString(),
-        Pose2D(start["x"].toDouble(), start["y"].toDouble(), start["yaw"].toDouble()),
-        Pose2D(goal["x"].toDouble(), goal["y"].toDouble(), goal["yaw"].toDouble()),
+        Pose2D(start["x"].toDouble(), start["y"].toDouble(), start["theta"].toDouble()),
+        Pose2D(goal["x"].toDouble(), goal["y"].toDouble(), goal["theta"].toDouble()),
         path_points,
         QColor(color["R"].toInt(), color["G"].toInt(), color["B"].toInt())
     );

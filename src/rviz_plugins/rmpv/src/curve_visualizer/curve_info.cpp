@@ -148,8 +148,8 @@ double CurveInfo::_calcTurningAngle()
                               (x1 * x2 + y1 * y2) / (std::sqrt(x1 * x1 + y1 * y1) * std::sqrt(x2 * x2 + y2 * y2))
                               )));
   }
-  // take yaw angle into account
-  angle += std::abs(poses_[0].yaw - poses_[poses_.size() - 1].yaw);
+  // take theta angle into account
+  angle += std::abs(poses_[0].theta - poses_[poses_.size() - 1].theta);
   return angle;
 }
 }  // namespace rmpv

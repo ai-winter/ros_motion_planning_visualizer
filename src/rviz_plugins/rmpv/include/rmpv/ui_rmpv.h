@@ -43,16 +43,16 @@ public:
     QLineEdit *lineEdit_path_add_start_x;
     QLabel *label_path_add_start_y;
     QLineEdit *lineEdit_path_add_start_y;
-    QLabel *label_path_add_start_yaw;
-    QLineEdit *lineEdit_path_add_start_yaw;
+    QLabel *label_path_add_start_theta;
+    QLineEdit *lineEdit_path_add_start_theta;
     QGroupBox *groupBox_path_add_goal;
     QHBoxLayout *horizontalLayout_path_add_goal;
     QLabel *label_path_add_goal_x;
     QLineEdit *lineEdit_path_add_goal_x;
     QLabel *label_path_add_goal_y;
     QLineEdit *lineEdit_path_add_goal_y;
-    QLabel *label_path_add_goal_yaw;
-    QLineEdit *lineEdit_path_add_goal_yaw;
+    QLabel *label_path_add_goal_theta;
+    QLineEdit *lineEdit_path_add_goal_theta;
     QGroupBox *groupBox_path_add_planner;
     QHBoxLayout *horizontalLayout_path_add_planner;
     QLabel *label_path_add_planner_global;
@@ -90,9 +90,9 @@ public:
     QGridLayout *gridLayout_curve_addPose_inputs;
     QLabel *label_curve_addPose_x;
     QLabel *label_curve_addPose_y;
-    QLineEdit *lineEdit_curve_addPose_yaw;
+    QLineEdit *lineEdit_curve_addPose_theta;
     QLineEdit *lineEdit_curve_addPose_x;
-    QLabel *label_curve_addPose_yaw;
+    QLabel *label_curve_addPose_theta;
     QLineEdit *lineEdit_curve_addPose_y;
     QSpacerItem *verticalSpacer_curve_addPose_1;
     QPushButton *pushButton_curve_addPose_add;
@@ -156,15 +156,15 @@ public:
 
         horizontalLayout_path_add_start->addWidget(lineEdit_path_add_start_y);
 
-        label_path_add_start_yaw = new QLabel(groupBox_path_add_start);
-        label_path_add_start_yaw->setObjectName(QString::fromUtf8("label_path_add_start_yaw"));
+        label_path_add_start_theta = new QLabel(groupBox_path_add_start);
+        label_path_add_start_theta->setObjectName(QString::fromUtf8("label_path_add_start_theta"));
 
-        horizontalLayout_path_add_start->addWidget(label_path_add_start_yaw);
+        horizontalLayout_path_add_start->addWidget(label_path_add_start_theta);
 
-        lineEdit_path_add_start_yaw = new QLineEdit(groupBox_path_add_start);
-        lineEdit_path_add_start_yaw->setObjectName(QString::fromUtf8("lineEdit_path_add_start_yaw"));
+        lineEdit_path_add_start_theta = new QLineEdit(groupBox_path_add_start);
+        lineEdit_path_add_start_theta->setObjectName(QString::fromUtf8("lineEdit_path_add_start_theta"));
 
-        horizontalLayout_path_add_start->addWidget(lineEdit_path_add_start_yaw);
+        horizontalLayout_path_add_start->addWidget(lineEdit_path_add_start_theta);
 
 
         verticalLayout_path_add->addWidget(groupBox_path_add_start);
@@ -193,15 +193,15 @@ public:
 
         horizontalLayout_path_add_goal->addWidget(lineEdit_path_add_goal_y);
 
-        label_path_add_goal_yaw = new QLabel(groupBox_path_add_goal);
-        label_path_add_goal_yaw->setObjectName(QString::fromUtf8("label_path_add_goal_yaw"));
+        label_path_add_goal_theta = new QLabel(groupBox_path_add_goal);
+        label_path_add_goal_theta->setObjectName(QString::fromUtf8("label_path_add_goal_theta"));
 
-        horizontalLayout_path_add_goal->addWidget(label_path_add_goal_yaw);
+        horizontalLayout_path_add_goal->addWidget(label_path_add_goal_theta);
 
-        lineEdit_path_add_goal_yaw = new QLineEdit(groupBox_path_add_goal);
-        lineEdit_path_add_goal_yaw->setObjectName(QString::fromUtf8("lineEdit_path_add_goal_yaw"));
+        lineEdit_path_add_goal_theta = new QLineEdit(groupBox_path_add_goal);
+        lineEdit_path_add_goal_theta->setObjectName(QString::fromUtf8("lineEdit_path_add_goal_theta"));
 
-        horizontalLayout_path_add_goal->addWidget(lineEdit_path_add_goal_yaw);
+        horizontalLayout_path_add_goal->addWidget(lineEdit_path_add_goal_theta);
 
 
         verticalLayout_path_add->addWidget(groupBox_path_add_goal);
@@ -382,20 +382,20 @@ public:
 
         gridLayout_curve_addPose_inputs->addWidget(label_curve_addPose_y, 1, 0, 1, 1);
 
-        lineEdit_curve_addPose_yaw = new QLineEdit(groupBox_curve_addPose);
-        lineEdit_curve_addPose_yaw->setObjectName(QString::fromUtf8("lineEdit_curve_addPose_yaw"));
+        lineEdit_curve_addPose_theta = new QLineEdit(groupBox_curve_addPose);
+        lineEdit_curve_addPose_theta->setObjectName(QString::fromUtf8("lineEdit_curve_addPose_theta"));
 
-        gridLayout_curve_addPose_inputs->addWidget(lineEdit_curve_addPose_yaw, 2, 1, 1, 1);
+        gridLayout_curve_addPose_inputs->addWidget(lineEdit_curve_addPose_theta, 2, 1, 1, 1);
 
         lineEdit_curve_addPose_x = new QLineEdit(groupBox_curve_addPose);
         lineEdit_curve_addPose_x->setObjectName(QString::fromUtf8("lineEdit_curve_addPose_x"));
 
         gridLayout_curve_addPose_inputs->addWidget(lineEdit_curve_addPose_x, 0, 1, 1, 1);
 
-        label_curve_addPose_yaw = new QLabel(groupBox_curve_addPose);
-        label_curve_addPose_yaw->setObjectName(QString::fromUtf8("label_curve_addPose_yaw"));
+        label_curve_addPose_theta = new QLabel(groupBox_curve_addPose);
+        label_curve_addPose_theta->setObjectName(QString::fromUtf8("label_curve_addPose_theta"));
 
-        gridLayout_curve_addPose_inputs->addWidget(label_curve_addPose_yaw, 2, 0, 1, 1);
+        gridLayout_curve_addPose_inputs->addWidget(label_curve_addPose_theta, 2, 0, 1, 1);
 
         lineEdit_curve_addPose_y = new QLineEdit(groupBox_curve_addPose);
         lineEdit_curve_addPose_y->setObjectName(QString::fromUtf8("lineEdit_curve_addPose_y"));
@@ -468,11 +468,11 @@ public:
         QWidget::setTabOrder(tabManager, tableView_path_list);
         QWidget::setTabOrder(tableView_path_list, lineEdit_path_add_start_x);
         QWidget::setTabOrder(lineEdit_path_add_start_x, lineEdit_path_add_start_y);
-        QWidget::setTabOrder(lineEdit_path_add_start_y, lineEdit_path_add_start_yaw);
-        QWidget::setTabOrder(lineEdit_path_add_start_yaw, lineEdit_path_add_goal_x);
+        QWidget::setTabOrder(lineEdit_path_add_start_y, lineEdit_path_add_start_theta);
+        QWidget::setTabOrder(lineEdit_path_add_start_theta, lineEdit_path_add_goal_x);
         QWidget::setTabOrder(lineEdit_path_add_goal_x, lineEdit_path_add_goal_y);
-        QWidget::setTabOrder(lineEdit_path_add_goal_y, lineEdit_path_add_goal_yaw);
-        QWidget::setTabOrder(lineEdit_path_add_goal_yaw, comboBox_path_add_planner_global);
+        QWidget::setTabOrder(lineEdit_path_add_goal_y, lineEdit_path_add_goal_theta);
+        QWidget::setTabOrder(lineEdit_path_add_goal_theta, comboBox_path_add_planner_global);
         QWidget::setTabOrder(comboBox_path_add_planner_global, pushButton_path_add_add);
         QWidget::setTabOrder(pushButton_path_add_add, pushButton_path_files_load);
         QWidget::setTabOrder(pushButton_path_files_load, pushButton_path_files_save);
@@ -482,8 +482,8 @@ public:
         QWidget::setTabOrder(comboBox_curve_addCurve_type, pushButton_curve_addCurve_add);
         QWidget::setTabOrder(pushButton_curve_addCurve_add, lineEdit_curve_addPose_x);
         QWidget::setTabOrder(lineEdit_curve_addPose_x, lineEdit_curve_addPose_y);
-        QWidget::setTabOrder(lineEdit_curve_addPose_y, lineEdit_curve_addPose_yaw);
-        QWidget::setTabOrder(lineEdit_curve_addPose_yaw, pushButton_curve_addPose_add);
+        QWidget::setTabOrder(lineEdit_curve_addPose_y, lineEdit_curve_addPose_theta);
+        QWidget::setTabOrder(lineEdit_curve_addPose_theta, pushButton_curve_addPose_add);
         QWidget::setTabOrder(pushButton_curve_addPose_add, pushButton_curve_files_load);
         QWidget::setTabOrder(pushButton_curve_files_load, pushButton_curve_files_save);
 
@@ -508,14 +508,14 @@ public:
         groupBox_path_add_start->setTitle(QCoreApplication::translate("RMPV", "Start Pose", nullptr));
         label_path_add_start_x->setText(QCoreApplication::translate("RMPV", "x", nullptr));
         label_path_add_start_y->setText(QCoreApplication::translate("RMPV", "y", nullptr));
-        label_path_add_start_yaw->setText(QCoreApplication::translate("RMPV", "yaw", nullptr));
+        label_path_add_start_theta->setText(QCoreApplication::translate("RMPV", "\316\270", nullptr));
 #if QT_CONFIG(tooltip)
         groupBox_path_add_goal->setToolTip(QCoreApplication::translate("RMPV", "The goal pose of the new path", nullptr));
 #endif // QT_CONFIG(tooltip)
         groupBox_path_add_goal->setTitle(QCoreApplication::translate("RMPV", "Goal Pose", nullptr));
         label_path_add_goal_x->setText(QCoreApplication::translate("RMPV", "x", nullptr));
         label_path_add_goal_y->setText(QCoreApplication::translate("RMPV", "y", nullptr));
-        label_path_add_goal_yaw->setText(QCoreApplication::translate("RMPV", "yaw", nullptr));
+        label_path_add_goal_theta->setText(QCoreApplication::translate("RMPV", "\316\270", nullptr));
 #if QT_CONFIG(tooltip)
         groupBox_path_add_planner->setToolTip(QCoreApplication::translate("RMPV", "The planner used to plan the new path", nullptr));
 #endif // QT_CONFIG(tooltip)
@@ -574,7 +574,7 @@ public:
         groupBox_curve_addPose->setTitle(QCoreApplication::translate("RMPV", "Add a New Pose", nullptr));
         label_curve_addPose_x->setText(QCoreApplication::translate("RMPV", "x", nullptr));
         label_curve_addPose_y->setText(QCoreApplication::translate("RMPV", "y", nullptr));
-        label_curve_addPose_yaw->setText(QCoreApplication::translate("RMPV", "yaw", nullptr));
+        label_curve_addPose_theta->setText(QCoreApplication::translate("RMPV", "\316\270", nullptr));
         pushButton_curve_addPose_add->setText(QCoreApplication::translate("RMPV", "Add", nullptr));
 #if QT_CONFIG(tooltip)
         groupBox_curve_addCurve->setToolTip(QString());

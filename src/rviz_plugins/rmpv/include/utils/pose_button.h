@@ -18,20 +18,29 @@
 #define POSE_BUTTON_H
 
 #include <QtWidgets>
-#include <QPushButton>
+#include <QToolButton>
+
+#include <rviz/tool_manager.h>
 
 namespace rmpv
 {
-class PoseButton : public QPushButton
+class PoseButton : public QToolButton
 {
  Q_OBJECT
 
 public:
- /*
-  * @brief Construct a new PoseButton object
-  * @param parent  the parent widget
-  */
- PoseButton(QWidget* parent = nullptr);
+  /*
+   * @brief Construct a new ToolButton object
+   * @param parent  the parent widget
+   */
+  PoseButton(QWidget* parent = nullptr);
+
+  ~PoseButton();
+
+protected:
+  void onClicked();
+
+  virtual void onPoseSet(double x, double y, double theta) = 0;
 };
 } // namespace rmpv
 #endif  // POSE_BUTTON_H

@@ -22,10 +22,9 @@ namespace rmpv
   * @brief Construct a new StartPoseButton object
   * @param parent  the parent widget
  */
-StartPoseButton::StartPoseButton(QWidget* parent)
- : PoseButton(parent)
-{
-  setIcon(QIcon(":/icons/start_pose.png"));
-  setToolTip("Set start pose using mouse");
-}
+//StartPoseButton::StartPoseButton()
+//{
+//  setIcon(QIcon(":/icons/start_pose.png"));
+//  setToolTip("Set start pose using mouse");
+//}
 }  // namespace rmpv

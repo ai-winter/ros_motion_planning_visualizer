@@ -18,6 +18,9 @@
 #define RMPV_H
 
 #include <rviz/panel.h>
+#include <rviz/visualization_manager.h>
+#include <rviz/render_panel.h>
+
 #include "rmpv/ui_rmpv.h"
 #include "path_visualizer/panel_path_visualizer.h"
 #include "curve_visualizer/panel_curve_visualizer.h"
@@ -33,7 +36,7 @@ public:
    * @brief Construct a new RMPV object
    * @param parent
    */
-  RMPV(QWidget* parent = nullptr);
+  RMPV(QWidget* parent = nullptr, rviz::VisualizationManager* manager = nullptr);
 
   /**
    * @brief Destroy the RMPV object
@@ -44,6 +47,7 @@ private:
   Ui::RMPV* ui_;   // ui object
   PanelPathVisualizer* panel_path_; // panel of path visualizer
   PanelCurveVisualizer* panel_curve_; // panel of curve visualizer
+  rviz::VisualizationManager* manager_; // Rviz VisualizationManager object
 };
 
 }  // namespace rmpv
