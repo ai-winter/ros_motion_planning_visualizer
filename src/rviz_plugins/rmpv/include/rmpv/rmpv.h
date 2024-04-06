@@ -23,7 +23,6 @@
 
 #include "rmpv/ui_rmpv.h"
 #include "path_visualizer/panel_path_visualizer.h"
-#include "curve_visualizer/panel_curve_visualizer.h"
 
 namespace rmpv
 {
@@ -46,7 +45,6 @@ public:
 private:
   Ui::RMPV* ui_;   // ui object
   PanelPathVisualizer* panel_path_; // panel of path visualizer
-  PanelCurveVisualizer* panel_curve_; // panel of curve visualizer
   rviz::VisualizationManager* manager_; // Rviz VisualizationManager object
 };
 

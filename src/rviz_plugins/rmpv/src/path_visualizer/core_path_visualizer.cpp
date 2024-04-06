@@ -33,6 +33,8 @@ CorePathVisualizer::~CorePathVisualizer()
 {
   if (path_list_)
     delete path_list_;
+  if (im_server_)
+    delete im_server_;
 }
 
 /**
@@ -54,7 +56,7 @@ void CorePathVisualizer::setupROS()
   call_plan_client_ = private_nh.serviceClient<wrapper_planner::CallPlan>("/move_base/WrapperPlanner/call_plan");
 
   // publishers
-  paths_pub_ = private_nh.advertise<visualization_msgs::MarkerArray>("/rmpv_paths", 10);
+  paths_pub_ = private_nh.advertise<visualization_msgs::MarkerArray>("/rmpv_paths", 1);
 
   // parameters
   private_nh.getParam("/move_base/planner", planner_list_);

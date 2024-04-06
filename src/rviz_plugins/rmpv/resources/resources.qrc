@@ -1,8 +1,5 @@
 <RCC>
     <qresource prefix="/">
         <file>icons/cross.png</file>
-        <file>icons/pose.png</file>
-        <file>icons/start_pose.png</file>
-        <file>icons/goal_pose.png</file>
     </qresource>
 </RCC>

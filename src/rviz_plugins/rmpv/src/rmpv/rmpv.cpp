@@ -30,7 +30,6 @@ RMPV::RMPV(QWidget* parent, rviz::VisualizationManager* manager) : rviz::Panel(p
 {
   ui_->setupUi(this);
   panel_path_ = new PanelPathVisualizer(this, ui_);
-  panel_curve_ = new PanelCurveVisualizer(this, ui_);
   if (parent)
   {
     ROS_WARN("parent is not null");
@@ -56,7 +55,7 @@ RMPV::~RMPV()
     delete ui_;
   if (panel_path_)
     delete panel_path_;
-  if (panel_curve_)
-    delete panel_curve_;
+  if (manager_)
+    delete manager_;
 }
 }  // namespace rmpv
