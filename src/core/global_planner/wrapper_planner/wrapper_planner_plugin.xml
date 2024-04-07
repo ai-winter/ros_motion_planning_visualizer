@@ -1,7 +1,0 @@
-<library path="lib/libwrapper_planner">
-  <class name="wrapper_planner/WrapperPlanner" type="wrapper_planner::WrapperPlanner" base_class_type="nav_core::BaseGlobalPlanner">
-    <description>
-      A implementation of wrapper global path planning algorithm
-    </description>
-  </class>
-</library>
