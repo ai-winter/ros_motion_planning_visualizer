@@ -61,5 +61,4 @@ RMPV::~RMPV()
   if (manager_)
     delete manager_;
 }
-}
 }  // namespace rmpv
