@@ -17,7 +17,7 @@ In scientific research, this repository allows researchers to observe, study, un
 
 This plugin is also one of tool chains of [ROS Motion Planning](https://github.com/ai-winter/ros_motion_planning) project.
 
-### This repository is under development!! It is not stable!! Please wait for our official release!!
+### This repository is under development!! It is not stable!!
 
 ## 1. <span id="1"> Start
 We provide a script to quickly start the world.
